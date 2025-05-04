@@ -1,0 +1,135 @@
+/* styles.css */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #0d0d0d;
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-top: 90px; /* Make space for the topbar */
+}
+
+/* Topbar */
+.topbar {
+  background-color: #001f4d;
+/*  opacity: 0.3; */
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  position: fixed; /* Keeps topbar fixed at the top */
+  width: 100%;
+  top: 0;
+  z-index: 1000; /* for always putting the topbar over everything else*/
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* for showing a light shadow below the topbar*/
+}
+
+.logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.topbar .button-group {
+  display: flex;
+  gap: 1px;
+}
+
+.topbar button {
+  background-color: #003366;
+/*  opacity: 0.9; */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 0 5px;
+  border-radius: 8px;
+  box-shadow: 0 4px #001f3d;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.topbar button:hover {
+  background-color: #004080;
+  transform: translateY(-2px);
+}
+
+/* Responsive grid layout for containers */
+.course-container,
+.semester-container,
+.subject-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Responsive */
+  gap: 60px;
+  max-width: 1000px;
+  padding: 40px 20px;
+  margin: 0 auto;
+  justify-items: center;
+  align-items: center;
+}
+
+/* Button with dynamic height and font size */
+.dynamic-button {
+  background-color: #1a1a1a;
+  color: white;
+  padding: clamp(40px, 10vw, 100px) 0; /* Adapts height */
+  text-align: center;
+  border-radius: 30px;
+  box-shadow: 0 6px 0 #0a0a0a;
+  font-size: clamp(1.5rem, 2vw, 2.2rem); /* Responsive font */
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  width: clamp(250px, 30vw, 400px); /* Dynamically resizes */
+}
+
+.dynamic-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+  background-color: #262626;
+}
+
+/* Standard Note Button */
+.note-button {
+  background-color: #004080;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px #00264d;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.note-button:hover {
+  background-color: #0059b3;
+  transform: translateY(-2px);
+}
+
+/* Back Button */
+.backButton {
+  background-color: #003366;  /* Similar to note button for consistency */
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  margin: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 6px 4px rgba(0, 0, 0, 0.3);  /* Light shadow */
+  transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.backButton:hover {
+  background-color: #004080;  /* Slightly lighter shade on hover */
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);  /* Stronger shadow effect on hover */
+}

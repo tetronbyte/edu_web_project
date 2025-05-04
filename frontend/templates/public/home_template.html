@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <!-- Link to the CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <h1>Welcome to the Home Page!</h1>
+    
+    <p>This is a sample page with external CSS and JS.</p>
+
+    <!-- Link to the JS file -->
+    <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
+</body>
+</html>

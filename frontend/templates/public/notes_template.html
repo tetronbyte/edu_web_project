@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Study Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="button-group">
+      <button onclick="window.location.href='/'">Notes</button>
+    </div>
+
+  <div class="logo">
+      <a href="/">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" height="95" width="90">
+      </a>
+  </div>
+
+    <div class="button-group">
+      <button onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+      <button onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+    </div>
+  </div>
+
+  <!-- Course Buttons -->
+  <div class="course-container" id="courseButtons">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Semester Buttons -->
+  <div class="semester-container" id="semesterButtons">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Subject Buttons -->
+  <div class="subject-container" id="subjectButtons">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Notes List -->
+  <div class="notes-container" id="notesContainer">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Back Button -->
+<button class="backButton" id="backButton">← Back (will.be.functional.soon)</button>
+
+  <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Study Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="button-group">
+      <button onclick="window.location.href='/'">Notes</button>
+    </div>
+
+    <div class="logo">
+        <a href="/">
+          <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" height="95" width="90">
+        </a>
+    </div>
+
+    <div class="button-group">
+      <button onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+      <button onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: center; align-items: center; height: 80vh; text-align: center;">
+    <h1>Coming soon!</h1>
+  </div>
+</body>
+</html>

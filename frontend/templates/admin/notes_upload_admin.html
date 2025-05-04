@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin - Upload Notes</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style_admin.css') }}">
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="logo">
+      <a href="/admin">
+        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+      </a>
+    </div>
+    <button onclick="window.location.href='/admin'">
+      Upload Notes
+    </button>
+    <button class="logout-btn" id="logoutBtn">Logout</button>  <!-- Logout Button -->
+  </div>
+
+  <!-- Upload Form Container -->
+  <div class="admin-container">
+    <h2>Upload Notes</h2>
+    <form id="uploadForm" enctype="multipart/form-data" method="post">
+      
+      <label for="course">Course</label>
+      <select name="course" id="course" required>
+        <option value="">-- Select Course --</option>
+        <option value="1st Year, BS">1st Year, BS</option>
+        <option value="2nd Year, BS">2nd Year, BS</option>
+      </select>
+
+      <label for="semester">Semester</label>
+      <select name="semester" id="semester" required>
+        <option value="">-- Select Semester --</option>
+      </select>
+
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" name="subject" placeholder="e.g., DM" required />
+
+      <label for="file">Upload PDF File</label>
+      <input type="file" id="file" name="file" accept="application/pdf" required />
+
+      <button type="submit">Upload</button>
+    </form>
+  </div>
+
+  <!-- JS script -->
+  <script src="{{ url_for('static', filename='javascript/script_admin.js') }}"></script>
+
+</body>
+</html>
