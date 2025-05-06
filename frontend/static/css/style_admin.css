@@ -179,20 +179,22 @@ button[type="submit"]:hover {
   margin-top: 12px;
 }
 
-/* === Logout Button at the Bottom === */
-.logout-btn {
+/* === Logout Button at the Bottom (Sidebar) === */
+.sidebar .logout-btn {
   background-color: #e60000; /* Red color for logout */
   color: white;
   border: none;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 8px 16px;
+  border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 100%;
-  margin-top: auto; /* Ensures it stays at the bottom */
+  width: 50%;
+  margin: 0 auto;
+  margin-top: auto;  /* Ensures it stays at the bottom */
+  display: block;  /* Ensure it behaves as a block element */
 }
 
-.logout-btn:hover {
+.sidebar .logout-btn:hover {
   background-color: #ff1a1a; /* Slightly lighter red for hover */
 }
