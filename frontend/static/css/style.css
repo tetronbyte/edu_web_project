@@ -107,6 +107,10 @@ body {
   font-size: 1rem;
   box-shadow: 0 4px #00264d;
   transition: transform 0.2s, background-color 0.2s;
+  justify-self: center; /* or center, depending on alignment you want */
+  width: auto;          /* important to prevent full width */
+  max-width: fit-content; /* optional: ensures it doesn’t overflow with long text */
+  display: inline-block; /* ensures it only wraps the text */
 }
 
 .note-button:hover {
@@ -116,20 +120,27 @@ body {
 
 /* Back Button */
 .backButton {
-  background-color: #003366;  /* Similar to note button for consistency */
+  position: fixed;              /* Sticks to screen */
+  bottom: 20px;                 /* Distance from bottom */
+  left: 20px;                   /* Distance from left */
+  z-index: 1001;                /* Higher than other elements */
+  background-color: #003366;
   color: white;
   border: none;
   padding: 12px 24px;
-  margin: 10px;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 6px 4px rgba(0, 0, 0, 0.3);  /* Light shadow */
+  box-shadow: 0 6px 4px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+
+  /* Optional: Responsive size for smaller screens */
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  padding: clamp(10px, 2vw, 14px) clamp(20px, 4vw, 28px);
 }
 
 .backButton:hover {
-  background-color: #004080;  /* Slightly lighter shade on hover */
+  background-color: #004080;
   transform: translateY(-3px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);  /* Stronger shadow effect on hover */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
 }

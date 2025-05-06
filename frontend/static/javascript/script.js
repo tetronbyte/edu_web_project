@@ -37,8 +37,21 @@ let subjectsBySemester = {
   }
 };
 
-// === Course Buttons ===
+// === State Management ===
+let historyStack = [];
+let selectedCourseGlobal = null;
+
+// === DOM References ===
 const courseContainer = document.getElementById('courseButtons');
+const semesterContainer = document.getElementById('semesterButtons');
+const subjectContainer = document.getElementById('subjectButtons');
+const notesContainer = document.getElementById('notesContainer');
+const backButton = document.getElementById('backButton');
+
+// === Hide back button initially
+backButton.style.display = 'none';
+
+// === Initialize Course Buttons ===
 courses.forEach(course => {
   const btn = document.createElement('div');
   btn.className = 'dynamic-button';
@@ -48,55 +61,62 @@ courses.forEach(course => {
 });
 
 // === Show Semesters ===
-let selectedCourseGlobal = null;
-
 function showSemesters(course) {
+  historyStack.push({ view: 'courseButtons' });
+
   selectedCourseGlobal = course;
-  document.getElementById('semesterButtons').style.display = 'grid';
-  const semContainer = document.getElementById('semesterButtons');
-  semContainer.innerHTML = '';
+  semesterContainer.style.display = 'grid';
+  semesterContainer.innerHTML = '';
 
   const courseSemesters = semestersByCourse[course];
-
   courseSemesters.forEach(sem => {
     const semBtn = document.createElement('div');
     semBtn.className = 'dynamic-button';
     semBtn.innerText = sem;
     semBtn.onclick = () => showSubjects(sem);
-    semContainer.appendChild(semBtn);
+    semesterContainer.appendChild(semBtn);
   });
 
   courseContainer.style.display = 'none';
+  subjectContainer.style.display = 'none';
+  notesContainer.style.display = 'none';
+  backButton.style.display = 'inline-block';
 }
 
 // === Show Subjects ===
 function showSubjects(semester) {
-  document.getElementById('subjectButtons').style.display = 'grid';
-  const subContainer = document.getElementById('subjectButtons');
-  subContainer.innerHTML = '';
+  historyStack.push({
+    view: 'semesterButtons',
+    selectedCourse: selectedCourseGlobal
+  });
 
-  const selectedCourse = selectedCourseGlobal;
+  subjectContainer.style.display = 'grid';
+  subjectContainer.innerHTML = '';
 
   Object.entries(subjectsBySemester[semester]).forEach(([displayName, folderName]) => {
     const subBtn = document.createElement('div');
     subBtn.className = 'dynamic-button';
     subBtn.innerText = displayName;
-    subBtn.onclick = () => fetchNotes(selectedCourse, semester, folderName);
-    subContainer.appendChild(subBtn);
+    subBtn.onclick = () => fetchNotes(selectedCourseGlobal, semester, folderName);
+    subjectContainer.appendChild(subBtn);
   });
 
-  document.getElementById('semesterButtons').style.display = 'none';
+  semesterContainer.style.display = 'none';
+  notesContainer.style.display = 'none';
+  backButton.style.display = 'inline-block';
 }
 
 // === Fetch Notes ===
 function fetchNotes(course, semester, subject) {
-  // Hide navigation UI
-  document.getElementById('courseButtons').style.display = 'none';
-  document.getElementById('semesterButtons').style.display = 'none';
-  document.getElementById('subjectButtons').style.display = 'none';
+  historyStack.push({
+    view: 'subjectButtons',
+    selectedCourse: course,
+    selectedSemester: semester
+  });
 
-  // Show notes
-  const notesContainer = document.getElementById('notesContainer');
+  courseContainer.style.display = 'none';
+  semesterContainer.style.display = 'none';
+  subjectContainer.style.display = 'none';
   notesContainer.style.display = 'grid';
   notesContainer.innerHTML = '';
 
@@ -118,4 +138,32 @@ function fetchNotes(course, semester, subject) {
       }
     })
     .catch(error => console.error('Error fetching notes:', error));
+
+  backButton.style.display = 'inline-block';
+}
+
+// === Go Back Function ===
+function goBack() {
+  const lastState = historyStack.pop();
+  if (!lastState) return;
+
+  // Hide all views
+  courseContainer.style.display = 'none';
+  semesterContainer.style.display = 'none';
+  subjectContainer.style.display = 'none';
+  notesContainer.style.display = 'none';
+
+  if (lastState.view === 'courseButtons') {
+    courseContainer.style.display = 'grid';
+  } else if (lastState.view === 'semesterButtons') {
+    selectedCourseGlobal = lastState.selectedCourse;
+    showSemesters(lastState.selectedCourse);
+    historyStack.pop(); // prevent double push
+  } else if (lastState.view === 'subjectButtons') {
+    showSubjects(lastState.selectedSemester);
+    historyStack.pop(); // prevent double push
+  }
+
+  // Update back button visibility
+  backButton.style.display = historyStack.length > 0 ? 'inline-block' : 'none';
 }
