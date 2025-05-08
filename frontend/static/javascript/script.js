@@ -8,18 +8,18 @@ let semestersByCourse = {
 
 let subjectsBySemester = {
   "Sem 1": {
-    "Intro to Calculus": "IntroCalculus",
-    "Physics for Data Scientists": "PhysicsData",
-    "Engineering Calculations": "EnggCalcs",
-    "Basics of Computing": "ComputingBasics",
-    "Writing for Self": "WritingSelf"
+    "Intro to Calculus": "IntroToCalculus",
+    "Physics for Data Scientists": "PhysicsForDS",
+    "Engineering Calculations": "EngineeringCalculations",
+    "Basics of Computing": "BasicsOfComputing",
+    "Writing for Self": "WritingForSelf"
   },
   "Sem 2": {
     "Intro to Probability Theory": "IntroToProbability",
     "Chemistry for Data Scientists": "ChemistryForDS",
     "Discrete Mathematics": "DiscreteMath",
     "Basics of Engineering Principles": "IntroToEnggPrinciples",
-    "Writing seminar": "WritingSeminar"
+    "Writing seminar": "WritingForSeminar"
   },
   "Sem 3": {
     "Applied Linear Algebra": "AppliedLinearAlgebra",

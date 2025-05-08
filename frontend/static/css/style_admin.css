@@ -181,7 +181,7 @@ button[type="submit"]:hover {
 
 /* === Logout Button at the Bottom (Sidebar) === */
 .sidebar .logout-btn {
-  background-color: #e60000; /* Red color for logout */
+  background-color: #fa2424; /* Red color for logout */
   color: white;
   border: none;
   padding: 8px 16px;
@@ -196,5 +196,5 @@ button[type="submit"]:hover {
 }
 
 .sidebar .logout-btn:hover {
-  background-color: #ff1a1a; /* Slightly lighter red for hover */
+  background-color: #f82c2c; /* Slightly lighter red for hover */
 }

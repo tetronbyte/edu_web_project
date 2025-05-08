@@ -41,6 +41,17 @@
       <label for="subject">Subject</label>
       <input type="text" id="subject" name="subject" placeholder="e.g., DM" required />
 
+      <label for="date">Date (for renaming file)</label>
+      <select name="date" id="date" required>
+        <option value="">-- Select Date --</option>
+        <option value="today">Today</option>
+        <option value="yesterday">Yesterday</option>
+      <!--  <option value="custom">Custom</option> -->
+      </select>
+      
+      <!-- Hidden date picker input for custom date -->
+      <input type="date" id="customDate" style="display: none;">  
+
       <label for="file">Upload PDF File</label>
       <input type="file" id="file" name="file" accept="application/pdf" required />
 

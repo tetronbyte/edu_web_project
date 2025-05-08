@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('uploadForm');
   const courseSelect = document.getElementById('course');
   const semesterSelect = document.getElementById('semester');
+  const dateSelect = document.getElementById('date');
+  const customDateInput = document.getElementById('customDate');
 
   // Course-to-semester mapping
   const courseSemesters = {
@@ -26,12 +28,40 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Handle date dropdown change
+  dateSelect.addEventListener('change', () => {
+    const selectedDate = dateSelect.value;
+
+    // Show the custom date input if "Custom" is selected
+    if (selectedDate === 'custom') {
+      customDateInput.style.display = 'block'; // Show date picker
+    } else {
+      customDateInput.style.display = 'none'; // Hide date picker
+    }
+  });
+
   // Handle form submission
   form.addEventListener('submit', (e) => {
-    e.preventDefault();
+    e.preventDefault();  // Prevent form submission
 
+    // Get the selected date value
+    const selectedDate = dateSelect.value;
+    let finalDate = '';
+
+    // Handle different date options and format them correctly as ddmmyyyy
+    if (selectedDate === 'today') {
+      finalDate = 'today';
+    } else if (selectedDate === 'yesterday') {
+      finalDate = "yesterday";
+    } else if (selectedDate === 'custom') {
+      finalDate = customDateInput.value; // The selected custom date in yyyy-mm-dd format
+    }
+
+    // Append the selected date to the form data
     const formData = new FormData(form);
+    formData.append('date', finalDate);  // Send the formatted date
 
+    // Submit the form data via fetch
     fetch('/upload', {
       method: 'POST',
       body: formData
@@ -96,15 +126,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+
 // ─────────────────────────────
 // Logout Button Handler
 // ─────────────────────────────
-// Logout Button Handler
 const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     fetch('/admin/logout', {
-      method: 'GET', // This will match your Flask route
+      method: 'GET',
     })
       .then(response => {
         if (response.ok) {
@@ -119,4 +149,3 @@ if (logoutBtn) {
       });
   });
 }
-

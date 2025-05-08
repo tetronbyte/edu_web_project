@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify, send_from_directory, redirect, flash, url_for, session
-from datetime import date
+from datetime import date, datetime, timedelta
 import os
 
 admin_bp = Blueprint('admin', __name__)
@@ -17,7 +17,12 @@ shortcut_dict = {
     "ITP": "IntroToProbability",
     "ITEP": "IntroToEnggPrinciples",
     "CFDS": "ChemistryForDS",
-    "WS": "WritingSeminar",
+    "WSem": "WritingForSeminar",
+    "ITC": "IntroToCalculus",
+    "PFDS": "PhysicsForDataScientists",
+    "EC": "EngineeringCalculations",
+    "BOC": "BasicsOfComputing",
+    "WS": "WritingForSelf", 
     "STFE": "StatisticalTheoryForEngineers",
     "PADS": "ProgrammingAndDataStructures",
     "ITO": "IntroductionToOptimization",
@@ -30,10 +35,25 @@ shortcut_dict = {
 }
 
 # === File Renamer ===
-def rename_file(subject_shortcut):
-    today = date.today().strftime("%d%m%Y")
+def rename_file(subject_shortcut, date_string):
+
+    if date_string == "today":
+        formatted_date = date.today().strftime("%d%m%Y")  # Get today's date in ddmmyyyy format
+    elif date_string == "yesterday":
+        formatted_date = (date.today() - timedelta(days=1)).strftime("%d%m%Y")  # Get yesterday's date in ddmmyyyy format
+    else:
+        try:
+            formatted_date = date_string
+            print(formatted_date)
+        except ValueError:
+            return "Invalid date format", 400
+
+    # Get the subject name
     full_name = shortcut_dict.get(subject_shortcut.upper(), "UnknownSubject")
-    return f"{full_name}_{today}.pdf"
+    
+    # Create the filename with the selected date
+    return f"{full_name}_{formatted_date}.pdf"
+
 
 # === Public Routes ===
 
@@ -95,6 +115,7 @@ def upload_notes():
 
     uploaded_file = request.files.get('file')
     subject_shortcut = request.form.get('subject')
+    date_string = request.form.get('date', None)
     course = request.form.get('course')
     semester = request.form.get('semester')
 
@@ -106,7 +127,7 @@ def upload_notes():
     if not course or not semester:
         return 'Course and Semester are required', 400
 
-    filename = rename_file(subject_shortcut)
+    filename = rename_file(subject_shortcut, date_string)
     full_subject = shortcut_dict[subject_shortcut.upper()]
     save_dir = os.path.join(UPLOAD_ROOT, course, semester, full_subject)
     os.makedirs(save_dir, exist_ok=True)
