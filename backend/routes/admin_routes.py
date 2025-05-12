@@ -99,7 +99,7 @@ def upload_notes():
         return 'Course and Semester are required', 400
 
     filename = rename_file(subject.replace(" ", ""), date_string)
-    save_dir = os.path.join(UPLOAD_ROOT, course, semester, subject)
+    save_dir = os.path.join(UPLOAD_ROOT, course, semester, subject.replace(" ", ""))
     os.makedirs(save_dir, exist_ok=True)
 
     uploaded_file.save(os.path.join(save_dir, filename))
@@ -110,7 +110,7 @@ def upload_notes():
 
 @admin_bp.route('/notes/<course>/<semester>/<subject>')
 def list_notes(course, semester, subject):
-    subject_folder = os.path.join(UPLOAD_ROOT, course, semester, subject)
+    subject_folder = os.path.join(UPLOAD_ROOT, course, semester, subject.replace(" ", ""))
     if not os.path.exists(subject_folder):
         return jsonify([])
     files = [f for f in os.listdir(subject_folder) if f.endswith('.pdf')]
@@ -120,5 +120,5 @@ def list_notes(course, semester, subject):
 
 @admin_bp.route('/notes/<course>/<semester>/<subject>/<filename>')
 def serve_note(course, semester, subject, filename):
-    file_path = os.path.join(UPLOAD_ROOT, course, semester, subject)
+    file_path = os.path.join(UPLOAD_ROOT, course, semester, subject.replace(" ", ""))
     return send_from_directory(file_path, filename)
