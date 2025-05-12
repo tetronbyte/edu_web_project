@@ -8,8 +8,8 @@ admin_bp = Blueprint('admin', __name__)
 UPLOAD_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'data', 'notes'))
 
 # === Dummy Admin Credentials ===
-ADMIN_USERNAME = 'asfasf'
-ADMIN_PASSWORD = 'asfasf'  # Replace with a secure method in production
+ADMIN_USERNAME = 'anurag'
+ADMIN_PASSWORD = 'admin19'  # Replace with a secure method in production
 
 # === File Renamer ===
 def rename_file(subject, date_string):
