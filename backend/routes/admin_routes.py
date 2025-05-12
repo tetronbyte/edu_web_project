@@ -8,51 +8,24 @@ admin_bp = Blueprint('admin', __name__)
 UPLOAD_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'data', 'notes'))
 
 # === Dummy Admin Credentials ===
-ADMIN_USERNAME = 'anurag'
-ADMIN_PASSWORD = 'admin19'  # Replace with a secure method in production
-
-# === Subject Shortcut Map ===
-shortcut_dict = {
-    "DM": "DiscreteMath",
-    "ITP": "IntroToProbability",
-    "ITEP": "IntroToEnggPrinciples",
-    "CFDS": "ChemistryForDS",
-    "WSem": "WritingForSeminar",
-    "ITC": "IntroToCalculus",
-    "PFDS": "PhysicsForDataScientists",
-    "EC": "EngineeringCalculations",
-    "BOC": "BasicsOfComputing",
-    "WS": "WritingForSelf", 
-    "STFE": "StatisticalTheoryForEngineers",
-    "PADS": "ProgrammingAndDataStructures",
-    "ITO": "IntroductionToOptimization",
-    "PFE": "ProgrammingForEngineers",
-    "DOA": "DesignOfAlgorithms",
-    "DMS": "DatabaseManagementSystems",
-    "FOML": "FoundationsOfMachineLearning",
-    "MLL": "MachineLearningLab",
-    "BFE": "BiologyForEngineers"
-}
+ADMIN_USERNAME = 'asfasf'
+ADMIN_PASSWORD = 'asfasf'  # Replace with a secure method in production
 
 # === File Renamer ===
-def rename_file(subject_shortcut, date_string):
-
+def rename_file(subject, date_string):
     if date_string == "today":
-        formatted_date = date.today().strftime("%d%m%Y")  # Get today's date in ddmmyyyy format
+        formatted_date = date.today().strftime("%d%m%Y")
     elif date_string == "yesterday":
-        formatted_date = (date.today() - timedelta(days=1)).strftime("%d%m%Y")  # Get yesterday's date in ddmmyyyy format
+        formatted_date = (date.today() - timedelta(days=1)).strftime("%d%m%Y")
     else:
         try:
-            formatted_date = date_string
-            print(formatted_date)
+            formatted_date = date_string  # should already be in ddmmyyyy or yyyy-mm-dd format
         except ValueError:
             return "Invalid date format", 400
 
-    # Get the subject name
-    full_name = shortcut_dict.get(subject_shortcut.upper(), "UnknownSubject")
-    
-    # Create the filename with the selected date
-    return f"{full_name}_{formatted_date}.pdf"
+    subject = subject.replace(" ", "")
+
+    return f"{subject}_{formatted_date}.pdf"
 
 
 # === Public Routes ===
@@ -114,7 +87,7 @@ def upload_notes():
         return redirect(url_for('admin.admin_login'))
 
     uploaded_file = request.files.get('file')
-    subject_shortcut = request.form.get('subject')
+    subject = request.form.get('subject')
     date_string = request.form.get('date', None)
     course = request.form.get('course')
     semester = request.form.get('semester')
@@ -122,14 +95,11 @@ def upload_notes():
     # Validate inputs
     if not uploaded_file or uploaded_file.filename == '':
         return 'No selected file', 400
-    if not subject_shortcut or subject_shortcut.upper() not in shortcut_dict:
-        return 'Invalid or missing subject shortcut', 400
     if not course or not semester:
         return 'Course and Semester are required', 400
 
-    filename = rename_file(subject_shortcut, date_string)
-    full_subject = shortcut_dict[subject_shortcut.upper()]
-    save_dir = os.path.join(UPLOAD_ROOT, course, semester, full_subject)
+    filename = rename_file(subject.replace(" ", ""), date_string)
+    save_dir = os.path.join(UPLOAD_ROOT, course, semester, subject)
     os.makedirs(save_dir, exist_ok=True)
 
     uploaded_file.save(os.path.join(save_dir, filename))

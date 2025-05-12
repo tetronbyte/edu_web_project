@@ -7,7 +7,6 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-V65PG4DBXS');
   </script>
   <meta charset="UTF-8" />
@@ -31,28 +30,31 @@
   </div>
 
   <!-- Upload Form Container -->
-  <div class="admin-container">
+  <div class="notes-upload-container">
     <h2>Upload Notes</h2>
     <form id="uploadForm" enctype="multipart/form-data" method="post">
       
       <label for="course">Course</label>
       <select name="course" id="course" required>
-        <option value="">-- Select Course --</option>
+        <option value="">— Select Course —</option>
         <option value="1st Year, BS">1st Year, BS</option>
         <option value="2nd Year, BS">2nd Year, BS</option>
       </select>
 
       <label for="semester">Semester</label>
       <select name="semester" id="semester" required>
-        <option value="">-- Select Semester --</option>
+        <option value="">— Select Semester —</option>
       </select>
 
+      <!-- Subject select element -->
       <label for="subject">Subject</label>
-      <input type="text" id="subject" name="subject" placeholder="e.g., DM" required />
+      <select name="subject" id="subject" required>
+        <option value="">— Select Subject —</option>
+      </select>
 
       <label for="date">Date (for renaming file)</label>
       <select name="date" id="date" required>
-        <option value="">-- Select Date --</option>
+        <option value="">— Select Date —</option>
         <option value="today">Today</option>
         <option value="yesterday">Yesterday</option>
       <!--  <option value="custom">Custom</option> -->
