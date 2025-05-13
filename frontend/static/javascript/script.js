@@ -167,3 +167,19 @@ function goBack() {
   // Update back button visibility
   backButton.style.display = historyStack.length > 0 ? 'inline-block' : 'none';
 }
+
+// Backspace is the shortcut for the back button
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Backspace') {
+    const activeElement = document.activeElement;
+    const isTyping =
+      activeElement.tagName === 'INPUT' ||
+      activeElement.tagName === 'TEXTAREA' ||
+      activeElement.isContentEditable;
+
+    if (!isTyping) {
+      event.preventDefault(); // stop browser back nav
+      goBack();
+    }
+  }
+});
