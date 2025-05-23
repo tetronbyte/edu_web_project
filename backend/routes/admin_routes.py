@@ -12,6 +12,8 @@ ADMIN_USERNAME = 'anurag'
 ADMIN_PASSWORD = 'admin19'  # Replace with a secure method in production
 
 # === File Renamer ===
+from datetime import datetime, date, timedelta
+
 def rename_file(subject, date_string):
     if date_string == "today":
         formatted_date = date.today().strftime("%d%m%Y")
@@ -19,12 +21,12 @@ def rename_file(subject, date_string):
         formatted_date = (date.today() - timedelta(days=1)).strftime("%d%m%Y")
     else:
         try:
-            formatted_date = date_string  # should already be in ddmmyyyy or yyyy-mm-dd format
+            dt = datetime.strptime(date_string, "%Y-%m-%d")
+            formatted_date = dt.strftime("%d%m%Y")
         except ValueError:
             return "Invalid date format", 400
 
     subject = subject.replace(" ", "")
-
     return f"{subject}_{formatted_date}.pdf"
 
 

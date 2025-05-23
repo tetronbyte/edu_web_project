@@ -77,14 +77,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Handle date dropdown change
+  // ────────────────
+  // ✅ Date Handling
+  // ────────────────
   dateSelect.addEventListener('change', () => {
     const selectedDate = dateSelect.value;
 
     if (selectedDate === 'custom') {
       customDateInput.style.display = 'block';
+      customDateInput.setAttribute('required', 'required');
     } else {
       customDateInput.style.display = 'none';
+      customDateInput.removeAttribute('required');
     }
   });
 
@@ -95,16 +99,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedDate = dateSelect.value;
     let finalDate = '';
 
-    if (selectedDate === 'today') {
-      finalDate = 'today';
-    } else if (selectedDate === 'yesterday') {
-      finalDate = 'yesterday';
-    } else if (selectedDate === 'custom') {
-      finalDate = customDateInput.value; // Format: yyyy-mm-dd
+    if (selectedDate === 'custom') {
+      finalDate = customDateInput.value;
+      if (!finalDate) {
+        alert("Please select a custom date.");
+        return;
+      }
+    } else {
+      finalDate = selectedDate; // 'today' or 'yesterday'
     }
 
     const formData = new FormData(form);
-    formData.append('date', finalDate);
+    formData.set('date', finalDate); // override if already exists
 
     fetch('/upload', {
       method: 'POST',
@@ -121,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       form.reset();
       semesterSelect.innerHTML = '<option value="">-- Select Semester --</option>';
       subjectSelect.innerHTML = '<option value="">-- Select Subject --</option>';
+      customDateInput.style.display = 'none';
     })
     .catch(error => {
       console.error('Upload error:', error);
