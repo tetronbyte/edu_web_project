@@ -1,4 +1,3 @@
 Flask
 requests
-pymongo
-gridfs-fuse
+Jinja2
