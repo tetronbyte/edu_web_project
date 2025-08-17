@@ -1,41 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V65PG4DBXS"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-V65PG4DBXS');
-  </script>
-  <meta charset="UTF-8">
-  <title>Study Portal</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Predictor - Study Hub</title>
+    
+    <!-- Base CSS Files -->
+    <link rel="stylesheet" href="../../static/css/base/reset.css">
+    <link rel="stylesheet" href="../../static/css/base/themes.css">
+    <link rel="stylesheet" href="../../static/css/base/layout.css">
+    <link rel="stylesheet" href="../../static/css/base/components.css">
 </head>
-<body>
-
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="button-group">
-      <button onclick="window.location.href='/'">Notes</button>
+<body class="layout-public">
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="button-group">
+            <button onclick="window.location.href='/'">Home</button>
+            <button onclick="window.location.href='/blog'">Blog</button>
+            <button onclick="window.location.href='/gllm'">GLLM</button>
+            <button onclick="window.location.href='/gpa-calculator'">GPA Calc</button>
+            <button onclick="window.location.href='/gpa-predictor'" class="active-nav">GPA Predict</button>
+        </div>
+        
+        <div class="logo">Study Hub</div>
     </div>
 
-    <div class="logo">
-        <a href="/">
-          <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" height="95" width="90">
-        </a>
+    <!-- Main Content -->
+    <div class="main-content-public">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: var(--spacing-2xl);">
+                <h1>GPA Predictor</h1>
+                <p>Predict what grades you need to achieve your target GPA</p>
+            </div>
+
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div class="card-body">
+                    <!-- Current GPA Input -->
+                    <div style="margin-bottom: var(--spacing-xl);">
+                        <h3>Current Academic Status</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="currentGPA">Current GPA</label>
+                                <input type="number" id="currentGPA" class="form-control" step="0.01" min="0" max="4.0" placeholder="e.g., 3.25">
+                            </div>
+                            <div class="form-group">
+                                <label for="completedCredits">Completed Credits</label>
+                                <input type="number" id="completedCredits" class="form-control" min="0" placeholder="e.g., 60">
+                            </div>
+                            <div class="form-group">
+                                <label for="targetGPA">Target GPA</label>
+                                <input type="number" id="targetGPA" class="form-control" step="0.01" min="0" max="4.0" placeholder="e.g., 3.50">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upcoming Courses -->
+                    <div style="margin-bottom: var(--spacing-xl);">
+                        <h3>Upcoming Courses</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="upcomingCredits">Credits This Semester</label>
+                                <input type="number" id="upcomingCredits" class="form-control" min="1" placeholder="e.g., 15">
+                            </div>
+                        </div>
+                        <button id="predictGPA" class="btn btn-primary">Predict Required Grade</button>
+                    </div>
+
+                    <!-- Prediction Result -->
+                    <div id="predictionResult" class="text-center" style="padding: var(--spacing-xl); background-color: var(--bg-tertiary); border-radius: var(--radius-lg); display: none;">
+                        <h3>Prediction Result</h3>
+                        <div id="requiredGrade" style="font-size: 2rem; font-weight: var(--font-weight-bold); color: var(--accent-primary); margin: var(--spacing-md) 0;"></div>
+                        <p id="predictionMessage"></p>
+                        <div id="gradeBreakdown" style="margin-top: var(--spacing-lg);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="button-group">
-      <button onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
-      <button onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
-    </div>
-  </div>
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='/'">← Back</button>
 
-  <div style="display: flex; justify-content: center; align-items: center; height: 80vh; text-align: center;">
-    <h1>Coming soon!</h1>
-  </div>
+    <!-- Core JavaScript -->
+    <script src="../../static/javascript/core/utils.js"></script>
+    <script src="../../static/javascript/core/api.js"></script>
+    
+    <!-- Page-specific JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const { qs, showNotification } = window.Utils;
+            
+            // DOM elements
+            const currentGPAInput = qs('#currentGPA');
+            const completedCreditsInput = qs('#completedCredits');
+            const targetGPAInput = qs('#targetGPA');
+            const upcomingCreditsInput = qs('#upcomingCredits');
+            const predictBtn = qs('#predictGPA');
+            const predictionResult = qs('#predictionResult');
+            const requiredGrade = qs('#requiredGrade');
+            const predictionMessage = qs('#predictionMessage');
+            const gradeBreakdown = qs('#gradeBreakdown');
+            
+            predictBtn?.addEventListener('click', predictRequiredGPA);
+            
+            function predictRequiredGPA() {
+                const currentGPA = parseFloat(currentGPAInput?.value);
+                const completedCredits = parseFloat(completedCreditsInput?.value);
+                const targetGPA = parseFloat(targetGPAInput?.value);
+                const upcomingCredits = parseFloat(upcomingCreditsInput?.value);
+                
+                // Validation
+                if (isNaN(currentGPA) || isNaN(completedCredits) || isNaN(targetGPA) || isNaN(upcomingCredits)) {
+                    showNotification('Please fill in all fields with valid numbers', 'error');
+                    return;
+                }
+                
+                if (currentGPA < 0 || currentGPA > 4.0 || targetGPA < 0 || targetGPA > 4.0) {
+                    showNotification('GPA values must be between 0.00 and 4.00', 'error');
+                    return;
+                }
+                
+                if (completedCredits <= 0 || upcomingCredits <= 0) {
+                    showNotification('Credits must be greater than 0', 'error');
+                    return;
+                }
+                
+                // Calculate required GPA
+                const currentPoints = currentGPA * completedCredits;
+                const totalCredits = completedCredits + upcomingCredits;
+                const targetPoints = targetGPA * totalCredits;
+                const requiredPoints = targetPoints - currentPoints;
+                const requiredGPAValue = requiredPoints / upcomingCredits;
+                
+                // Display result
+                displayPrediction(requiredGPAValue, currentGPA, targetGPA, upcomingCredits);
+            }
+            
+            function displayPrediction(required, current, target, credits) {
+                let message, className, gradeInfo;
+                
+                if (required > 4.0) {
+                    message = `It's not possible to achieve your target GPA of ${target.toFixed(2)} with ${credits} credits. Consider taking more credits or adjusting your target.`;
+                    requiredGrade.textContent = "Not Achievable";
+                    className = "error";
+                } else if (required < 0) {
+                    message = `Great news! You can achieve your target GPA with any passing grades. Your current GPA of ${current.toFixed(2)} is already above your target.`;
+                    requiredGrade.textContent = "Any Passing Grade";
+                    className = "success";
+                } else {
+                    const gradeLetter = getGradeLetter(required);
+                    requiredGrade.textContent = `${required.toFixed(2)} (${gradeLetter})`;
+                    
+                    if (required >= 3.8) {
+                        message = "You need to maintain excellent grades. Focus on consistent study habits and seek help when needed.";
+                        className = "warning";
+                    } else if (required >= 3.0) {
+                        message = "You need to maintain good grades. This is achievable with dedicated effort.";
+                        className = "info";
+                    } else if (required >= 2.0) {
+                        message = "You need to maintain passing grades. This should be manageable with consistent effort.";
+                        className = "success";
+                    } else {
+                        message = "You can achieve your target with minimal effort. Keep up the good work!";
+                        className = "success";
+                    }
+                }
+                
+                requiredGrade.className = className;
+                predictionMessage.textContent = message;
+                
+                // Grade breakdown
+                if (required >= 0 && required <= 4.0) {
+                    gradeBreakdown.innerHTML = `
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--spacing-md); margin-top: var(--spacing-lg);">
+                            <div class="text-center">
+                                <div style="font-weight: var(--font-weight-semibold);">Current GPA</div>
+                                <div style="font-size: var(--font-size-lg); color: var(--accent-primary);">${current.toFixed(2)}</div>
+                            </div>
+                            <div class="text-center">
+                                <div style="font-weight: var(--font-weight-semibold);">Target GPA</div>
+                                <div style="font-size: var(--font-size-lg); color: var(--accent-primary);">${target.toFixed(2)}</div>
+                            </div>
+                            <div class="text-center">
+                                <div style="font-weight: var(--font-weight-semibold);">Required Average</div>
+                                <div style="font-size: var(--font-size-lg); color: var(--accent-primary);">${required.toFixed(2)}</div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    gradeBreakdown.innerHTML = '';
+                }
+                
+                predictionResult.style.display = 'block';
+            }
+            
+            function getGradeLetter(points) {
+                if (points >= 4.0) return 'A';
+                if (points >= 3.7) return 'A-';
+                if (points >= 3.3) return 'B+';
+                if (points >= 3.0) return 'B';
+                if (points >= 2.7) return 'B-';
+                if (points >= 2.3) return 'C+';
+                if (points >= 2.0) return 'C';
+                if (points >= 1.7) return 'C-';
+                if (points >= 1.3) return 'D+';
+                if (points >= 1.0) return 'D';
+                return 'F';
+            }
+        });
+    </script>
 </body>
 </html>

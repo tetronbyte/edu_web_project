@@ -1,40 +1,223 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V65PG4DBXS"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-V65PG4DBXS');
-  </script>
-  <meta charset="UTF-8">
-  <title>Study Portal</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Calculator - Study Hub</title>
+    
+    <!-- Base CSS Files -->
+    <link rel="stylesheet" href="../../static/css/base/reset.css">
+    <link rel="stylesheet" href="../../static/css/base/themes.css">
+    <link rel="stylesheet" href="../../static/css/base/layout.css">
+    <link rel="stylesheet" href="../../static/css/base/components.css">
 </head>
-<body>
-
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="button-group">
-      <button onclick="window.location.href='/'">Notes</button>
+<body class="layout-public">
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="button-group">
+            <button onclick="window.location.href='/'">Home</button>
+            <button onclick="window.location.href='/blog'">Blog</button>
+            <button onclick="window.location.href='/gllm'">GLLM</button>
+            <button onclick="window.location.href='/gpa-calculator'" class="active-nav">GPA Calc</button>
+            <button onclick="window.location.href='/gpa-predictor'">GPA Predict</button>
+        </div>
+        
+        <div class="logo">Study Hub</div>
     </div>
 
-    <div class="logo">
-        <a href="/">
-          <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" height="95" width="90">
-        </a>
+    <!-- Main Content -->
+    <div class="main-content-public">
+        <div class="container">
+            <div class="text-center" style="margin-bottom: var(--spacing-2xl);">
+                <h1>GPA Calculator</h1>
+                <p>Calculate your current GPA based on your grades</p>
+            </div>
+
+            <div class="card" style="max-width: 800px; margin: 0 auto;">
+                <div class="card-body">
+                    <!-- Course Input Form -->
+                    <div style="margin-bottom: var(--spacing-xl);">
+                        <h3>Add Course</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="courseName">Course Name</label>
+                                <input type="text" id="courseName" class="form-control" placeholder="Enter course name">
+                            </div>
+                            <div class="form-group">
+                                <label for="credits">Credits</label>
+                                <input type="number" id="credits" class="form-control" min="1" max="6" placeholder="Credits">
+                            </div>
+                            <div class="form-group">
+                                <label for="grade">Grade</label>
+                                <select id="grade" class="form-control">
+                                    <option value="">Select Grade</option>
+                                    <option value="4.0">A</option>
+                                    <option value="3.7">A-</option>
+                                    <option value="3.3">B+</option>
+                                    <option value="3.0">B</option>
+                                    <option value="2.7">B-</option>
+                                    <option value="2.3">C+</option>
+                                    <option value="2.0">C</option>
+                                    <option value="1.7">C-</option>
+                                    <option value="1.3">D+</option>
+                                    <option value="1.0">D</option>
+                                    <option value="0.0">F</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button id="addCourse" class="btn btn-primary">Add Course</button>
+                    </div>
+
+                    <!-- Courses List -->
+                    <div id="coursesList" style="margin-bottom: var(--spacing-xl);">
+                        <h3>Your Courses</h3>
+                        <div id="coursesTable">
+                            <p class="text-muted">No courses added yet. Add a course above to get started.</p>
+                        </div>
+                    </div>
+
+                    <!-- GPA Result -->
+                    <div id="gpaResult" class="text-center" style="padding: var(--spacing-xl); background-color: var(--bg-tertiary); border-radius: var(--radius-lg); display: none;">
+                        <h2>Your GPA</h2>
+                        <div id="gpaValue" style="font-size: 3rem; font-weight: var(--font-weight-bold); color: var(--accent-primary);">0.00</div>
+                        <p id="gpaStatus" class="text-muted"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="button-group">
-      <button onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
-      <button onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
-    </div>
-  </div>
-  <div style="display: flex; justify-content: center; align-items: center; height: 80vh; text-align: center;">
-    <h1>Coming soon!</h1>
-  </div>
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='/'">← Back</button>
+
+    <!-- Core JavaScript -->
+    <script src="../../static/javascript/core/utils.js"></script>
+    <script src="../../static/javascript/core/api.js"></script>
+    
+    <!-- Page-specific JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const { qs, showNotification } = window.Utils;
+            
+            let courses = [];
+            
+            // DOM elements
+            const courseNameInput = qs('#courseName');
+            const creditsInput = qs('#credits');
+            const gradeSelect = qs('#grade');
+            const addCourseBtn = qs('#addCourse');
+            const coursesTable = qs('#coursesTable');
+            const gpaResult = qs('#gpaResult');
+            const gpaValue = qs('#gpaValue');
+            const gpaStatus = qs('#gpaStatus');
+            
+            // Add course
+            addCourseBtn?.addEventListener('click', addCourse);
+            
+            function addCourse() {
+                const name = courseNameInput?.value.trim();
+                const credits = parseFloat(creditsInput?.value);
+                const grade = parseFloat(gradeSelect?.value);
+                
+                if (!name || !credits || isNaN(grade)) {
+                    showNotification('Please fill in all fields', 'error');
+                    return;
+                }
+                
+                courses.push({ name, credits, grade });
+                updateCoursesDisplay();
+                calculateGPA();
+                
+                // Clear form
+                courseNameInput.value = '';
+                creditsInput.value = '';
+                gradeSelect.value = '';
+                
+                showNotification('Course added successfully', 'success');
+            }
+            
+            function updateCoursesDisplay() {
+                if (courses.length === 0) {
+                    coursesTable.innerHTML = '<p class="text-muted">No courses added yet. Add a course above to get started.</p>';
+                    return;
+                }
+                
+                const tableHTML = `
+                    <table style="width: 100%; border-collapse: collapse; margin-top: var(--spacing-md);">
+                        <thead>
+                            <tr style="background-color: var(--bg-tertiary);">
+                                <th style="padding: var(--spacing-md); text-align: left; border: 1px solid var(--border-primary);">Course</th>
+                                <th style="padding: var(--spacing-md); text-align: center; border: 1px solid var(--border-primary);">Credits</th>
+                                <th style="padding: var(--spacing-md); text-align: center; border: 1px solid var(--border-primary);">Grade</th>
+                                <th style="padding: var(--spacing-md); text-align: center; border: 1px solid var(--border-primary);">Points</th>
+                                <th style="padding: var(--spacing-md); text-align: center; border: 1px solid var(--border-primary);">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${courses.map((course, index) => `
+                                <tr>
+                                    <td style="padding: var(--spacing-md); border: 1px solid var(--border-primary);">${course.name}</td>
+                                    <td style="padding: var(--spacing-md); text-align: center; border: 1px solid var(--border-primary);">${course.credits}</td>
+                                    <td style="padding: var(--spacing-md); text-align: center; border: 1px solid var(--border-primary);">${getGradeLetter(course.grade)}</td>
+                                    <td style="padding: var(--spacing-md); text-align: center; border: 1px solid var(--border-primary);">${(course.credits * course.grade).toFixed(2)}</td>
+                                    <td style="padding: var(--spacing-md); text-align: center; border: 1px solid var(--border-primary);">
+                                        <button onclick="removeCourse(${index})" class="btn btn-sm btn-error">Remove</button>
+                                    </td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+                
+                coursesTable.innerHTML = tableHTML;
+            }
+            
+            function calculateGPA() {
+                if (courses.length === 0) {
+                    gpaResult.style.display = 'none';
+                    return;
+                }
+                
+                const totalPoints = courses.reduce((sum, course) => sum + (course.credits * course.grade), 0);
+                const totalCredits = courses.reduce((sum, course) => sum + course.credits, 0);
+                const gpa = totalPoints / totalCredits;
+                
+                gpaValue.textContent = gpa.toFixed(2);
+                gpaStatus.textContent = getGPAStatus(gpa);
+                gpaResult.style.display = 'block';
+            }
+            
+            function getGradeLetter(points) {
+                if (points >= 4.0) return 'A';
+                if (points >= 3.7) return 'A-';
+                if (points >= 3.3) return 'B+';
+                if (points >= 3.0) return 'B';
+                if (points >= 2.7) return 'B-';
+                if (points >= 2.3) return 'C+';
+                if (points >= 2.0) return 'C';
+                if (points >= 1.7) return 'C-';
+                if (points >= 1.3) return 'D+';
+                if (points >= 1.0) return 'D';
+                return 'F';
+            }
+            
+            function getGPAStatus(gpa) {
+                if (gpa >= 3.8) return 'Excellent! Outstanding academic performance.';
+                if (gpa >= 3.5) return 'Very Good! Strong academic performance.';
+                if (gpa >= 3.0) return 'Good! Solid academic performance.';
+                if (gpa >= 2.5) return 'Fair. Consider improving your study habits.';
+                if (gpa >= 2.0) return 'Needs improvement. Seek academic support.';
+                return 'Critical. Immediate academic intervention needed.';
+            }
+            
+            // Make removeCourse available globally
+            window.removeCourse = function(index) {
+                courses.splice(index, 1);
+                updateCoursesDisplay();
+                calculateGPA();
+                showNotification('Course removed', 'success');
+            };
+        });
+    </script>
 </body>
 </html>

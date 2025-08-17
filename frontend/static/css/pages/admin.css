@@ -1,0 +1,191 @@
+/* ADMIN STYLES */
+
+/* Sidebar Styles */
+.sidebar {
+  background-color: #001f4d;
+  height: 100vh;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #4da6ff;
+}
+
+.sidebar a {
+  display: block;
+  color: white;
+  padding: 15px 20px;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.sidebar a:hover {
+  background-color: #003366;
+}
+
+.sidebar a.active {
+  background-color: #004080;
+}
+
+/* Main Content Styles */
+.main-content {
+  margin-left: 250px;
+  padding: 20px;
+  background-color: #0d0d0d;
+  min-height: 100vh;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+/* Form Styles */
+form {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  background-color: #333;
+  border: none;
+  border-radius: 8px;
+  color: white;
+}
+
+form button {
+  background-color: #004080;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+form button:hover {
+  background-color: #0059b3;
+}
+
+/* Error & Success Messages */
+.error-message {
+  background-color: #4d1a1a;
+  border: 2px solid #cc0000;
+  color: #ff6666;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.success-message {
+  background-color: #1a4d1a;
+  border: 2px solid #00cc00;
+  color: #66ff66;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1a1a1a;
+  margin-bottom: 20px;
+}
+
+table th,
+table td {
+  padding: 12px;
+  border: 1px solid #333;
+  text-align: left;
+}
+
+table th {
+  background-color: #003366;
+}
+
+table tr:nth-child(even) {
+  background-color: #262626;
+}
+
+/* Login Page Styles */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-box {
+  background-color: #1a1a1a;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  max-width: 400px;
+  width: 100%;
+}
+
+.login-box h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #4da6ff;
+}
+
+.login-box input {
+  margin-bottom: 20px;
+}
+
+.login-box button {
+  width: 100%;
+}
+
+/* Admin Note Actions */
+.note-button {
+  background-color: #004080;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 4px #00264d;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.note-button:hover {
+  background-color: #0059b3;
+  transform: translateY(-2px);
+}
+
+/* Date Picker Styles */
+.date-picker {
+  background-color: #333;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  color: white;
+}

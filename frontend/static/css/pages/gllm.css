@@ -1,0 +1,152 @@
+/* GLLM PAGE STYLES */
+
+/* Page Layout */
+.gllm-container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #0d0d0d;
+  min-height: 100vh;
+}
+
+.gllm-header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #4da6ff;
+}
+
+/* Form Section */
+.gllm-form {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+}
+
+.gllm-form label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.gllm-form input,
+.gllm-form select,
+.gllm-form textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  background-color: #333;
+  border: none;
+  border-radius: 8px;
+  color: white;
+}
+
+.gllm-form button {
+  background-color: #004080;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.gllm-form button:hover {
+  background-color: #0059b3;
+}
+
+/* Results Section */
+.gllm-results {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  max-width: 800px;
+  margin: 0 auto;
+  overflow-x: auto;
+}
+
+.gllm-results h3 {
+  margin-bottom: 20px;
+  color: #4da6ff;
+}
+
+/* Table Styles */
+.gllm-results table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1a1a1a;
+}
+
+.gllm-results th,
+.gllm-results td {
+  padding: 12px;
+  border: 1px solid #333;
+  text-align: left;
+}
+
+.gllm-results th {
+  background-color: #003366;
+}
+
+.gllm-results tr:nth-child(even) {
+  background-color: #262626;
+}
+
+/* Loader Styles */
+.gllm-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.gllm-loader .spinner {
+  border: 6px solid #333;
+  border-top: 6px solid #4da6ff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error & Success Messages */
+.gllm-error {
+  background-color: #4d1a1a;
+  border: 2px solid #cc0000;
+  color: #ff6666;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.gllm-success {
+  background-color: #1a4d1a;
+  border: 2px solid #00cc00;
+  color: #66ff66;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .gllm-form,
+  .gllm-results {
+    padding: 15px;
+  }
+
+  .gllm-results table th,
+  .gllm-results table td {
+    padding: 8px;
+  }
+}

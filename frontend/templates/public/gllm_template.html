@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLLM - Graphing Calculator</title>
+    
+    <!-- Base CSS Files -->
+    <link rel="stylesheet" href="../../static/css/base/reset.css">
+    <link rel="stylesheet" href="../../static/css/base/themes.css">
+    <link rel="stylesheet" href="../../static/css/base/layout.css">
+    <link rel="stylesheet" href="../../static/css/base/components.css">
+    
+    <!-- Desmos API -->
+    <script src="https://www.desmos.com/api/v1.7/calculator.js?apikey=dcb31709b452b1cf9dc26972add0fda6"></script>
+</head>
+<body class="layout-public">
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="button-group">
+            <button onclick="window.location.href='/'">Home</button>
+            <button onclick="window.location.href='/blog'">Blog</button>
+            <button onclick="window.location.href='/gllm'" class="active-nav">GLLM</button>
+            <button onclick="window.location.href='/gpa-calculator'">GPA Calc</button>
+            <button onclick="window.location.href='/gpa-predictor'">GPA Predict</button>
+        </div>
+        
+        <div class="logo">Study Hub</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content-public">
+        <div class="container">
+            <div class="gllm-header">
+                <h1>GLLM - Graphing Calculator</h1>
+                <p>Describe mathematical functions and I'll graph them for you!</p>
+            </div>
+
+            <div class="flex gap-lg" style="min-height: 70vh;">
+                <!-- Left Panel - Chat Interface -->
+                <div class="flex-1" style="max-width: 400px;">
+                    <!-- Chat Messages -->
+                    <div id="chatMessages" class="chat-messages" style="height: 400px; overflow-y: auto; border: 2px solid var(--border-primary); border-radius: var(--radius-md); padding: var(--spacing-md); margin-bottom: var(--spacing-md); background-color: var(--bg-secondary);">
+                        <!-- Messages will appear here -->
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input-container">
+                        <textarea id="chatInput" placeholder="Describe a function to graph..." style="width: 100%; min-height: 80px; padding: var(--spacing-md); border: 2px solid var(--border-primary); border-radius: var(--radius-md); background-color: var(--bg-tertiary); color: var(--text-primary); resize: none; margin-bottom: var(--spacing-sm);"></textarea>
+                        
+                        <div class="flex flex-between">
+                            <div id="chatStatus" class="status-indicator">Ready</div>
+                            <button id="sendMessage" class="btn btn-primary">
+                                <span id="sendText">Send</span>
+                                <span id="sendSpinner" class="hidden">⏳</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Equations Panel -->
+                    <div id="equationsPanel" class="equations-panel hidden" style="margin-top: var(--spacing-lg); padding: var(--spacing-md); border: 2px solid var(--border-primary); border-radius: var(--radius-md); background-color: var(--bg-secondary);">
+                        <h3>Generated Equations:</h3>
+                        <div id="equationsList" class="equations-list">
+                            <!-- Equations will appear here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel - Graphing Calculator -->
+                <div class="flex-1">
+                    <div style="position: relative;">
+                        <div style="position: absolute; top: 10px; right: 10px; z-index: 10;">
+                            <button onclick="clearCalculator()" class="btn btn-secondary btn-sm">Clear Graph</button>
+                        </div>
+                        <div id="calculator" style="width: 100%; height: 500px; border: 2px solid var(--border-primary); border-radius: var(--radius-md);"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='/'">← Back</button>
+
+    <!-- Core JavaScript -->
+    <script src="../../static/javascript/core/utils.js"></script>
+    <script src="../../static/javascript/core/api.js"></script>
+    
+    <!-- Page-specific JavaScript -->
+    <script src="../../static/javascript/pages/gllm.js"></script>
+
+    <!-- CSS for GLLM-specific elements -->
+    <style>
+        .chat-messages {
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-primary) var(--bg-secondary);
+        }
+        
+        .message {
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-sm);
+            border-radius: var(--radius-sm);
+        }
+        
+        .user-message {
+            background-color: var(--brand-accent);
+            color: var(--text-primary);
+            margin-left: 20%;
+        }
+        
+        .bot-message {
+            background-color: var(--bg-tertiary);
+            color: var(--text-secondary);
+            margin-right: 20%;
+        }
+        
+        .message-content {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: var(--font-size-xs);
+            opacity: 0.8;
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .status-indicator {
+            font-size: var(--font-size-sm);
+            color: var(--text-muted);
+        }
+        
+        .status-indicator.loading {
+            color: var(--accent-primary);
+        }
+        
+        .equation-item {
+            margin-bottom: var(--spacing-sm);
+            padding: var(--spacing-sm);
+            background-color: var(--bg-tertiary);
+            border-radius: var(--radius-sm);
+        }
+        
+        .equation-latex {
+            font-family: 'Courier New', monospace;
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .equation-description {
+            font-size: var(--font-size-sm);
+            color: var(--text-secondary);
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</body>
+</html>

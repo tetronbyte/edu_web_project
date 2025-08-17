@@ -1,0 +1,17 @@
+{
+  "posts": [
+    {
+      "id": "b41f7cd8-b389-43f8-ae63-758f56c916a4",
+      "title": "Welcome to Our Study Portal Blog",
+      "excerpt": "This is your first blog post! Start writing about academic topics, study tips, and more.",
+      "content": "<p>Welcome to the Study Portal Blog! This is where we'll share valuable insights, study tips, tutorials, and important announcements.</p><p>Stay tuned for more content!</p>",
+      "category": "announcements",
+      "date": "2025-08-15T23:06:41.698313",
+      "readTime": 2,
+      "featured": true,
+      "image": null,
+      "author": "Admin",
+      "published": true
+    }
+  ]
+}

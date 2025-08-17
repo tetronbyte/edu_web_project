@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Editor - Admin</title>
+    
+    <!-- Base CSS Files -->
+    <link rel="stylesheet" href="../../static/css/base/reset.css">
+    <link rel="stylesheet" href="../../static/css/base/themes.css">
+    <link rel="stylesheet" href="../../static/css/base/layout.css">
+    <link rel="stylesheet" href="../../static/css/base/components.css">
+    
+    <!-- Page-specific CSS -->
+    <link rel="stylesheet" href="../../static/css/pages/blog_admin.css">
+    
+    <style>
+        /* Blog Editor specific styles */
+        .blog-editor-container {
+            padding: var(--spacing-xl) var(--spacing-2xl);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--border-secondary);
+        }
+        
+        .editor-form {
+            background: var(--gradient-card);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border-primary);
+        }
+        
+        .form-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .form-section h3 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-md);
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .content-editor {
+            min-height: 400px;
+            border: 2px solid var(--border-primary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: var(--font-size-md);
+            line-height: 1.6;
+        }
+        
+        .content-editor:focus {
+            outline: none;
+            border-color: var(--border-focus);
+            box-shadow: var(--shadow-focus);
+        }
+        
+        .editor-toolbar {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            flex-wrap: wrap;
+        }
+        
+        .toolbar-btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 1px solid var(--border-primary);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            font-size: var(--font-size-sm);
+        }
+        
+        .toolbar-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--brand-accent);
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: flex-end;
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--border-secondary);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            color: var(--text-primary);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--spacing-sm);
+            font-size: var(--font-size-md);
+        }
+        
+        .form-control {
+            background-color: var(--bg-tertiary);
+            border: 2px solid var(--border-primary);
+            color: var(--text-primary);
+            padding: 14px;
+            border-radius: var(--radius-md);
+            font-size: var(--font-size-md);
+            transition: all var(--transition-normal);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .form-control:focus {
+            border-color: var(--border-focus);
+            box-shadow: var(--shadow-focus);
+            outline: none;
+        }
+        
+        @media (max-width: 768px) {
+            .blog-editor-container {
+                padding: var(--spacing-lg);
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .editor-header {
+                flex-direction: column;
+                gap: var(--spacing-md);
+                text-align: center;
+            }
+            
+            .editor-toolbar {
+                justify-content: center;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="layout-admin">
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" style="display: none;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3>Admin Panel</h3>
+        </div>
+        
+        <div class="nav-buttons">
+            <button onclick="navigateToDashboard()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
+                    <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
+                    <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
+                    <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
+                </svg>
+                <span>Dashboard</span>
+            </button>
+            
+            <button onclick="navigateToUpload()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="7,10 12,5 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="5" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Upload Notes</span>
+            </button>
+            
+            <button onclick="navigateToBlog()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M14.828 14.828C15.5 14.156 16 13.204 16 12.172C16 10.109 14.364 8.47297 12.301 8.47297C11.269 8.47297 10.317 8.97297 9.645 9.64497" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Manage Blog</span>
+            </button>
+            
+            <button onclick="navigateToNewPost()" class="active">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18.5 2.50023C18.8978 2.1024 19.4374 1.87891 20 1.87891C20.5626 1.87891 21.1022 2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213 4.00023C22.1213 4.56284 21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>New Post</span>
+            </button>
+        </div>
+        
+        <button class="logout-btn" onclick="window.location.href='/admin/logout'">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>Logout</span>
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="blog-editor-container">
+            <!-- Editor Header -->
+            <div class="editor-header">
+                <h1 id="editorTitle">Create New Post</h1>
+                <button onclick="window.location.href='/admin/blog'" class="btn btn-secondary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Back to Blog Management
+                </button>
+            </div>
+
+            <!-- Blog Editor Form -->
+            <form id="blogPostForm" class="editor-form">
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <h3>Basic Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="postTitle">Title *</label>
+                            <input type="text" id="postTitle" name="title" class="form-control" required placeholder="Enter post title">
+                        </div>
+                        <div class="form-group">
+                            <label for="postCategory">Category *</label>
+                            <select id="postCategory" name="category" class="form-control" required>
+                                <option value="">Select Category</option>
+                                <option value="announcements">Announcements</option>
+                                <option value="tutorials">Tutorials</option>
+                                <option value="study-tips">Study Tips</option>
+                                <option value="resources">Resources</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="readTime">Read Time (minutes)</label>
+                            <input type="number" id="readTime" name="readTime" class="form-control" min="1" placeholder="Auto-calculated">
+                        </div>
+                        <div class="form-group">
+                            <label for="postImage">Featured Image URL</label>
+                            <input type="url" id="postImage" name="image" class="form-control" placeholder="https://example.com/image.jpg">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postExcerpt">Excerpt</label>
+                        <textarea id="postExcerpt" name="excerpt" class="form-control" rows="3" placeholder="Brief description of the post (auto-generated if left empty)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="form-section">
+                    <h3>Content *</h3>
+                    
+                    <!-- Editor Toolbar -->
+                    <div class="editor-toolbar">
+                        <button type="button" class="toolbar-btn" onclick="formatText('bold')" title="Bold">
+                            <strong>B</strong>
+                        </button>
+                        <button type="button" class="toolbar-btn" onclick="formatText('italic')" title="Italic">
+                            <em>I</em>
+                        </button>
+                        <button type="button" class="toolbar-btn" onclick="formatText('underline')" title="Underline">
+                            <u>U</u>
+                        </button>
+                        <button type="button" class="toolbar-btn" onclick="insertLink()" title="Insert Link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 13C10.4295 13.5741 10.9774 14.0491 11.6066 14.3929C12.2357 14.7367 12.9315 14.9411 13.6467 14.9923C14.3618 15.0435 15.0796 14.9403 15.7513 14.6897C16.4231 14.4392 17.0331 14.047 17.54 13.54L20.54 10.54C21.4508 9.59695 21.9548 8.33394 21.9434 7.02296C21.932 5.71198 21.4061 4.45791 20.4791 3.53087C19.5521 2.60383 18.298 2.07799 16.987 2.0666C15.676 2.0552 14.413 2.55918 13.47 3.47L11.75 5.18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 11C13.5705 10.4259 13.0226 9.95088 12.3934 9.60707C11.7643 9.26327 11.0685 9.05885 10.3533 9.00767C9.63819 8.95649 8.92037 9.05973 8.24864 9.31027C7.5769 9.56082 6.96687 9.95301 6.45996 10.46L3.45996 13.46C2.54917 14.403 2.04519 15.666 2.05659 16.977C2.06798 18.288 2.59382 19.5421 3.52086 20.4691C4.44791 21.3962 5.70197 21.922 7.01295 21.9334C8.32393 21.9448 9.58694 21.4408 10.53 20.53L12.24 18.82" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Link
+                        </button>
+                        <button type="button" class="toolbar-btn" onclick="formatText('insertUnorderedList')" title="Bullet List">
+                            • List
+                        </button>
+                        <button type="button" class="toolbar-btn" onclick="formatText('insertOrderedList')" title="Numbered List">
+                            1. List
+                        </button>
+                        <button type="button" class="toolbar-btn" onclick="formatText('formatBlock', 'h2')" title="Heading 2">
+                            H2
+                        </button>
+                        <button type="button" class="toolbar-btn" onclick="formatText('formatBlock', 'h3')" title="Heading 3">
+                            H3
+                        </button>
+                    </div>
+                    
+                    <div id="contentEditor" class="content-editor" contenteditable="true" placeholder="Write your post content here..."></div>
+                    <textarea id="postContent" name="content" style="display: none;" required></textarea>
+                </div>
+
+                <!-- Settings -->
+                <div class="form-section">
+                    <h3>Settings</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="isFeatured" name="featured" style="margin-right: 8px;"> 
+                                Mark as Featured Post
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="isPublished" name="published" checked style="margin-right: 8px;"> 
+                                Publish immediately
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" onclick="saveDraft()" class="btn btn-secondary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H15L19 7V19Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="17,21 17,13 7,13 7,21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="7,3 7,8 15,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Save Draft
+                    </button>
+                    <button type="submit" id="saveBtn" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Save Post
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Core JavaScript -->
+    <script src="../../static/javascript/core/utils.js"></script>
+    <script src="../../static/javascript/core/api.js"></script>
+    
+    <!-- Blog Editor JavaScript -->
+    <script>
+        // Fix: Proper Jinja2 variable handling
+        let isEditing = false;
+        let editingPostId = null;
+
+        // Check if we're editing an existing post - FIXED SYNTAX
+        {% if post_id is defined %}
+            editingPostId = {{ post_id | tojson }};
+            isEditing = true;
+            console.log('Editing post:', editingPostId);
+        {% endif %}
+
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEditor();
+            if (isEditing && editingPostId) {
+                loadPostForEditing();
+            }
+        });
+
+        function setupEditor() {
+            const contentEditor = document.getElementById('contentEditor');
+            const postContent = document.getElementById('postContent');
+            
+            // Sync content editor with hidden textarea
+            if (contentEditor && postContent) {
+                contentEditor.addEventListener('input', function() {
+                    postContent.value = this.innerHTML;
+                    updateReadTime();
+                });
+
+                // Handle paste events to clean up formatting
+                contentEditor.addEventListener('paste', function(e) {
+                    e.preventDefault();
+                    const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                    document.execCommand('insertText', false, text);
+                });
+            }
+
+            // Form submission
+            const form = document.getElementById('blogPostForm');
+            if (form) {
+                form.addEventListener('submit', handleFormSubmit);
+            }
+        }
+
+        async function loadPostForEditing() {
+            try {
+                const post = await Api.admin.getBlogPost(editingPostId);
+                populateForm(post);
+                document.getElementById('editorTitle').textContent = 'Edit Blog Post';
+                const saveBtn = document.getElementById('saveBtn');
+                saveBtn.innerHTML = `
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Update Post
+                `;
+            } catch (error) {
+                console.error('Error loading post:', error);
+                Utils.showNotification('Failed to load post for editing.', 'error');
+            }
+        }
+
+        function populateForm(post) {
+            const fields = [
+                'postTitle', 'postExcerpt', 'postCategory', 
+                'readTime', 'postImage'
+            ];
+            
+            fields.forEach(fieldId => {
+                const element = document.getElementById(fieldId);
+                if (element) {
+                    const fieldName = fieldId.replace('post', '').toLowerCase();
+                    element.value = post[fieldName] || '';
+                }
+            });
+
+            const contentEditor = document.getElementById('contentEditor');
+            const postContent = document.getElementById('postContent');
+            if (contentEditor && postContent) {
+                contentEditor.innerHTML = post.content || '';
+                postContent.value = post.content || '';
+            }
+
+            const isFeatured = document.getElementById('isFeatured');
+            const isPublished = document.getElementById('isPublished');
+            if (isFeatured) isFeatured.checked = post.featured || false;
+            if (isPublished) isPublished.checked = post.published !== false;
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) return;
+
+            const formData = getFormData();
+            
+            try {
+                showSaving();
+                
+                let result;
+                if (isEditing && editingPostId) {
+                    result = await Api.admin.updateBlogPost(editingPostId, formData);
+                } else {
+                    result = await Api.admin.createBlogPost(formData);
+                }
+                
+                Utils.showNotification(
+                    isEditing ? 'Post updated successfully!' : 'Post created successfully!', 
+                    'success'
+                );
+                
+                setTimeout(() => {
+                    window.location.href = '/admin/blog';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error saving post:', error);
+                Utils.showNotification('Failed to save post. Please try again.', 'error');
+            } finally {
+                hideSaving();
+            }
+        }
+
+        function getFormData() {
+            return {
+                title: document.getElementById('postTitle').value.trim(),
+                excerpt: document.getElementById('postExcerpt').value.trim(),
+                content: document.getElementById('postContent').value.trim(),
+                category: document.getElementById('postCategory').value,
+                readTime: parseInt(document.getElementById('readTime').value) || calculateReadTime(),
+                image: document.getElementById('postImage').value.trim() || null,
+                featured: document.getElementById('isFeatured').checked,
+                published: document.getElementById('isPublished').checked
+            };
+        }
+
+        function validateForm() {
+            const title = document.getElementById('postTitle').value.trim();
+            const content = document.getElementById('postContent').value.trim();
+            const category = document.getElementById('postCategory').value;
+
+            if (!title) {
+                Utils.showNotification('Please enter a post title.', 'error');
+                document.getElementById('postTitle').focus();
+                return false;
+            }
+
+            if (!content) {
+                Utils.showNotification('Please enter post content.', 'error');
+                document.getElementById('contentEditor').focus();
+                return false;
+            }
+
+            if (!category) {
+                Utils.showNotification('Please select a category.', 'error');
+                document.getElementById('postCategory').focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        function formatText(command, value = null) {
+            document.execCommand(command, false, value);
+            document.getElementById('contentEditor').focus();
+            document.getElementById('postContent').value = document.getElementById('contentEditor').innerHTML;
+        }
+
+        function insertLink() {
+            const url = prompt('Enter the URL:');
+            if (url) {
+                formatText('createLink', url);
+            }
+        }
+
+        function calculateReadTime() {
+            const content = document.getElementById('contentEditor').textContent;
+            const wordCount = content.trim().split(/\s+/).length;
+            return Math.max(1, Math.round(wordCount / 225));
+        }
+
+        function updateReadTime() {
+            const readTimeField = document.getElementById('readTime');
+            if (readTimeField && !readTimeField.value) {
+                readTimeField.value = calculateReadTime();
+            }
+        }
+
+        async function saveDraft() {
+            if (!validateForm()) return;
+
+            const formData = getFormData();
+            formData.published = false;
+
+            try {
+                showSaving();
+                
+                if (isEditing && editingPostId) {
+                    await Api.admin.updateBlogPost(editingPostId, formData);
+                } else {
+                    const result = await Api.admin.createBlogPost(formData);
+                    // If creating new post, update the editing state
+                    if (result && result.post && result.post.id) {
+                        editingPostId = result.post.id;
+                        isEditing = true;
+                    }
+                }
+                
+                Utils.showNotification('Draft saved successfully!', 'success');
+            } catch (error) {
+                console.error('Error saving draft:', error);
+                Utils.showNotification('Failed to save draft. Please try again.', 'error');
+            } finally {
+                hideSaving();
+            }
+        }
+
+        function showSaving() {
+            const saveBtn = document.getElementById('saveBtn');
+            if (saveBtn) {
+                saveBtn.textContent = 'Saving...';
+                saveBtn.disabled = true;
+            }
+        }
+
+        function hideSaving() {
+            const saveBtn = document.getElementById('saveBtn');
+            if (saveBtn) {
+                saveBtn.innerHTML = (isEditing && editingPostId) ? 
+                    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Update Post` : 
+                    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Save Post`;
+                saveBtn.disabled = false;
+            }
+        }
+
+        // Navigation functions
+        function navigateToDashboard() { window.location.href = '/admin'; }
+        function navigateToBlog() { window.location.href = '/admin/blog'; }
+        function navigateToNewPost() { window.location.href = '/admin/blog/new'; }
+        function navigateToUpload() { window.location.href = '/admin/upload'; }
+        
+        function toggleMobileSidebar() {
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) sidebar.classList.toggle('mobile-open');
+        }
+
+        // Mobile menu functionality
+        function checkScreenSize() {
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            if (window.innerWidth <= 768) {
+                mobileBtn.style.display = 'block';
+            } else {
+                mobileBtn.style.display = 'none';
+                const sidebar = document.querySelector('.sidebar');
+                if (sidebar) sidebar.classList.remove('mobile-open');
+            }
+        }
+
+        window.addEventListener('resize', checkScreenSize);
+        checkScreenSize();
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+                event.preventDefault();
+                document.getElementById('blogPostForm').dispatchEvent(new Event('submit'));
+            }
+
+            if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'S') {
+                event.preventDefault();
+                saveDraft();
+            }
+        });
+    </script>
+</body>
+</html>

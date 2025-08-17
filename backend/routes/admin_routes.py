@@ -1,126 +1,236 @@
-from flask import Blueprint, render_template, request, jsonify, send_from_directory, redirect, flash, url_for, session
-from datetime import date, datetime, timedelta
-import os
+from flask import Blueprint, render_template, request, jsonify, session, redirect, url_for, flash
+from services.file_service import FileService
+from services.blog_service import BlogService
+from services.auth_service import AuthService
 
-admin_bp = Blueprint('admin', __name__)
+class AdminRoutes:
+    def __init__(self, admin_username='anurag', admin_password='admin19'):
+        self.auth_service = AuthService(admin_username, admin_password)
+        self.blog_service = BlogService()
+        self.bp = Blueprint('admin', __name__, url_prefix='/admin')
+        self.register_routes()
 
-# === Path to Store PDFs ===
-UPLOAD_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..', 'data', 'notes'))
+    def register_routes(self):
+        bp = self.bp
 
-# === Dummy Admin Credentials ===
-ADMIN_USERNAME = 'anurag'
-ADMIN_PASSWORD = 'admin19'  # Replace with a secure method in production
+        # === Authentication Routes ===
+        @bp.route('/login', methods=['GET', 'POST'])
+        def admin_login():
+            if request.method == 'POST':
+                username = request.form.get('username')
+                password = request.form.get('password')
+                
+                if self.auth_service.authenticate(username, password):
+                    session['admin_logged_in'] = True
+                    return redirect(url_for('admin.admin_dashboard'))
+                
+                flash('Invalid credentials', 'error')
+                return redirect(url_for('admin.admin_login'))
+            
+            return render_template('login_admin.html')
 
-# === File Renamer ===
-from datetime import datetime, date, timedelta
-
-def rename_file(subject, date_string):
-    if date_string == "today":
-        formatted_date = date.today().strftime("%d%m%Y")
-    elif date_string == "yesterday":
-        formatted_date = (date.today() - timedelta(days=1)).strftime("%d%m%Y")
-    else:
-        try:
-            dt = datetime.strptime(date_string, "%Y-%m-%d")
-            formatted_date = dt.strftime("%d%m%Y")
-        except ValueError:
-            return "Invalid date format", 400
-
-    subject = subject.replace(" ", "")
-    return f"{subject}_{formatted_date}.pdf"
-
-
-# === Public Routes ===
-
-@admin_bp.route('/')
-def notes_page():
-    return render_template('notes_template.html')
-
-@admin_bp.route('/home')
-def home_page():
-    return render_template('home_template.html')
-
-@admin_bp.route('/gpa_calculator')
-def gpa_calculator():
-    return render_template('gpa_calculator.html')  # Create if needed
-
-@admin_bp.route('/gpa_predictor')
-def gpa_predictor():
-    return render_template('gpa_predictor.html')  # Create if needed
-
-# === Admin Login ===
-
-@admin_bp.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-
-        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
-            session['admin_logged_in'] = True
-            return redirect(url_for('admin.admin_upload_page'))
-        else:
-            flash('Invalid credentials', 'error')
+        @bp.route('/logout')
+        def admin_logout():
+            self.auth_service.logout()
             return redirect(url_for('admin.admin_login'))
 
-    return render_template('admin_login.html')
+        # === Admin Dashboard ===
+        @bp.route('/')
+        def admin_dashboard():
+            if not self.auth_service.is_authenticated():
+                return redirect(url_for('admin.admin_login'))
+            return render_template('dashboard_admin.html')
+
+        # === Notes Management ===
+        @bp.route('/upload')
+        def admin_upload_page():
+            if not self.auth_service.is_authenticated():
+                return redirect(url_for('admin.admin_login'))
+            return render_template('notes_upload_admin.html')
+
+        @bp.route('/upload', methods=['POST'])
+        def upload_notes():
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+
+            try:
+                files = request.files.getlist('files')  # Support multiple files
+                subject = request.form.get('subject')
+                date_string = request.form.get('date')
+                course = request.form.get('course')
+                semester = request.form.get('semester')
+
+                if not files or all(f.filename == '' for f in files):
+                    return jsonify({'error': 'No files selected'}), 400
+                
+                if not all([course, semester, subject]):
+                    return jsonify({'error': 'Course, Semester, and Subject are required'}), 400
+
+                uploaded_files = []
+                for file in files:
+                    if file and file.filename != '':
+                        filename = FileService.save_uploaded_file(file, subject, date_string, course, semester)
+                        uploaded_files.append(filename)
+
+                return jsonify({
+                    'message': f'{len(uploaded_files)} file(s) uploaded successfully!',
+                    'files': uploaded_files
+                }), 200
+
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
+
+        # === Blog Management Routes ===
+        @bp.route('/blog')
+        def admin_blog_management():
+            if not self.auth_service.is_authenticated():
+                return redirect(url_for('admin.admin_login'))
+            return render_template('blog_admin.html')
+
+        @bp.route('/blog/new')
+        def admin_new_blog_post():
+            if not self.auth_service.is_authenticated():
+                return redirect(url_for('admin.admin_login'))
+            return render_template('blog_editor_admin.html')  # Fixed template name
+
+        @bp.route('/blog/edit/<post_id>')
+        def admin_edit_blog_post(post_id):
+            if not self.auth_service.is_authenticated():
+                return redirect(url_for('admin.admin_login'))
+            return render_template('blog_editor_admin.html', post_id=post_id)  # Fixed template name
 
 
-# === Admin Logout ===
+        # === Admin API Routes ===
+        
+        # Dashboard API
+        @bp.route('/api/dashboard/stats')
+        def get_dashboard_stats():
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+            
+            try:
+                stats = {
+                    'totalPosts': self.blog_service.get_post_count(),
+                    'publishedPosts': self.blog_service.get_published_count(),
+                    'draftPosts': self.blog_service.get_draft_count(),
+                    'totalNotes': FileService.get_total_notes_count(),
+                    'todayViews': 0,  # Implement analytics if needed
+                    'monthlyViews': 0  # Implement analytics if needed
+                }
+                return jsonify(stats)
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
 
-@admin_bp.route('/admin/logout')
-def admin_logout():
-    session.pop('admin_logged_in', None)  # Clear the session
-    return redirect(url_for('admin.admin_login'))  # Redirect to login page
+        @bp.route('/api/dashboard/activity')
+        def get_recent_activity():
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+            
+            try:
+                activity = self.blog_service.get_recent_activity()
+                return jsonify(activity)
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
 
-# === Admin Upload Page ===
+        # Blog API Routes
+        @bp.route('/api/blog/posts')
+        def admin_get_all_posts():
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+            
+            try:
+                posts = self.blog_service.get_all_posts(include_unpublished=True)
+                return jsonify({
+                    'posts': posts,
+                    'total': len(posts)
+                })
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
 
-@admin_bp.route('/admin')
-def admin_upload_page():
-    if not session.get('admin_logged_in'):
-        return redirect(url_for('admin.admin_login'))
-    return render_template('notes_upload_admin.html')
+        @bp.route('/api/blog/post/<post_id>')
+        def admin_get_post(post_id):
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+            
+            try:
+                post = self.blog_service.get_post_by_id(post_id)
+                if not post:
+                    return jsonify({'error': 'Post not found'}), 404
+                return jsonify(post)
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
 
-# === Upload Endpoint (Protected) ===
+        @bp.route('/api/blog/post', methods=['POST'])
+        def admin_create_post():
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+            
+            try:
+                post_data = request.get_json()
+                post = self.blog_service.create_post(post_data)
+                return jsonify({
+                    'message': 'Post created successfully',
+                    'post': post
+                }), 201
+            except ValueError as e:
+                return jsonify({'error': str(e)}), 400
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
 
-@admin_bp.route('/upload', methods=['POST'])
-def upload_notes():
-    if not session.get('admin_logged_in'):
-        return redirect(url_for('admin.admin_login'))
+        @bp.route('/api/blog/post/<post_id>', methods=['PUT'])
+        def admin_update_post(post_id):
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+            
+            try:
+                post_data = request.get_json()
+                post = self.blog_service.update_post(post_id, post_data)
+                if not post:
+                    return jsonify({'error': 'Post not found'}), 404
+                return jsonify({
+                    'message': 'Post updated successfully',
+                    'post': post
+                })
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
 
-    uploaded_file = request.files.get('file')
-    subject = request.form.get('subject')
-    date_string = request.form.get('date', None)
-    course = request.form.get('course')
-    semester = request.form.get('semester')
+        @bp.route('/api/blog/post/<post_id>', methods=['DELETE'])
+        def admin_delete_post(post_id):
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+            
+            try:
+                success = self.blog_service.delete_post(post_id)
+                if not success:
+                    return jsonify({'error': 'Post not found'}), 404
+                return jsonify({'message': 'Post deleted successfully'})
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
 
-    # Validate inputs
-    if not uploaded_file or uploaded_file.filename == '':
-        return 'No selected file', 400
-    if not course or not semester:
-        return 'Course and Semester are required', 400
+        @bp.route('/api/blog/post/<post_id>/toggle', methods=['POST'])
+        def admin_toggle_post_status(post_id):
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+            
+            try:
+                post = self.blog_service.toggle_post_status(post_id)
+                if not post:
+                    return jsonify({'error': 'Post not found'}), 404
+                return jsonify({
+                    'message': f'Post {"published" if post["published"] else "unpublished"} successfully',
+                    'post': post
+                })
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500
 
-    filename = rename_file(subject.replace(" ", ""), date_string)
-    save_dir = os.path.join(UPLOAD_ROOT, course, semester, subject.replace(" ", ""))
-    os.makedirs(save_dir, exist_ok=True)
-
-    uploaded_file.save(os.path.join(save_dir, filename))
-
-    return jsonify({'message': 'File uploaded successfully!'}), 200
-
-# === API: List Notes ===
-
-@admin_bp.route('/notes/<course>/<semester>/<subject>')
-def list_notes(course, semester, subject):
-    subject_folder = os.path.join(UPLOAD_ROOT, course, semester, subject.replace(" ", ""))
-    if not os.path.exists(subject_folder):
-        return jsonify([])
-    files = [f for f in os.listdir(subject_folder) if f.endswith('.pdf')]
-    return jsonify(files)
-
-# === Serve PDFs ===
-
-@admin_bp.route('/notes/<course>/<semester>/<subject>/<filename>')
-def serve_note(course, semester, subject, filename):
-    file_path = os.path.join(UPLOAD_ROOT, course, semester, subject.replace(" ", ""))
-    return send_from_directory(file_path, filename)
+        # Notes API Routes
+        @bp.route('/api/notes/<course>/<semester>/<subject>')
+        def admin_list_notes(course, semester, subject):
+            if not self.auth_service.is_authenticated():
+                return jsonify({'error': 'Unauthorized'}), 401
+            
+            try:
+                files = FileService.list_subject_files(course, semester, subject)
+                return jsonify(files)
+            except Exception as e:
+                return jsonify({'error': str(e)}), 500

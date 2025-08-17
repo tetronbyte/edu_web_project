@@ -1,0 +1,110 @@
+/* Admin Login Page Styles */
+
+.login-page {
+    background-color: var(--bg-primary);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-lg);
+}
+
+.login-container {
+    background: var(--gradient-card);
+    padding: var(--spacing-2xl);
+    border-radius: 16px;
+    box-shadow: var(--shadow-xl);
+    width: 400px;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid var(--border-secondary);
+}
+
+.login-container h2 {
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+    color: var(--text-primary);
+    font-size: 26px;
+}
+
+.login-container .form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    background-color: var(--bg-tertiary);
+    border: 2px solid var(--border-primary);
+    color: var(--text-primary);
+    padding: 12px;
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    transition: all var(--transition-normal);
+    width: 100%;
+}
+
+.login-container input[type="text"]:focus,
+.login-container input[type="password"]:focus {
+    border-color: var(--border-focus);
+    box-shadow: var(--shadow-focus);
+}
+
+.login-container button {
+    background: var(--gradient-primary);
+    color: var(--text-primary);
+    padding: 12px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    margin-top: 10px;
+    width: 100%;
+}
+
+.login-container button:hover {
+    background: linear-gradient(45deg, var(--brand-light), var(--brand-lighter));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 64, 128, 0.4);
+}
+
+.login-container button:disabled {
+    background: var(--border-secondary);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Login form messages */
+.login-message {
+    margin-bottom: var(--spacing-lg);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-weight: var(--font-weight-semibold);
+}
+
+.login-message.error {
+    background: var(--error-bg);
+    border: 2px solid var(--error);
+    color: var(--error);
+}
+
+.login-message.success {
+    background: var(--success-bg);
+    border: 2px solid var(--success);
+    color: var(--success);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .login-container {
+        width: 350px;
+        padding: var(--spacing-xl);
+        margin: var(--spacing-lg);
+    }
+    
+    .login-container h2 {
+        font-size: 24px;
+    }
+}

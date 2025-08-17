@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Notes - Admin</title>
+    <title>Admin Dashboard - Study Hub</title>
     
     <!-- Base CSS Files -->
     <link rel="stylesheet" href="../../static/css/base/reset.css">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../../static/css/base/components.css">
     
     <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="../../static/css/pages/notes_admin.css">
+    <link rel="stylesheet" href="../../static/css/pages/dashboard_admin.css">
 </head>
 <body class="layout-admin">
     <!-- Mobile Menu Button -->
@@ -34,7 +34,7 @@
         </div>
         
         <div class="nav-buttons">
-            <button onclick="navigateToDashboard()">
+            <button onclick="navigateToDashboard()" class="active">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
                     <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
@@ -44,7 +44,7 @@
                 <span>Dashboard</span>
             </button>
             
-            <button onclick="navigateToUpload()" class="active">
+            <button onclick="navigateToUpload()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     <polyline points="7,10 12,5 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -83,90 +83,106 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="notes-upload-container">
-            <!-- Notes Header -->
-            <div class="notes-header">
-                <h2>Upload Notes</h2>
+        <div class="dashboard-container">
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <h1>Admin Dashboard</h1>
+                <button id="refreshDashboard" class="btn btn-secondary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <polyline points="23,4 23,10 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <polyline points="1,20 1,14 7,14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M20.49 9C19.9828 7.56678 19.1209 6.28392 17.9845 5.27EA6C16.8482 4.26221 15.4745 3.55663 13.9917 3.21669C12.5089 2.87676 10.9652 2.91364 9.50481 3.32416C8.04437 3.73469 6.71475 4.505 5.64 5.58L1 10M23 14L18.36 18.42C17.2853 19.495 15.9556 20.2653 14.4952 20.6758C13.0348 21.0864 11.4911 21.1232 10.0083 20.7833C8.52547 20.4434 7.1518 19.7378 6.01547 18.73C4.87913 17.7221 4.01717 16.4392 3.51 15.006" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Refresh
+                </button>
             </div>
 
-            <!-- Upload Form -->
-            <form id="uploadForm" class="notes-form" enctype="multipart/form-data">
-                <!-- Course Selection -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="course">Course *</label>
-                        <select id="course" name="course" class="form-control" required>
-                            <option value="">-- Select Course --</option>
-                            <option value="1st Year, BS">1st Year, BS</option>
-                            <option value="2nd Year, BS">2nd Year, BS</option>
-                        </select>
+            <!-- Quick Stats -->
+            <div id="statsGrid" class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalPosts">-</span>
+                    <span class="stat-label">Total Posts</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="publishedPosts">-</span>
+                    <span class="stat-label">Published</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="draftPosts">-</span>
+                    <span class="stat-label">Drafts</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalNotes">-</span>
+                    <span class="stat-label">Total Notes</span>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Blog Management Card -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M14.828 14.828C15.5 14.156 16 13.204 16 12.172C16 10.109 14.364 8.47297 12.301 8.47297C11.269 8.47297 10.317 8.97297 9.645 9.64497" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="semester">Semester *</label>
-                        <select id="semester" name="semester" class="form-control" required>
-                            <option value="">-- Select Semester --</option>
-                        </select>
-                    </div>
+                    <h3>Blog Management</h3>
+                    <p>Create, edit, and manage your blog posts. Keep your content fresh and engaging.</p>
+                    <button onclick="navigateToBlog()" class="btn btn-primary">Manage Posts</button>
                 </div>
 
-                <!-- Subject and Date -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="subject">Subject *</label>
-                        <select id="subject" name="subject" class="form-control" required>
-                            <option value="">-- Select Subject --</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="date">Date *</label>
-                        <select id="date" name="date" class="form-control" required>
-                            <option value="">-- Select Date --</option>
-                            <option value="today">Today</option>
-                            <option value="yesterday">Yesterday</option>
-                            <option value="custom">Custom Date</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Custom Date Input -->
-                <div class="form-group" style="display: none;">
-                    <label for="customDate">Custom Date</label>
-                    <input type="date" id="customDate" name="customDate" class="form-control date-picker">
-                </div>
-
-                <!-- File Upload Area -->
-                <div class="form-group">
-                    <label for="notesFile">Upload Files *</label>
-                    <div id="uploadArea" class="upload-area">
-                        <div class="upload-icon">
-                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M10 9L12 11L14 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M12 11V15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                            </svg>
-                        </div>
-                        <p>Drag and drop your notes here</p>
-                        <p class="upload-hint">or click to browse files</p>
-                        <p class="upload-hint">Supported formats: PDF, DOC, DOCX, TXT, PPT, PPTX</p>
-                    </div>
-                    <input type="file" id="notesFile" name="files" class="file-input" multiple accept=".pdf,.doc,.docx,.txt,.ppt,.pptx" required>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Notes Upload Card -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <polyline points="7,10 12,5 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             <line x1="12" y1="5" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                         </svg>
-                        Upload Notes
-                    </button>
+                    </div>
+                    <h3>Notes Upload</h3>
+                    <p>Upload and organize study notes for different courses and subjects.</p>
+                    <button onclick="navigateToUpload()" class="btn btn-primary">Upload Notes</button>
                 </div>
-            </form>
+
+                <!-- New Post Card -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M18.5 2.50023C18.8978 2.1024 19.4374 1.87891 20 1.87891C20.5626 1.87891 21.1022 2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213 4.00023C22.1213 4.56284 21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Create New Post</h3>
+                    <p>Write and publish new blog posts to share knowledge and updates.</p>
+                    <button onclick="navigateToNewPost()" class="btn btn-success">New Post</button>
+                </div>
+
+                <!-- Site Analytics Card -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 14S9.5 16 12 16S16 14 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="9" y1="9" x2="9.01" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <line x1="15" y1="9" x2="15.01" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Visit Public Site</h3>
+                    <p>View the public site to see how your content appears to visitors.</p>
+                    <button onclick="window.open('/', '_blank')" class="btn btn-secondary">View Site</button>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <h3>Recent Activity</h3>
+                <div id="recentActivityList" class="activity-list">
+                    <div class="loading">Loading recent activity...</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -175,7 +191,7 @@
     <script src="../../static/javascript/core/api.js"></script>
     
     <!-- Page-specific JavaScript -->
-    <script src="../../static/javascript/pages/notes_admin.js"></script>
+    <script src="../../static/javascript/pages/dashboard_admin.js"></script>
     
     <!-- Global admin functions -->
     <script>

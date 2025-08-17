@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-        <!-- Google tag (gtag.js) -->
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-V65PG4DBXS"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-V65PG4DBXS');
     </script>
     <meta charset="UTF-8">
     <title>Admin Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_admin.css') }}">
+    
+    <!-- CSS links -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/admin.css') }}">
 </head>
 <body>
     <div class="login-container">
@@ -33,6 +38,9 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='javascript/script_admin.js') }}"></script>
+    <!-- Updated JavaScript links - Core files first, then page-specific -->
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/pages/admin.js') }}"></script>
 </body>
 </html>

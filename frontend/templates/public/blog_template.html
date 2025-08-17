@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Study Hub</title>
+    
+    <!-- Base CSS Files -->
+    <link rel="stylesheet" href="../../static/css/base/reset.css">
+    <link rel="stylesheet" href="../../static/css/base/themes.css">
+    <link rel="stylesheet" href="../../static/css/base/layout.css">
+    <link rel="stylesheet" href="../../static/css/base/components.css">
+    
+    <!-- Page-specific CSS -->
+    <link rel="stylesheet" href="../../static/css/pages/blog_public.css">
+</head>
+<body class="layout-public">
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="button-group">
+            <button onclick="window.location.href='/'">Home</button>
+            <button onclick="window.location.href='/blog'" class="active-nav">Blog</button>
+            <button onclick="window.location.href='/gllm'">GLLM</button>
+            <button onclick="window.location.href='/gpa-calculator'">GPA Calc</button>
+            <button onclick="window.location.href='/gpa-predictor'">GPA Predict</button>
+        </div>
+        
+        <div class="logo">Study Hub</div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content-public">
+        <!-- Blog Header -->
+        <div class="blog-header">
+            <h1>Study Hub Blog</h1>
+            <p>Latest updates, tutorials, and study tips</p>
+        </div>
+
+        <!-- Search and Filter Controls -->
+        <div class="blog-controls">
+            <div class="search-container">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search posts...">
+                <button class="search-btn">🔍</button>
+            </div>
+            
+            <select id="categoryFilter" class="filter-select">
+                <option value="">All Categories</option>
+                <option value="announcements">Announcements</option>
+                <option value="tutorials">Tutorials</option>
+                <option value="study-tips">Study Tips</option>
+                <option value="resources">Resources</option>
+            </select>
+        </div>
+
+        <!-- Featured Post Section -->
+        <div id="featuredPost" class="featured-section">
+            <!-- Featured post will be loaded dynamically -->
+        </div>
+
+        <!-- Blog Posts Grid -->
+        <div id="blogContainer" class="blog-container">
+            <!-- Blog posts will be loaded dynamically -->
+        </div>
+
+        <!-- Load More Button -->
+        <div class="load-more-container">
+            <button id="loadMoreBtn" class="load-more-btn">Load More Posts</button>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.location.href='/'">← Back</button>
+
+    <!-- Core JavaScript -->
+    <script src="../../static/javascript/core/utils.js"></script>
+    <script src="../../static/javascript/core/api.js"></script>
+    
+    <!-- Page-specific JavaScript -->
+    <script src="../../static/javascript/pages/blog_public.js"></script>
+</body>
+</html>

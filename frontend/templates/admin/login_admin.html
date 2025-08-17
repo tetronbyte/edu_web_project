@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Your Site</title>
+    
+    <!-- Base CSS Files -->
+    <link rel="stylesheet" href="../../static/css/base/reset.css">
+    <link rel="stylesheet" href="../../static/css/base/themes.css">
+    <link rel="stylesheet" href="../../static/css/base/layout.css">
+    <link rel="stylesheet" href="../../static/css/base/components.css">
+    
+    <!-- Page-specific CSS -->
+    <link rel="stylesheet" href="../../static/css/pages/login_admin.css">
+</head>
+<body>
+    <div class="login-page">
+        <div class="login-container">
+            <h2>Admin Login</h2>
+            
+            <!-- Login messages -->
+            <div id="errorMessage" class="login-message error" style="display: none;">
+                Invalid credentials. Please try again.
+            </div>
+            
+            <div id="successMessage" class="login-message success" style="display: none;">
+                Login successful. Redirecting...
+            </div>
+            
+            <form id="loginForm" method="POST" action="/admin/login">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required autocomplete="username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" id="submitBtn" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Core JavaScript -->
+    <script src="../../static/javascript/core/utils.js"></script>
+    <script src="../../static/javascript/core/api.js"></script>
+    
+    <!-- Page-specific JavaScript -->
+    <script src="../../static/javascript/pages/login_admin.js"></script>
+</body>
+</html>

@@ -2,61 +2,69 @@
 <html lang="en">
 <head>
     <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-V65PG4DBXS"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-V65PG4DBXS');
-  </script>
-  <meta charset="UTF-8">
-  <title>Study Portal</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V65PG4DBXS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V65PG4DBXS');
+    </script>
+    <meta charset="UTF-8">
+    <title>Study Portal</title>
+    
+    <!-- CSS links -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
 </head>
-<body>
+<body class="with-topbar">
 
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="button-group">
-      <button onclick="window.location.href='/'">Notes</button>
+    <!-- Topbar -->
+    <div class="topbar">
+        <div class="button-group">
+            <button onclick="window.location.href='/'">Notes</button>
+            <button onclick="window.location.href='/graphing'">AI Graphing</button>
+        </div>
+
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" height="95" width="90">
+            </a>
+        </div>
+
+        <div class="button-group">
+            <button onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+        </div>
     </div>
 
-  <div class="logo">
-      <a href="/">
-        <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo" height="95" width="90">
-      </a>
-  </div>
-
-    <div class="button-group">
-      <button onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
-      <button onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+    <!-- Course Buttons -->
+    <div class="course-container" id="courseButtons">
+        <!-- Populated by JS -->
     </div>
-  </div>
 
-  <!-- Course Buttons -->
-  <div class="course-container" id="courseButtons">
-    <!-- Populated by JS -->
-  </div>
+    <!-- Semester Buttons -->
+    <div class="semester-container" id="semesterButtons">
+        <!-- Populated by JS -->
+    </div>
 
-  <!-- Semester Buttons -->
-  <div class="semester-container" id="semesterButtons">
-    <!-- Populated by JS -->
-  </div>
+    <!-- Subject Buttons -->
+    <div class="subject-container" id="subjectButtons">
+        <!-- Populated by JS -->
+    </div>
 
-  <!-- Subject Buttons -->
-  <div class="subject-container" id="subjectButtons">
-    <!-- Populated by JS -->
-  </div>
+    <!-- Notes List -->
+    <div class="notes-container" id="notesContainer">
+        <!-- Populated by JS -->
+    </div>
 
-  <!-- Notes List -->
-  <div class="notes-container" id="notesContainer">
-    <!-- Populated by JS -->
-  </div>
+    <!-- Back Button -->
+    <button class="backButton" id="backButton" onclick="goBack()">← Back</button>
 
-  <!-- Back Button -->
-<button class="backButton" id="backButton" onclick="goBack()">← Back</button>
-
-  <script src="{{ url_for('static', filename='javascript/script.js') }}"></script>
+    <!-- Updated JavaScript links - Core files first, then page-specific -->
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/pages/home.js') }}"></script>
 </body>
 </html>

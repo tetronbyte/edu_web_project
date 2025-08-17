@@ -1,0 +1,270 @@
+/* GLLM Admin Page Styles */
+
+.gllm-container {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    background-color: var(--bg-primary);
+    min-height: 100vh;
+}
+
+.gllm-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    color: var(--accent-primary);
+}
+
+.gllm-header h1 {
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--spacing-md);
+}
+
+.gllm-header p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-lg);
+}
+
+/* Form Section */
+.gllm-form {
+    background-color: var(--bg-secondary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    max-width: 600px;
+    margin: 0 auto var(--spacing-xl) auto;
+}
+
+.gllm-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-light);
+    font-weight: var(--font-weight-semibold);
+}
+
+.gllm-form input,
+.gllm-form select,
+.gllm-form textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: var(--spacing-md);
+    background-color: var(--bg-tertiary);
+    border: 2px solid var(--border-primary);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    transition: all var(--transition-normal);
+}
+
+.gllm-form input:focus,
+.gllm-form select:focus,
+.gllm-form textarea:focus {
+    border-color: var(--border-focus);
+    box-shadow: var(--shadow-focus);
+}
+
+.gllm-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.gllm-form button {
+    background-color: var(--brand-accent);
+    color: var(--text-primary);
+    border: none;
+    padding: 12px var(--spacing-lg);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+    font-weight: var(--font-weight-semibold);
+}
+
+.gllm-form button:hover {
+    background-color: var(--brand-light);
+}
+
+.gllm-form button:disabled {
+    background-color: var(--border-secondary);
+    cursor: not-allowed;
+}
+
+/* Results Section */
+.gllm-results {
+    background-color: var(--bg-secondary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    max-width: 900px;
+    margin: 0 auto;
+    overflow-x: auto;
+}
+
+.gllm-results h3 {
+    margin-bottom: var(--spacing-lg);
+    color: var(--accent-primary);
+    font-size: var(--font-size-xl);
+}
+
+/* Table Styles */
+.gllm-results table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.gllm-results th,
+.gllm-results td {
+    padding: 12px;
+    border: 1px solid var(--border-secondary);
+    text-align: left;
+}
+
+.gllm-results th {
+    background-color: var(--brand-secondary);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.gllm-results tr:nth-child(even) {
+    background-color: var(--bg-card-hover);
+}
+
+.gllm-results tr:hover {
+    background-color: var(--bg-tertiary);
+}
+
+/* Loader Styles */
+.gllm-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--spacing-2xl);
+}
+
+.gllm-loader .spinner {
+    border: 6px solid var(--border-secondary);
+    border-top: 6px solid var(--accent-primary);
+    border-radius: var(--radius-full);
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* GLLM specific messages */
+.gllm-error {
+    background: var(--error-bg);
+    border: 2px solid var(--error);
+    color: var(--error);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+    font-weight: var(--font-weight-semibold);
+}
+
+.gllm-success {
+    background: var(--success-bg);
+    border: 2px solid var(--success);
+    color: var(--success);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+    font-weight: var(--font-weight-semibold);
+}
+
+.gllm-info {
+    background: var(--info-bg);
+    border: 2px solid var(--info);
+    color: var(--info);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-md);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Export/Action buttons */
+.gllm-actions {
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+    justify-content: flex-end;
+}
+
+.gllm-export-btn {
+    background-color: var(--success);
+    color: var(--text-primary);
+    border: none;
+    padding: 8px var(--spacing-md);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    transition: background-color var(--transition-fast);
+}
+
+.gllm-export-btn:hover {
+    background-color: var(--success-light);
+}
+
+.gllm-clear-btn {
+    background-color: var(--error);
+    color: var(--text-primary);
+    border: none;
+    padding: 8px var(--spacing-md);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    transition: background-color var(--transition-fast);
+}
+
+.gllm-clear-btn:hover {
+    background-color: var(--error-light);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .gllm-form,
+    .gllm-results {
+        padding: var(--spacing-md);
+        margin: 0 var(--spacing-sm) var(--spacing-lg) var(--spacing-sm);
+    }
+    
+    .gllm-results table th,
+    .gllm-results table td {
+        padding: 8px;
+        font-size: var(--font-size-sm);
+    }
+    
+    .gllm-actions {
+        flex-direction: column;
+    }
+    
+    .gllm-export-btn,
+    .gllm-clear-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .gllm-container {
+        padding: var(--spacing-sm);
+    }
+    
+    .gllm-header h1 {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .gllm-results {
+        overflow-x: scroll;
+    }
+    
+    .gllm-results table {
+        min-width: 500px;
+    }
+}
