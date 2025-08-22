@@ -1,267 +1,427 @@
 import os
 import re
 import json
-import requests
+import uuid
+import random
+from typing import Dict, List, Any, Optional
+from datetime import datetime, timedelta
+from dataclasses import dataclass
 from dotenv import load_dotenv
+import requests
 
 load_dotenv()
 
+perplexity_api_key = os.getenv("PERPLEXITY_API_KEY")
+perplexity_model = os.getenv("PERPLEXITY_MODEL", "sonar")
+perplexity_api_base = os.getenv("PERPLEXITY_API_BASE", "https://api.perplexity.ai")
+perplexity_api_url = f"{perplexity_api_base}/chat/completions"
+
+@dataclass
+class GraphingSessionState:
+    """In-memory session state"""
+    session_id: str
+    user_context: Dict[str, Any]
+    equation_history: List[Dict[str, Any]]
+    current_equations: List[Dict[str, Any]]
+    last_activity: datetime
+    preferences: Dict[str, Any]
+    conversation_history: List[Dict[str, Any]]
+
 class AIService:
-    PERPLEXITY_API_KEY = os.getenv('PERPLEXITY_API_KEY')
-    PERPLEXITY_BASE_URL = "https://api.perplexity.ai/chat/completions"
-
-    ENHANCED_SYSTEM_PROMPT = """
-    You are an advanced mathematical equation generator for Desmos graphing calculator. Use your reasoning capabilities to interpret diverse natural language descriptions and convert them into precise, immediately graphable mathematical equations.
-EXPANDED PROMPT UNDERSTANDING:
-
-1. BASIC SHAPES & CURVES:
-- Geometric shapes: circles, ellipses, rectangles, triangles, polygons
-- Conic sections: parabolas, hyperbolas, ellipses
-- Common curves: sine, cosine, tangent, exponential, logarithmic
-
-2. DESCRIPTIVE MODIFIERS:
-- Size: small, large, tiny, huge, narrow, wide
-- Position: shifted, moved, translated, centered, offset
-- Orientation: rotated, tilted, flipped, inverted
-- Amplitude: high, low, big, small amplitude
-- Frequency: fast, slow, high, low frequency
-
-3. MATHEMATICAL OPERATIONS:
-- Transformations: stretch, compress, reflect, translate
-- Combinations: intersection, union, sum, difference
-- Derivatives: slope, tangent line, rate of change
-- Integrals: area under curve, accumulated change
-
-4. REAL-WORLD CONTEXTS:
-- Physics: projectile motion, wave patterns, oscillations
-- Economics: supply/demand curves, cost functions, profit maximization
-- Biology: population growth, decay models, periodic cycles
-- Engineering: signal processing, control systems, optimization
-
-5. ARTISTIC & CREATIVE PROMPTS:
-- Patterns: spirals, flowers, hearts, stars, geometric art
-- Animations: moving objects, rotating shapes, oscillating patterns
-- Symmetry: reflection, rotational symmetry, tessellations
-
-REASONING PROCESS:
-1. Identify the core mathematical concept
-2. Interpret descriptive modifiers and context
-3. Select appropriate mathematical form
-4. Assign specific numerical parameters
-5. Ensure immediate graphability in Desmos
-
-COMPREHENSIVE EXAMPLES:
-
-Input: "a flower with 5 petals"
-Reasoning: Rose curve with n petals uses r = cos(nθ/2). For 5 petals, n=5. Convert to Cartesian or use polar form.
-Output: [{"latex": "r = 3\\cos(2.5\\theta)", "description": "5-petaled rose curve"}]
-
-Input: "projectile motion of a ball"
-Reasoning: Projectile follows parabolic path y = x·tan(θ) - (g·x²)/(2·v₀²·cos²(θ)). Use typical values.
-Output: [{"latex": "y = x - 0.05x^2", "description": "Parabolic trajectory of projectile motion"}]
-
-Input: "heart shape for Valentine's Day"
-Reasoning: Heart curve uses (x²+y²-1)³ = x²y³ or parametric form. Choose simpler implicit form.
-Output: [{"latex": "(x^2 + y^2 - 1)^3 = x^2 \\cdot y^3", "description": "Heart-shaped curve"}]
-
-Input: "spiral galaxy arm"
-Reasoning: Logarithmic spiral r = ae^(bθ). Use moderate growth rate for visibility.
-Output: [{"latex": "r = e^{0.2\\theta}", "description": "Logarithmic spiral resembling galaxy arm"}]
-
-Input: "sound wave with low frequency"
-Reasoning: Sound waves are sinusoidal. Low frequency means small coefficient of x.
-Output: [{"latex": "y = \\sin(0.5x)", "description": "Low-frequency sine wave representing sound"}]
-
-Input: "profit maximization curve"
-Reasoning: Profit often follows inverted parabola with maximum point. Use realistic business context.
-Output: [{"latex": "y = -0.1x^2 + 4x - 5", "description": "Profit function with maximum at x=20"}]
-
-CRITICAL REQUIREMENTS:
-- ALL equations must be immediately graphable (specific numerical values only)
-- Use proper Desmos-compatible LaTeX syntax
-- Maximum 2 equations per response
-- Include brief reasoning before JSON output
-
-RESPONSE FORMAT:
-[Brief reasoning explanation]
-    JSON:
-    [
-      {
-        "latex": "complete equation ready for Desmos",
-        "description": "clear explanation connecting to original prompt"
-      }
-    ]
+    """
+    Always uses Perplexity 'sonar' model. Session is in-memory and context-aware.
     """
 
-    @staticmethod
-    def categorize_and_enhance_prompt(user_input: str) -> str:
-        user_lower = (user_input or "").lower()
-        if any(w in user_lower for w in ['projectile', 'motion', 'trajectory', 'physics', 'velocity', 'acceleration']):
-            return f"Physics Context: {user_input}. Generate equations representing physical phenomena with realistic parameters."
-        if any(w in user_lower for w in ['flower', 'heart', 'spiral', 'pattern', 'art', 'design', 'creative']):
-            return f"Artistic Context: {user_input}. Generate visually appealing mathematical art with clear geometric beauty."
-        if any(w in user_lower for w in ['profit', 'cost', 'revenue', 'demand', 'supply', 'economics', 'business']):
-            return f"Economics Context: {user_input}. Generate realistic business/economic mathematical models."
-        if any(w in user_lower for w in ['growth', 'population', 'decay', 'biological', 'natural', 'organism']):
-            return f"Biology Context: {user_input}. Generate equations modeling biological processes with appropriate parameters."
-        if any(w in user_lower for w in ['moving', 'rotating', 'oscillating', 'animation', 'dynamic', 'changing']):
-            return f"Dynamic Context: {user_input}. Generate equations suitable for animation or time-varying behavior."
-        return f"Mathematical Context: {user_input}. Generate precise mathematical equations."
+    def __init__(self):
+        self.perplexity_api_key = perplexity_api_key
+        self.perplexity_base_url = perplexity_api_url
+        self.model = perplexity_model
 
-    @staticmethod
-    def extract_advanced_json_from_response(response_text: str):
-        try:
-            cleaned = re.sub(r'.*?', '', response_text or '', flags=re.DOTALL)
+        # Sessions in memory only
+        self.sessions: Dict[str, GraphingSessionState] = {}
+        self.session_timeout = timedelta(hours=2)
 
-            json_marker_match = re.search(r'JSON:\s*($$.*?$$)', cleaned, flags=re.DOTALL)
-            if json_marker_match:
-                try:
-                    return json.loads(json_marker_match.group(1))
-                except json.JSONDecodeError:
-                    pass
+        self.max_equations = 10
+        self.system_prompt = self._build_system_prompt()
 
-            json_array_matches = re.findall(r'\$\$(?:[^[$$]|(?:\$\$[^$$]*\$\$))*\$\$', cleaned, flags=re.DOTALL)
-            for match in json_array_matches:
-                try:
-                    data = json.loads(match)
-                    if isinstance(data, list) and data:
-                        return data
-                except json.JSONDecodeError:
-                    continue
+        self._json_array_re = re.compile(r"\[[\s\S]*\]")
+        self._bad_tokens_re = re.compile(r"(?:\bmod\b|%|\bfloor\b|\bceil\b|\||\\left|\\right)", re.IGNORECASE)
+        self._unknown_command_re = re.compile(r"\\([a-zA-Z]+)")
+        self._allowed_commands = {
+            "sin","cos","tan","cot","sec","csc",
+            "asin","acos","atan",
+            "sinh","cosh","tanh",
+            "log","ln","exp","sqrt","pi","theta"
+        }
 
-            first_bracket = cleaned.find('[')
-            last_bracket = cleaned.rfind(']')
-            if first_bracket != -1 and last_bracket != -1 and first_bracket < last_bracket:
-                snippet = cleaned[first_bracket:last_bracket + 1]
-                return json.loads(snippet)
-        except Exception:
-            pass
-        return False
+    def generate_equations_with_context(self, user_input: str, session_id: Optional[str] = None) -> Dict[str, Any]:
+        """Main entry to generate equations, with session context."""
+        if not session_id or session_id not in self.sessions:
+            session_id = self.create_session()
 
-    @staticmethod
-    def validate_enhanced_equations(equations):
-        if not equations or not isinstance(equations, list):
-            return False
-        for eq in equations:
-            if not isinstance(eq, dict) or 'latex' not in eq or 'description' not in eq:
-                return False
-            latex = (eq.get('latex') or '')
-            suspicious = re.findall(r'\b[a-df-wz]\b(?![a-z])', latex.lower())
-            allowed = ['e', 'pi', 'ln', 'sin', 'cos', 'tan', 'sqrt', 'log']
-            suspicious = [v for v in suspicious if v not in allowed]
-            if suspicious:
-                return False
-            if not any(elem in latex.lower() for elem in ['x', 'y', 'r', 'theta', '=', 'sin', 'cos', 'tan', 'log', 'sqrt']):
-                return False
-        return True
+        self.cleanup_expired_sessions()
+        context = self._analyze_user_input(user_input, session_id)
 
-    @staticmethod
-    def is_graphable_equation(latex: str) -> bool:
-        cleaned = (latex or '').replace('\\pi', '').replace('\\sin', '').replace('\\cos', '') \
-                               .replace('\\ln', '').replace('\\sqrt', '').replace('\\tan', '') \
-                               .replace('\\log', '').replace('\\theta', '').replace('theta', '')
-        suspicious = re.findall(r'\b[a-df-wz]\b', cleaned.lower())
-        suspicious = [v for v in suspicious if v not in ['e', 'r']]
-        return not bool(suspicious)
+        result = self._run_perplexity_agent(user_input, context, session_id)
 
-    @staticmethod
-    def get_comprehensive_fallback_equations(user_input: str):
-        text = (user_input or '').lower()
-        if any(w in text for w in ['flower', 'rose', 'petal']):
-            return [{"latex": "r = 3\\cos(2\\theta)", "description": "4-petaled rose curve (flower pattern)"}]
-        if any(w in text for w in ['heart', 'love', 'valentine']):
-            return [{"latex": "x^2 + (y - \\sqrt{|x|})^2 = 1", "description": "Heart-shaped curve"}]
-        if any(w in text for w in ['spiral', 'galaxy', 'nautilus']):
-            return [{"latex": "r = 0.5\\theta", "description": "Archimedean spiral"}]
-        if any(w in text for w in ['star', 'asterisk']):
-            return [{"latex": "r = 2 + \\cos(5\\theta)", "description": "Star-like pattern"}]
-        if any(w in text for w in ['projectile', 'trajectory', 'motion', 'ball', 'cannon']):
-            return [{"latex": "y = x - 0.02x^2", "description": "Projectile motion trajectory"}]
-        if any(w in text for w in ['wave', 'sound', 'vibration', 'oscillation']):
-            return [{"latex": "y = 2\\sin(3x)", "description": "Wave pattern with amplitude 2"}]
-        if any(w in text for w in ['pendulum', 'swing']):
-            return [{"latex": "y = 3\\cos(2x)", "description": "Pendulum oscillation pattern"}]
-        if any(w in text for w in ['profit', 'revenue', 'cost']):
-            return [{"latex": "y = -0.1x^2 + 5x - 10", "description": "Profit function with maximum"}]
-        if any(w in text for w in ['supply', 'demand']):
-            return [{"latex": "y = 0.5x + 2", "description": "Supply curve (upward sloping)"}] if 'supply' in text else [{"latex": "y = -0.3x + 8", "description": "Demand curve (downward sloping)"}]
-        if any(w in text for w in ['growth', 'population', 'bacteria']):
-            return [{"latex": "y = 2^{0.5x}", "description": "Exponential growth model"}]
-        if any(w in text for w in ['decay', 'radioactive', 'half-life']):
-            return [{"latex": "y = 10 \\cdot 2^{-0.3x}", "description": "Exponential decay model"}]
-        if any(w in text for w in ['circle', 'round']):
-            if 'small' in text:
-                return [{"latex": "x^2 + y^2 = 4", "description": "Small circle with radius 2"}]
-            if any(w in text for w in ['large', 'big']):
-                return [{"latex": "x^2 + y^2 = 36", "description": "Large circle with radius 6"}]
-            return [{"latex": "x^2 + y^2 = 9", "description": "Circle with radius 3"}]
-        if any(w in text for w in ['ellipse', 'oval']):
-            return [{"latex": "\\frac{x^2}{9} + \\frac{y^2}{4} = 1", "description": "Ellipse with semi-major axis 3"}]
-        if any(w in text for w in ['hyperbola']):
-            return [{"latex": "\\frac{x^2}{4} - \\frac{y^2}{9} = 1", "description": "Hyperbola with center at origin"}]
-        if 'sine' in text or 'sin' in text:
-            if any(w in text for w in ['high', 'big', 'large']) and 'amplitude' in text:
-                return [{"latex": "y = 4\\sin(x)", "description": "Sine wave with amplitude 4"}]
-            if any(w in text for w in ['fast', 'quick', 'high']) and 'frequency' in text:
-                return [{"latex": "y = \\sin(3x)", "description": "Sine wave with frequency 3"}]
-            return [{"latex": "y = \\sin(x)", "description": "Standard sine wave"}]
-        if 'cos' in text or 'cosine' in text:
-            return [{"latex": "y = \\cos(x)", "description": "Standard cosine wave"}]
-        if 'tan' in text or 'tangent' in text:
-            return [{"latex": "y = \\tan(x)", "description": "Tangent function"}]
-        if 'parabola' in text or 'quadratic' in text:
-            return [{"latex": "y = -x^2", "description": "Downward opening parabola"}] if 'down' in text else [{"latex": "y = x^2", "description": "Upward opening parabola"}]
-        if 'cubic' in text:
-            return [{"latex": "y = x^3", "description": "Cubic function"}]
-        if any(w in text for w in ['absolute', 'abs', 'v-shape']):
-            return [{"latex": "y = |x|", "description": "Absolute value function (V-shape)"}]
-        if any(w in text for w in ['sqrt', 'square root']):
-            return [{"latex": "y = \\sqrt{x}", "description": "Square root function"}]
-        if any(w in text for w in ['exponential', 'exp']):
-            return [{"latex": "y = 2^x", "description": "Exponential function with base 2"}]
-        if any(w in text for w in ['log', 'logarithm']):
-            return [{"latex": "y = \\ln(x)", "description": "Natural logarithm function"}]
-        if any(w in text for w in ['line', 'linear']):
-            return [{"latex": "y = x", "description": "Linear function with slope 1"}]
-        return [
-            {"latex": "y = x^2", "description": "Standard parabola"},
-            {"latex": "y = \\sin(x)", "description": "Sine wave"}
-        ]
+        if "error" in result:
+            return {
+                "success": False,
+                "session_id": session_id,
+                "error": result["error"],
+                "details": result.get("details", ""),
+                "equations": [],
+                "message": "AI was unable to generate equations"
+            }
+
+        equations = result["equations"][: self.max_equations]
+        session = self.sessions[session_id]
+        session.equation_history.extend(equations)
+        session.current_equations = equations
+        session.last_activity = datetime.now()
+        session.conversation_history.append({"type": "user", "message": user_input, "timestamp": datetime.now().isoformat()})
+        session.conversation_history.append({"type": "assistant", "equations": equations, "timestamp": datetime.now().isoformat()})
+        self._update_user_preferences(session, equations)
+
+        return {
+            "success": True,
+            "equations": equations,
+            "session_id": session_id,
+            "context": context,
+            "message": f"Generated {len(equations)} equations"
+        }
 
     @classmethod
     def generate_math_expressions(cls, user_input: str):
-        if not cls.PERPLEXITY_API_KEY:
-            return cls.get_comprehensive_fallback_equations(user_input)
+        """Legacy fallback."""
+        service = cls()
+        return service._get_fallback_equations(user_input)
 
-        enhanced_prompt = cls.categorize_and_enhance_prompt(user_input)
-        headers = {"Authorization": f"Bearer {cls.PERPLEXITY_API_KEY}", "Content-Type": "application/json"}
-        data = {
-            "model": "r1-1776",
-            "messages": [
-                {"role": "system", "content": cls.ENHANCED_SYSTEM_PROMPT},
-                {"role": "user", "content": enhanced_prompt}
-            ],
-            "temperature": 0.1,
-            "max_tokens": 2000
+    def get_session_history(self, session_id: str) -> Dict[str, Any]:
+        """Return session summary."""
+        if session_id not in self.sessions:
+            return {"error": "Session not found"}
+        s = self.sessions[session_id]
+        return {
+            "session_id": session_id,
+            "equation_count": len(s.equation_history),
+            "current_equations": s.current_equations,
+            "preferences": s.preferences,
+            "last_activity": s.last_activity.isoformat(),
         }
 
+    # ------------------ AGENT: Perplexity only ------------------
+    def _run_perplexity_agent(self, user_input: str, context: Dict[str, Any], session_id: str) -> Dict[str, Any]:
+        """
+        Simple multi-pass with Perplexity API, using session context.
+        """
+        if not self.perplexity_api_key:
+            return {"error": "api_not_configured", "equations": []}
+
+        def call_llm(prompt: str) -> Dict[str, Any]:
+            headers = {"Authorization": f"Bearer {self.perplexity_api_key}", "Content-Type": "application/json"}
+            data = {
+                "model": self.model,
+                "messages": [
+                    {"role": "system", "content": self.system_prompt},
+                    {"role": "user", "content": prompt},
+                ],
+                "temperature": 0.4,
+                "max_tokens": 1500,
+            }
+            try:
+                r = requests.post(self.perplexity_base_url, headers=headers, json=data, timeout=30)
+                if r.status_code != 200:
+                    return {"err": f"api_error {r.status_code}", "txt": r.text}
+                j = r.json()
+                content = j.get("choices", [{}])[0].get("message", {}).get("content", "")
+                return {"ok": True, "content": content}
+            except Exception as e:
+                return {"err": "api_down", "txt": str(e)}
+
+        MAX_ATTEMPTS = 3
+        raw = None
+        prompt = self._build_context_prompt(user_input, context)
+
+        for attempt in range(1, MAX_ATTEMPTS + 1):
+            if attempt == 1 and raw is None:
+                res = call_llm(prompt)
+            else:
+                critique = self._format_critique(issues)
+                repair = (
+                    f"{prompt}\n\n"
+                    f"Your previous JSON was invalid for Desmos plotting.\n"
+                    f"Fix ALL issues strictly and output ONLY a corrected JSON array:\n{critique}"
+                )
+                res = call_llm(repair)
+
+            if res.get("err"):
+                label = res["err"]
+                return {"error": label, "details": res.get("txt", ""), "equations": []}
+
+            raw = res["content"]
+            candidates = self._extract_equations_from_response(raw)
+            issues = self._validate_equations_list(candidates, user_input)
+            if not issues:
+                return {"equations": self._convert_equations_for_frontend(candidates)}
+
+        return {"error": "invalid_ai_output", "details": "Failed to produce valid equations after self-repair loop", "equations": []}
+
+    # ---------------- Prompting, Validation, Context awareness ----------------
+    def _build_system_prompt(self) -> str:
+        return f"""
+You are an advanced Mathematical Graphing Assistant.
+Your job is to generate equations that can be plotted directly in Desmos.
+
+HARD RULES
+1) Output only a valid JSON array (no extra text).
+2) Prefer x–y relations. If user explicitly asks for polar/parametric, then use proper forms Desmos supports.
+3) If additional parameters/constants are needed, REPLACE THEM with reasonable numeric values (no undefined symbols).
+4) Equations must be immediately graphable in Desmos.
+   - Do NOT use: modulus (% or mod), floor, ceil, absolute-value bars (|x|), or unknown LaTeX commands.
+   - Allowed standard functions: sin, cos, tan, cot, sec, csc, asin, acos, atan, sinh, cosh, tanh, ln, log, exp, sqrt.
+5) Provide at most {self.max_equations} equations per request.
+6) Use simple LaTeX. No prose.
+
+JSON FORMAT
+[
+  {{
+    "latex": "y = x^2",
+    "description": "Basic parabola",
+    "type": "primary",
+    "complexity": "basic",
+    "related_concepts": ["algebra","quadratic"]
+  }}
+]
+
+BEHAVIOR
+- If the user is vague → provide simple, reasonable examples.
+- If complex → keep forms Desmos-compatible, numeric where needed.
+- Multiple variations allowed (max {self.max_equations}).
+- Output ONLY the JSON array.
+        """.strip()
+
+    def _build_context_prompt(self, user_input: str, context: Dict[str, Any]) -> str:
+        parts = [
+            f"Task: generate up to {self.max_equations} Desmos-ready equations for: {user_input}",
+            f"Request timestamp: {datetime.now().isoformat()}",
+        ]
+        if context.get("previous_equations"):
+            recent = context["previous_equations"][-3:]
+            parts.append("Recent session equations:")
+            for eq in recent:
+                parts.append(f"- {eq.get('equation') or eq.get('latex')}: {eq.get('description','')}")
+        if context.get("preferences"):
+            pref = context["preferences"]
+            if "favorite_concepts" in pref:
+                parts.append(f"User prefers: {', '.join(pref['favorite_concepts'])}")
+            if "complexity_preference" in pref:
+                parts.append(f"User prefers complexity: {pref['complexity_preference']}")
+        parts.append("Ensure each equation is graphable in Desmos NOW; keep only x and y variables unless user requested otherwise.")
+        return "\n".join(parts)
+
+    def _extract_equations_from_response(self, response: str) -> List[Dict[str, Any]]:
+        if not response:
+            return []
+        m = self._json_array_re.search(response)
+        if not m:
+            return []
         try:
-            resp = requests.post(cls.PERPLEXITY_BASE_URL, headers=headers, json=data, timeout=45)
-            if resp.status_code != 200:
-                return cls.get_comprehensive_fallback_equations(user_input)
+            arr = json.loads(m.group(0))
+            return arr if isinstance(arr, list) else []
+        except Exception:
+            return []
 
-            result = resp.json()
-            llm_response = result['choices'][0]['message']['content']
-            equations = cls.extract_advanced_json_from_response(llm_response)
+    def _validate_equations_list(self, equations: List[Dict[str, Any]], user_input: str) -> List[str]:
+        """
+        Returns list of issues (empty list means valid).
+        Checks:
+         - array length [1..max_equations]
+         - each item has 'latex' and 'description'
+         - latex is Desmos-safe (no banned tokens, balanced parens, only x,y unless explicitly allowed)
+        """
+        issues = []
+        if not equations:
+            return ["No equations found in JSON."]
+        if len(equations) > self.max_equations:
+            issues.append(f"Too many equations: {len(equations)} (max {self.max_equations}).")
 
-            if equations and cls.validate_enhanced_equations(equations):
-                valid = []
-                for eq in equations[:2]:
-                    if isinstance(eq, dict) and 'latex' in eq and 'description' in eq:
-                        if cls.is_graphable_equation(eq['latex']):
-                            valid.append(eq)
-                if valid:
-                    return valid
-            return cls.get_comprehensive_fallback_equations(user_input)
-        except requests.RequestException:
-            return cls.get_comprehensive_fallback_equations(user_input)
+        # Determine if polar/parametric allowed by the user message
+        allow_polar = bool(re.search(r"\bpolar|r\s*=", user_input, re.IGNORECASE))
+        allow_parametric = bool(re.search(r"\bparametric|\bx\(|\by\(", user_input, re.IGNORECASE))
+
+        for i, eq in enumerate(equations, 1):
+            if not isinstance(eq, dict):
+                issues.append(f"Item {i} is not an object.")
+                continue
+            latex = (eq.get("latex") or "").strip()
+            desc = (eq.get("description") or "").strip()
+            if not latex:
+                issues.append(f"Item {i} missing 'latex'.")
+                continue
+            if not desc:
+                issues.append(f"Item {i} missing 'description'.")
+
+            eq_issues = self._desmos_guardrails(latex, allow_parametric=allow_parametric, allow_polar=allow_polar)
+            issues.extend([f"Item {i}: {msg}" for msg in eq_issues])
+
+        return issues
+
+    def _desmos_guardrails(self, latex: str, *, allow_parametric: bool, allow_polar: bool) -> List[str]:
+        errs: List[str] = []
+
+        # Quick rejects: unsupported tokens / commands
+        if self._bad_tokens_re.search(latex):
+            errs.append("Contains unsupported token (mod/%/floor/ceil/| or \\left/\\right).")
+
+        # Balanced parentheses
+        stack = 0
+        for ch in latex:
+            if ch == "(":
+                stack += 1
+            elif ch == ")":
+                stack -= 1
+                if stack < 0:
+                    break
+        if stack != 0:
+            errs.append("Unbalanced parentheses.")
+
+        # Unknown LaTeX commands (e.g., \foo)
+        for m in self._unknown_command_re.finditer(latex):
+            cmd = m.group(1).lower()
+            if cmd not in self._allowed_commands:
+                errs.append(f"Unknown LaTeX command '\\{cmd}'.")
+
+        # Variable check: only x and y unless explicitly allowed polar/parametric
+        # Ignore function names & allowed commands; detect bare letters.
+        tokens = re.findall(r"[a-zA-Z]+", latex.replace("\\", ""))
+        funcs = set(list(self._allowed_commands) + ["e", "pi", "theta"])
+        free_vars = {t for t in tokens if t.lower() not in funcs and t.lower() not in {"x", "y"}}
+
+        if free_vars:
+            # Polar: allow r, theta
+            if allow_polar and free_vars.issubset({"r", "theta"}):
+                pass
+            # Parametric: allow t in x(t), y(t) — but we asked to avoid unless explicit
+            elif allow_parametric and free_vars.issubset({"t"}):
+                pass
+            else:
+                errs.append(f"Contains variables other than x,y (found: {sorted(free_vars)}) without numeric values.")
+
+        # Basic sanity: must look like relation with x,y (or r/theta)
+        if not allow_polar and not re.search(r"[xy]", latex, re.IGNORECASE):
+            errs.append("Equation does not reference x or y.")
+
+        return errs
+
+    def _format_critique(self, issues: List[str]) -> str:
+        if not issues:
+            return "No issues."
+        bullets = "\n".join(f"- {s}" for s in issues)
+        return f"Problems to fix:\n{bullets}\n\nRules to obey:\n- Use only x,y variables (or numeric constants).\n- No mod/floor/ceil/|x|.\n- Only standard functions sin,cos,tan,ln,log,exp,sqrt, etc.\n- <= {self.max_equations} equations.\n- Return ONLY JSON array."
+
+    # ---------------------------------------------------------------------
+    # Context & prefs
+    # ---------------------------------------------------------------------
+    def _extract_math_concepts(self, text: str) -> List[str]:
+        text_lower = text.lower()
+        concept_patterns = {
+            "trigonometry": ["sin", "cos", "tan", "sine", "cosine"],
+            "algebra": ["linear", "quadratic", "polynomial", "equation", "variable"],
+            "calculus": ["derivative", "integral", "limit"],
+            "geometry": ["circle", "ellipse", "parabola", "hyperbola", "line", "curve"],
+            "physics": ["projectile", "wave", "oscillation", "velocity"],
+            "statistics": ["distribution", "probability", "regression"],
+            "art": ["pattern", "spiral", "flower", "heart"],
+        }
+        return [c for c, kws in concept_patterns.items() if any(k in text_lower for k in kws)]
+
+    def _analyze_user_input(self, user_input: str, session_id: str) -> Dict[str, Any]:
+        session = self.sessions.get(session_id)
+        context = {
+            "previous_equations": session.equation_history if session else [],
+            "preferences": session.preferences if session else {},
+            "conversation_length": len(session.conversation_history) if session else 0,
+            "detected_concepts": self._extract_math_concepts(user_input),
+        }
+        return context
+
+    def _convert_equations_for_frontend(self, equations: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        converted = []
+        for eq in equations[: self.max_equations]:
+            converted.append({
+                "equation": eq.get("latex", ""),
+                "description": eq.get("description", ""),
+                "type": eq.get("type", "primary"),
+                "complexity": eq.get("complexity", "intermediate"),
+                "related_concepts": eq.get("related_concepts", []),
+            })
+        return converted
+
+    def _update_user_preferences(self, session: GraphingSessionState, equations: List[Dict[str, Any]]):
+        complexities = [eq.get("complexity", "intermediate") for eq in equations]
+        if complexities:
+            session.preferences["complexity_preference"] = max(set(complexities), key=complexities.count)
+        all_concepts: List[str] = []
+        for eq in equations:
+            all_concepts.extend(eq.get("related_concepts", []))
+        if all_concepts:
+            counts: Dict[str, int] = {}
+            for c in all_concepts:
+                counts[c] = counts.get(c, 0) + 1
+            top = sorted(counts.items(), key=lambda x: x[1], reverse=True)[:5]
+            session.preferences["favorite_concepts"] = [k for k, _ in top]
+
+    # ---------------------------------------------------------------------
+    # Fallbacks & sessions
+    # ---------------------------------------------------------------------
+    def _get_fallback_equations(self, user_input: str) -> List[Dict[str, Any]]:
+        text = user_input.lower()
+
+        # "x = 4" or "y = -2"
+        m = re.search(r"([xy])\s*=\s*(-?\d+(?:\.\d+)?)", text)
+        if m:
+            var, val = m.groups()
+            if var == "x":
+                return [{"equation": f"x = {val}", "description": f"Vertical line at x = {val}"}]
+            return [{"equation": f"y = {val}", "description": f"Horizontal line at y = {val}"}]
+
+        # Keywords
+        patterns = {
+            "flower": [{"equation": "y = x\\sin(x)", "description": "petal-like oscillations"}],
+            "heart": [{"equation": "y = \\sqrt{1-x^2} - 0.5x^2", "description": "smooth heart-like curve"}],
+            "spiral": [{"equation": "y = x\\sin(x)", "description": "spiral-ish oscillation"}],
+            "sine": [{"equation": "y = \\sin(x)", "description": "Sine wave"}],
+            "parabola": [{"equation": "y = x^2", "description": "Basic parabola"}],
+            "circle": [{"equation": "x^2 + y^2 = 9", "description": "Circle radius 3"}],
+        }
+        for k, v in patterns.items():
+            if k in text:
+                return v
+
+        # Default
+        defaults = [
+            [{"equation": "y = x^2", "description": "Quadratic"}, {"equation": "y = \\sin(x)", "description": "Sine"}],
+            [{"equation": "y = x^3", "description": "Cubic"}, {"equation": "y = \\cos(x)", "description": "Cosine"}],
+            [{"equation": "y = 2x + 1", "description": "Linear"}, {"equation": "y = \\ln(x)", "description": "Natural log"}],
+        ]
+        return random.choice(defaults)
+
+    def create_session(self) -> str:
+        sid = str(uuid.uuid4())
+        self.sessions[sid] = GraphingSessionState(
+            session_id=sid,
+            user_context={},
+            equation_history=[],
+            current_equations=[],
+            last_activity=datetime.now(),
+            preferences={},
+            conversation_history=[],
+        )
+        return sid
+
+    def cleanup_expired_sessions(self):
+        now = datetime.now()
+        expired = [sid for sid, s in self.sessions.items() if now - s.last_activity > self.session_timeout]
+        for sid in expired:
+            del self.sessions[sid]

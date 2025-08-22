@@ -196,144 +196,71 @@
 .overflow-y-auto { overflow-y: auto; }
 
 /* Modern Topbar Layout with Arrow Animation */
+/* layout.css */
+
+/* Topbar Container */
 .topbar {
-    background: linear-gradient(135deg, #001f4d 0%, #003366 100%);
-    height: 65px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 var(--spacing-2xl);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: var(--z-fixed);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--topbar-height);
+  background: var(--gradient-header);
+  display: flex;
+  align-items: center; /* ✅ This centers everything vertically */
+  justify-content: space-between;
+  padding: 0 var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  z-index: var(--z-sticky);
 }
 
-/* Logo section on the left */
+/* Left Section: Logo + Website Name */
 .topbar .logo {
-    position: relative;
-    left: 0;
-    transform: none;
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    font-size: var(--font-size-xl);
-    font-weight: var(--font-weight-bold);
-    color: var(--text-primary);
+  display: flex;
+  align-items: center; /* ✅ Centers logo and text vertically */
+  gap: var(--spacing-sm);
 }
 
 .topbar .logo img {
-    width: 45px;
-    height: 45px;
-    border-radius: var(--radius-md);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    transition: all var(--transition-normal);
-}
-
-.topbar .logo img:hover {
-    transform: scale(1.05);
-    border-color: var(--brand-accent);
-    box-shadow: 0 0 15px rgba(77, 166, 255, 0.3);
+  height: 70px;
+  width: auto;
+  border-radius: var(--radius-sm);
+  vertical-align: middle; /* ✅ Additional vertical alignment */
 }
 
 .topbar .logo-text {
     font-size: var(--font-size-xl);
     font-weight: var(--font-weight-bold);
-    background: linear-gradient(45deg, #4da6ff, #66b3ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Navigation buttons on the right */
-.topbar .nav-group {
-    display: flex;
-    gap: var(--spacing-xl);
-    align-items: center;
-}
-
-/* Modern Navigation Buttons with Arrow Animation */
-.topbar .nav-group .nav-btn {
-    position: relative;
-    background: none;
-    border: none;
     color: var(--text-primary);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-semibold);
-    padding: var(--spacing-md) var(--spacing-lg);
-    cursor: pointer;
-    transition: color var(--transition-normal);
-    text-decoration: none;
-    display: inline-block;
-    overflow: hidden;
+    white-space: nowrap;
 }
 
-.topbar .nav-group .nav-btn:hover {
-    color: #66b3ff;
-    text-decoration: none;
+/* Right Section: Button Group */
+.topbar .button-group {
+  gap: 10px; /* ✅ Safe - doesn't affect individual button width */
 }
 
-/* Active state */
-.topbar .nav-group .nav-btn.active-nav {
-    color: #4da6ff;
+/* Topbar Buttons */
+/* Topbar Buttons - Override transforms */
+.topbar button {
+  background-color: transparent;
+  color: var(--text-light);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  padding: 0 18px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
 }
 
-.topbar .nav-group .nav-btn.active-nav::before {
-    width: 100%;
-    background: #4da6ff;
+.topbar button:hover {
+  background: var(--gradient-button-hover);
+  /* Remove any transform effects */
+  transform: none;
+  box-shadow: none;
 }
 
-.topbar .nav-group .nav-btn.active-nav::after {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-}
 
-/* Arrow Animation Elements */
-.topbar .nav-group .nav-btn::before {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: #66b3ff;
-    transform: translateX(-50%);
-    transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
 
-.topbar .nav-group .nav-btn::after {
-    content: '';
-    position: absolute;
-    bottom: -8px;
-    left: 50%;
-    width: 6px;
-    height: 6px;
-    background: #66b3ff;
-    border-radius: 50%;
-    transform: translateX(-50%) scale(0);
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-/* Hover Animation */
-.topbar .nav-group .nav-btn:hover::before {
-    width: 100%;
-    background: linear-gradient(90deg, 
-        transparent 0%, 
-        #66b3ff 20%, 
-        #4da6ff 50%, 
-        #66b3ff 80%, 
-        transparent 100%);
-    animation: arrowExpand 0.6s ease-out;
-}
-
-.topbar .nav-group .nav-btn:hover::after {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-    animation: dotPulse 0.6s ease-out;
-}
 
 /* Arrow Expansion Animation */
 @keyframes arrowExpand {

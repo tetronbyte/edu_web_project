@@ -38,10 +38,6 @@ h6 { font-size: var(--font-size-base); }
     line-height: 1;
 }
 
-.btn:hover {
-    transform: translateY(-2px);
-}
-
 .btn:disabled {
     cursor: not-allowed;
     opacity: 0.6;
@@ -173,23 +169,56 @@ h6 { font-size: var(--font-size-base); }
 }
 
 /* Topbar buttons */
-.topbar button {
-    background-color: var(--brand-secondary);
-    color: var(--text-primary);
-    border: none;
-    padding: 10px var(--spacing-md);
-    margin: 0 5px;
-    border-radius: var(--radius-md);
-    box-shadow: 0 4px #001f3d;
-    cursor: pointer;
-    font-weight: var(--font-weight-bold);
-    transition: var(--transition-fast);
+.button {
+  background: none;
+  color: var(--text-light);
+  border: none;
+  box-shadow: none;
+  padding: 0 20px; /* or any spacing you like */
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s;
 }
 
-.topbar button:hover,
-.topbar button.active-nav {
-    background-color: var(--brand-accent);
-    transform: translateY(-2px);
+.button:hover {
+  color: var(--accent-primary);
+  background: none;
+  /* Your underline animation is already handled by ::after */
+  box-shadow: none;
+  transform: none;
+}
+
+
+/* Dot-to-underline animation */
+.button::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  width: 3px;
+  height: 2px;
+  background-color: var(--text-light);
+  border-radius: 1px;
+  margin: 0 auto;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+}
+
+.button:hover::after {
+  width: 75%;
+  opacity: 1;
+  border-radius: 0;
+}
+
+/* Override general button hover for topbar buttons */
+.topbar .button {
+  /* Only minimal styles here */
+  background: none;
+  box-shadow: none;
+  padding: 0 20px;
+  color: var(--text-light);
 }
 
 /* Forms */

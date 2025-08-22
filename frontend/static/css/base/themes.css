@@ -56,9 +56,7 @@
     --gradient-warning: linear-gradient(45deg, #ffc107, #ff8f00);
     
     /* Enhanced Button Gradients */
-    --gradient-button-hover: linear-gradient(135deg, 
-        rgba(0, 102, 204, 0.15) 0%, 
-        rgba(0, 64, 128, 0.15) 100%);
+    --shadow-button-hover: 0 6px 25px rgba(0, 0, 0, 0.4);
     
     --gradient-button-active: linear-gradient(135deg, 
         rgba(0, 102, 204, 0.25) 0%, 

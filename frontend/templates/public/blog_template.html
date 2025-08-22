@@ -1,38 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V65PG4DBXS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-V65PG4DBXS');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog - Study Hub</title>
+    <title>Dectinity | Blog</title>
     
     <!-- Base CSS Files -->
-    <link rel="stylesheet" href="../../static/css/base/reset.css">
-    <link rel="stylesheet" href="../../static/css/base/themes.css">
-    <link rel="stylesheet" href="../../static/css/base/layout.css">
-    <link rel="stylesheet" href="../../static/css/base/components.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
     
     <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="../../static/css/pages/blog_public.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/blog_public.css') }}">
 </head>
-<body class="layout-public">
-    <!-- Topbar -->
+<body class="with-topbar">
+    <!-- ✅ Topbar -->
     <div class="topbar">
-        <div class="button-group">
-            <button onclick="window.location.href='/'">Home</button>
-            <button onclick="window.location.href='/blog'" class="active-nav">Blog</button>
-            <button onclick="window.location.href='/gllm'">GLLM</button>
-            <button onclick="window.location.href='/gpa-calculator'">GPA Calc</button>
-            <button onclick="window.location.href='/gpa-predictor'">GPA Predict</button>
+        <!-- Left: Logo + Site Name -->
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            </a>
+            <span class="logo-text" style="font-weight: normal;">Dectinity</span>
         </div>
-        
-        <div class="logo">Study Hub</div>
+
+        <!-- Right: Navigation Buttons -->
+        <div class="button-group">
+            <a href="/" class="button">Home</a>
+            <a href="/notes" class="button">Notes</a>
+            <a href="/gllm" class="button">GLLM</a>
+            <a href="/gpa_calculator" class="button">GPA Calc</a>
+            <a href="/gpa_predictor" class="button">GPA Predict</a>
+        </div>
     </div>
 
     <!-- Main Content -->
     <div class="main-content-public">
         <!-- Blog Header -->
         <div class="blog-header">
-            <h1>Study Hub Blog</h1>
+            <h1>Dectinity Blog</h1>
             <p>Latest updates, tutorials, and study tips</p>
         </div>
 
@@ -72,10 +88,10 @@
     <button class="back-button" onclick="window.location.href='/'">← Back</button>
 
     <!-- Core JavaScript -->
-    <script src="../../static/javascript/core/utils.js"></script>
-    <script src="../../static/javascript/core/api.js"></script>
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
     
     <!-- Page-specific JavaScript -->
-    <script src="../../static/javascript/pages/blog_public.js"></script>
+    <script src="{{ url_for('static', filename='javascript/pages/blog_public.js') }}"></script>
 </body>
 </html>

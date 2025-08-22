@@ -1,7 +1,11 @@
-from flask import Blueprint, render_template, request, jsonify, send_from_directory
+from flask import Blueprint, render_template, request, jsonify
 from services.ai_service import AIService
 from services.blog_service import BlogService
 from services.file_service import FileService
+from datetime import datetime
+
+# Keep a single service instance for reuse
+ai_service = AIService()
 
 class PublicRoutes:
     def __init__(self):
@@ -17,6 +21,10 @@ class PublicRoutes:
         def home_page():
             return render_template('home_template.html')
 
+        @bp.route('/notes')
+        def notes_page():
+            return render_template('notes_template.html')
+
         @bp.route('/blog')
         def blog_page():
             return render_template('blog_template.html')
@@ -25,90 +33,95 @@ class PublicRoutes:
         def gllm_page():
             return render_template('gllm_template.html')
 
-        @bp.route('/gpa-calculator')
+        @bp.route('/gpa_calculator')
         def gpa_calculator():
             return render_template('gpa_calculator.html')
 
-        @bp.route('/gpa-predictor')
+        @bp.route('/gpa_predictor')
         def gpa_predictor():
             return render_template('gpa_predictor.html')
 
         # === API Routes ===
-        
-        # GLLM API
-        @bp.route('/generate-equations', methods=['POST'])
+
+        @bp.route('/api/session/create', methods=['POST'])
+        def create_session():
+            try:
+                session_id = ai_service.create_session()
+                return jsonify({'success': True, 'session_id': session_id, 'message': 'Session created successfully'})
+            except Exception as e:
+                return jsonify({'success': False, 'error': str(e)}), 500
+
+        @bp.route('/api/generate-equations', methods=['POST'])
         def generate_equations():
             try:
-                payload = request.get_json(silent=True) or {}
-                user_input = payload.get('input', '')
-                
+                data = request.get_json() or {}
+                user_input = (data.get('input') or '').strip()
+                session_id = data.get('session_id')
+
                 if not user_input:
                     return jsonify({'success': False, 'error': 'No input provided'}), 400
 
-                equations = AIService.generate_math_expressions(user_input)
-                
+                result = ai_service.generate_equations_with_context(user_input, session_id)
+                return jsonify(result)
+            except Exception as e:
+                return jsonify({'success': False, 'error': str(e), 'message': 'Error generating equations'}), 500
+
+        @bp.route('/generate-equations', methods=['POST'])
+        def generate_equations_legacy():
+            try:
+                payload = request.get_json(silent=True) or {}
+                user_input = payload.get('input', '')
+                if not user_input:
+                    return jsonify({'success': False, 'error': 'No input provided'}), 400
+
+                equations = ai_service._get_fallback_equations(user_input)
                 if not equations:
                     return jsonify({'success': False, 'error': 'Could not generate valid equations'}), 500
-
                 return jsonify({'success': True, 'equations': equations})
             except Exception as e:
                 return jsonify({'success': False, 'error': str(e)}), 500
 
-        # Blog API
-        @bp.route('/api/blog/posts')
-        def get_blog_posts():
+        @bp.route('/api/session/<session_id>/history', methods=['GET'])
+        def get_session_history(session_id):
             try:
-                category = request.args.get('category', '')
-                search = request.args.get('search', '')
-                limit = request.args.get('limit', type=int)
-                
-                posts = self.blog_service.get_published_posts(category=category, search=search, limit=limit)
-                
-                return jsonify({
-                    'posts': posts,
-                    'total': len(posts)
-                })
+                history = ai_service.get_session_history(session_id)
+                return jsonify(history)
             except Exception as e:
                 return jsonify({'error': str(e)}), 500
 
-        @bp.route('/api/blog/post/<post_id>')
-        def get_blog_post(post_id):
+        @bp.route('/api/chat', methods=['POST'])
+        def chat_with_context():
             try:
-                post = self.blog_service.get_published_post_by_id(post_id)
-                if not post:
-                    return jsonify({'error': 'Post not found'}), 404
-                return jsonify(post)
-            except Exception as e:
-                return jsonify({'error': str(e)}), 500
+                data = request.get_json() or {}
+                message = (data.get('message') or '').strip()
+                session_id = data.get('session_id')
 
-        @bp.route('/api/blog/search')
-        def search_blog_posts():
-            try:
-                query = request.args.get('q', '')
-                category = request.args.get('category', '')
-                
-                posts = self.blog_service.search_posts(query, category)
-                
-                return jsonify({
-                    'posts': posts,
-                    'total': len(posts)
-                })
-            except Exception as e:
-                return jsonify({'error': str(e)}), 500
+                if not message:
+                    return jsonify({'success': False, 'error': 'No message provided'}), 400
 
-        # Notes API
-        @bp.route('/notes/<course>/<semester>/<subject>')
-        def list_notes(course, semester, subject):
-            try:
-                files = FileService.list_subject_files(course, semester, subject)
-                return jsonify(files)
+                result = ai_service.generate_equations_with_context(message, session_id)
+                response = {
+                    **result,
+                    'response': f"I've generated {len(result.get('equations', []))} equations based on: '{message}'",
+                    'timestamp': datetime.now().isoformat()
+                }
+                return jsonify(response)
             except Exception as e:
-                return jsonify({'error': str(e)}), 500
+                return jsonify({'success': False, 'error': str(e)}), 500
 
-        @bp.route('/notes/<course>/<semester>/<subject>/<filename>')
-        def serve_note(course, semester, subject, filename):
-            try:
-                file_path = FileService.get_subject_folder_path(course, semester, subject)
-                return send_from_directory(file_path, filename)
-            except Exception as e:
-                return jsonify({'error': str(e)}), 404
+        @bp.route('/api/health', methods=['GET'])
+        def health_check():
+            return jsonify({
+                'status': 'healthy',
+                'timestamp': datetime.now().isoformat(),
+                'services': {
+                    'ai_service': 'operational',
+                    'perplexity_api': 'configured' if ai_service.perplexity_api_key else 'not_configured',
+                    'langchain': 'available' if ('_HAVE_LANGCHAIN' in dir(ai_service) and ai_service.openai_api_key) else 'not_available',
+                    'langgraph': 'available' if ('_HAVE_LANGGRAPH' in dir(ai_service)) else 'not_available'
+                }
+            })
+
+# Create instance for app registration
+public_routes = PublicRoutes()
+bp = public_routes.bp
