@@ -1,273 +1,268 @@
-/* Theme Variables */
 :root {
-    /* Background Colors */
-    --bg-primary: #0d0d0d;
-    --bg-secondary: #1a1a1a;
-    --bg-tertiary: #2a2a2a;
-    --bg-card: #1a1a1a;
-    --bg-card-hover: #252525;
-    --bg-panel: #333333;
-    
-    /* Text Colors */
-    --text-primary: #ffffff;
-    --text-secondary: #cccccc;
-    --text-muted: #888888;
-    --text-accent: #4da6ff;
-    --text-light: #f0f0f0;
-    --text-dark: #bbbbbb;
-    
-    /* Border Colors */
-    --border-primary: #404040;
-    --border-secondary: #333333;
-    --border-hover: #555555;
-    --border-focus: #004080;
-    
-    /* Brand Colors */
-    --brand-primary: #001f4d;
-    --brand-secondary: #003366;
-    --brand-accent: #004080;
-    --brand-light: #0059b3;
-    --brand-lighter: #007bff;
-    
-    /* Accent Colors */
-    --accent-primary: #4da6ff;
-    --accent-secondary: #b3d9ff;
-    
-    /* Status Colors */
-    --success: #28a745;
-    --success-light: #34d058;
-    --success-bg: rgba(40, 167, 69, 0.1);
-    --warning: #ffc107;
-    --warning-light: #ff8f00;
-    --warning-bg: rgba(255, 193, 7, 0.1);
-    --error: #dc3545;
-    --error-light: #c82333;
-    --error-bg: rgba(220, 53, 69, 0.1);
-    --info: #17a2b8;
-    --info-bg: rgba(23, 162, 184, 0.1);
-    
-    /* Primary Gradients */
-    --gradient-primary: linear-gradient(45deg, #004080, #0059b3);
-    --gradient-secondary: linear-gradient(45deg, #0059b3, #007bff);
-    --gradient-card: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    --gradient-header: linear-gradient(135deg, #001f4d 0%, #003366 100%);
-    --gradient-success: linear-gradient(45deg, #28a745, #34d058);
-    --gradient-error: linear-gradient(45deg, #dc3545, #c82333);
-    --gradient-warning: linear-gradient(45deg, #ffc107, #ff8f00);
-    
-    /* Enhanced Button Gradients */
-    --shadow-button-hover: 0 6px 25px rgba(0, 0, 0, 0.4);
-    
-    --gradient-button-active: linear-gradient(135deg, 
-        rgba(0, 102, 204, 0.25) 0%, 
-        rgba(0, 64, 128, 0.25) 100%);
-    
-    /* Danger/Logout Button Gradients */
-    --gradient-danger: linear-gradient(135deg, 
-        rgba(220, 53, 69, 0.9) 0%, 
-        rgba(176, 42, 55, 0.9) 100%);
-    
-    --gradient-danger-hover: linear-gradient(135deg, 
-        rgba(220, 53, 69, 1) 0%, 
-        rgba(176, 42, 55, 1) 100%);
-    
-    /* Sidebar Gradients */
-    --gradient-sidebar: linear-gradient(180deg, 
-        var(--bg-primary) 0%, 
-        rgba(0, 32, 64, 0.95) 50%,
-        rgba(0, 25, 50, 0.98) 100%);
-    
-    --gradient-sidebar-button: linear-gradient(135deg, 
-        rgba(26, 26, 26, 0.8) 0%, 
-        rgba(45, 45, 45, 0.8) 100%);
-    
-    --gradient-sidebar-button-hover: linear-gradient(135deg, 
-        rgba(0, 64, 128, 0.2) 0%, 
-        rgba(0, 89, 179, 0.2) 100%);
-    
-    --gradient-sidebar-button-active: linear-gradient(135deg, 
-        rgba(0, 64, 128, 0.4) 0%, 
-        rgba(0, 89, 179, 0.4) 100%);
-    
-    /* Special Effect Gradients */
-    --gradient-glass: linear-gradient(135deg, 
-        rgba(255, 255, 255, 0.05) 0%, 
-        rgba(255, 255, 255, 0.02) 50%,
-        rgba(255, 255, 255, 0.05) 100%);
-    
-    --gradient-shine: linear-gradient(45deg, 
-        transparent 30%, 
-        rgba(255, 255, 255, 0.1) 50%, 
-        transparent 70%);
-    
-    /* Dashboard Card Gradients */
-    --gradient-dashboard-card: linear-gradient(135deg, 
-        rgba(26, 26, 26, 0.95) 0%, 
-        rgba(45, 45, 45, 0.95) 50%,
-        rgba(35, 35, 35, 0.95) 100%);
-    
-    --gradient-dashboard-card-hover: linear-gradient(135deg, 
-        rgba(26, 26, 26, 1) 0%, 
-        rgba(45, 45, 45, 1) 50%,
-        rgba(35, 35, 35, 1) 100%);
-    
-    /* Form Gradients */
-    --gradient-form-bg: linear-gradient(135deg, 
-        rgba(26, 26, 26, 0.9) 0%, 
-        rgba(42, 42, 42, 0.9) 100%);
-    
-    --gradient-input-focus: linear-gradient(135deg, 
-        rgba(0, 64, 128, 0.1) 0%, 
-        rgba(0, 89, 179, 0.1) 100%);
-    
-    /* Shadows */
-    --shadow-xs: 0 2px 4px rgba(0, 0, 0, 0.1);
-    --shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.5);
-    --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.7);
-    --shadow-focus: 0 0 10px rgba(0, 64, 128, 0.3);
-    --shadow-glow: 0 0 20px rgba(77, 166, 255, 0.2);
-    --shadow-button: 0 4px 15px rgba(0, 0, 0, 0.2);
-    --shadow-button-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
-    
-    /* Spacing */
-    --spacing-xs: 5px;
-    --spacing-sm: 10px;
-    --spacing-md: 15px;
-    --spacing-lg: 20px;
-    --spacing-xl: 30px;
-    --spacing-2xl: 40px;
-    --spacing-3xl: 60px;
-    
-    /* Border Radius */
-    --radius-xs: 4px;
-    --radius-sm: 6px;
-    --radius-md: 8px;
-    --radius-lg: 15px;
-    --radius-xl: 20px;
-    --radius-2xl: 25px;
-    --radius-full: 50%;
-    
-    /* Transitions */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
-    --transition-slow: 0.5s ease;
-    --transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    
-    /* Typography */
-    --font-size-xs: 0.8rem;
-    --font-size-sm: 0.9rem;
-    --font-size-base: 1rem;
-    --font-size-md: 1rem;
-    --font-size-lg: 1.1rem;
-    --font-size-xl: 1.2rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 2rem;
-    --font-size-4xl: 2.5rem;
-    --font-weight-normal: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-    
-    /* Z-index layers */
-    --z-dropdown: 1000;
-    --z-sticky: 1020;
-    --z-fixed: 1030;
-    --z-sidebar: 1035;
-    --z-modal-backdrop: 1040;
-    --z-modal: 1050;
-    --z-popover: 1060;
-    --z-tooltip: 1070;
-    
-    /* Layout dimensions */
-    --sidebar-width: 220px;
-    --topbar-height: 90px;
-    --mobile-breakpoint: 768px;
-    --tablet-breakpoint: 1024px;
-    
-    /* Animation and Effects */
-    --blur-light: blur(2px);
-    --blur-medium: blur(5px);
-    --blur-heavy: blur(10px);
-    
-    /* Backdrop Filters */
-    --backdrop-glass: blur(10px) saturate(180%);
-    --backdrop-dark: blur(5px) brightness(0.7);
+/* Background Colors */
+--bg-primary: #0d0d0d;
+--bg-secondary: #1a1a1a;
+--bg-tertiary: #2a2a2a;
+--bg-card: #1a1a1a;
+--bg-card-hover: #252525;
+--bg-panel: #333333;
+
+/* Text Colors */
+--text-primary: #ffffff;
+--text-secondary: #cccccc;
+--text-muted: #888888;
+--text-accent: #4da6ff;
+--text-light: #f0f0f0;
+--text-dark: #bbbbbb;
+
+/* Border Colors */
+--border-primary: #404040;
+--border-secondary: #333333;
+--border-hover: #555555;
+--border-focus: #004080;
+
+/* Brand Colors */
+--brand-primary: #001f4d;
+--brand-secondary: #003366;
+--brand-accent: #004080;
+--brand-light: #0059b3;
+--brand-lighter: #007bff;
+
+/* Accent Colors */
+--accent-primary: #4da6ff;
+--accent-secondary: #b3d9ff;
+
+/* Status Colors */
+--success: #28a745;
+--success-light: #34d058;
+--success-bg: rgba(40, 167, 69, 0.1);
+--warning: #ffc107;
+--warning-light: #ff8f00;
+--warning-bg: rgba(255, 193, 7, 0.1);
+--error: #dc3545;
+--error-light: #c82333;
+--error-bg: rgba(220, 53, 69, 0.1);
+--info: #17a2b8;
+--info-bg: rgba(23, 162, 184, 0.1);
+
+/* Primary Gradients */
+--gradient-primary: linear-gradient(45deg, #004080, #0059b3);
+--gradient-secondary: linear-gradient(45deg, #0059b3, #007bff);
+--gradient-card: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+--gradient-header: linear-gradient(135deg, #001f4d 0%, #003366 100%);
+--gradient-success: linear-gradient(45deg, #28a745, #34d058);
+--gradient-error: linear-gradient(45deg, #dc3545, #c82333);
+--gradient-warning: linear-gradient(45deg, #ffc107, #ff8f00);
+
+/* Enhanced Button Gradients */
+--shadow-button-hover: 0 6px 25px rgba(0, 0, 0, 0.4);
+--gradient-button-hover: linear-gradient(135deg, 
+    rgba(0, 64, 128, 0.3) 0%, 
+    rgba(0, 89, 179, 0.3) 100%);
+--gradient-button-active: linear-gradient(135deg,
+    rgba(0, 102, 204, 0.25) 0%,
+    rgba(0, 64, 128, 0.25) 100%);
+
+/* Danger/Logout Button Gradients */
+--gradient-danger: linear-gradient(135deg,
+    rgba(220, 53, 69, 0.9) 0%,
+    rgba(176, 42, 55, 0.9) 100%);
+--gradient-danger-hover: linear-gradient(135deg,
+    rgba(220, 53, 69, 1) 0%,
+    rgba(176, 42, 55, 1) 100%);
+
+/* Sidebar Gradients */
+--gradient-sidebar: linear-gradient(180deg,
+    var(--bg-primary) 0%,
+    rgba(0, 32, 64, 0.95) 50%,
+    rgba(0, 25, 50, 0.98) 100%);
+--gradient-sidebar-button: linear-gradient(135deg,
+    rgba(26, 26, 26, 0.8) 0%,
+    rgba(45, 45, 45, 0.8) 100%);
+--gradient-sidebar-button-hover: linear-gradient(135deg,
+    rgba(0, 64, 128, 0.2) 0%,
+    rgba(0, 89, 179, 0.2) 100%);
+--gradient-sidebar-button-active: linear-gradient(135deg,
+    rgba(0, 64, 128, 0.4) 0%,
+    rgba(0, 89, 179, 0.4) 100%);
+
+/* Special Effect Gradients */
+--gradient-glass: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(255, 255, 255, 0.05) 100%);
+--gradient-shine: linear-gradient(45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%);
+
+/* Dashboard Card Gradients */
+--gradient-dashboard-card: linear-gradient(135deg,
+    rgba(26, 26, 26, 0.95) 0%,
+    rgba(45, 45, 45, 0.95) 50%,
+    rgba(35, 35, 35, 0.95) 100%);
+--gradient-dashboard-card-hover: linear-gradient(135deg,
+    rgba(26, 26, 26, 1) 0%,
+    rgba(45, 45, 45, 1) 50%,
+    rgba(35, 35, 35, 1) 100%);
+
+/* Form Gradients */
+--gradient-form-bg: linear-gradient(135deg,
+    rgba(26, 26, 26, 0.9) 0%,
+    rgba(42, 42, 42, 0.9) 100%);
+--gradient-input-focus: linear-gradient(135deg,
+    rgba(0, 64, 128, 0.1) 0%,
+    rgba(0, 89, 179, 0.1) 100%);
+
+/* Shadows */
+--shadow-xs: 0 2px 4px rgba(0, 0, 0, 0.1);
+--shadow-sm: 0 4px 10px rgba(0, 0, 0, 0.3);
+--shadow-md: 0 8px 25px rgba(0, 0, 0, 0.3);
+--shadow-lg: 0 15px 35px rgba(0, 0, 0, 0.5);
+--shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.7);
+--shadow-focus: 0 0 10px rgba(0, 64, 128, 0.3);
+--shadow-glow: 0 0 20px rgba(77, 166, 255, 0.2);
+--shadow-button: 0 4px 15px rgba(0, 0, 0, 0.2);
+--shadow-button-hover: 0 6px 20px rgba(0, 0, 0, 0.3);
+
+/* Spacing */
+--spacing-xs: 5px;
+--spacing-sm: 10px;
+--spacing-md: 15px;
+--spacing-lg: 20px;
+--spacing-xl: 30px;
+--spacing-2xl: 40px;
+--spacing-3xl: 60px;
+
+/* Border Radius */
+--radius-xs: 4px;
+--radius-sm: 6px;
+--radius-md: 8px;
+--radius-lg: 15px;
+--radius-xl: 20px;
+--radius-2xl: 25px;
+--radius-full: 50%;
+
+/* Transitions */
+--transition-fast: 0.2s ease;
+--transition-normal: 0.3s ease;
+--transition-slow: 0.5s ease;
+--transition-bounce: 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+/* Typography */
+--font-size-xs: 0.8rem;
+--font-size-sm: 0.9rem;
+--font-size-base: 1rem;
+--font-size-md: 1rem;
+--font-size-lg: 1.1rem;
+--font-size-xl: 1.2rem;
+--font-size-2xl: 1.5rem;
+--font-size-3xl: 2rem;
+--font-size-4xl: 2.5rem;
+
+--font-weight-normal: 400;
+--font-weight-medium: 500;
+--font-weight-semibold: 600;
+--font-weight-bold: 700;
+
+/* Z-index layers */
+--z-dropdown: 1000;
+--z-sticky: 1020;
+--z-fixed: 1030;
+--z-sidebar: 1035;
+--z-modal-backdrop: 1040;
+--z-modal: 1050;
+--z-popover: 1060;
+--z-tooltip: 1070;
+
+/* Layout dimensions */
+--sidebar-width: 220px;
+--topbar-height: 90px;
+--mobile-breakpoint: 768px;
+--tablet-breakpoint: 1024px;
+
+/* Animation and Effects */
+--blur-light: blur(2px);
+--blur-medium: blur(5px);
+--blur-heavy: blur(10px);
+
+/* Backdrop Filters */
+--backdrop-glass: blur(10px) saturate(180%);
+--backdrop-dark: blur(5px) brightness(0.7);
 }
 
 /* Dark theme adjustments (default) */
 @media (prefers-color-scheme: dark) {
-    :root {
-        --bg-primary: #0d0d0d;
-        --text-primary: #ffffff;
-    }
+:root {
+    --bg-primary: #0d0d0d;
+    --text-primary: #ffffff;
+}
 }
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
-    :root {
-        --border-primary: #666666;
-        --border-secondary: #555555;
-        --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.6);
-        --gradient-card: linear-gradient(135deg, #222222 0%, #333333 100%);
-        --gradient-sidebar: linear-gradient(180deg, 
-            var(--bg-primary) 0%, 
-            rgba(0, 40, 80, 1) 50%,
-            rgba(0, 30, 60, 1) 100%);
-    }
+:root {
+    --border-primary: #666666;
+    --border-secondary: #555555;
+    --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.6);
+    --gradient-card: linear-gradient(135deg, #222222 0%, #333333 100%);
+    --gradient-sidebar: linear-gradient(180deg,
+        var(--bg-primary) 0%,
+        rgba(0, 40, 80, 1) 50%,
+        rgba(0, 30, 60, 1) 100%);
+}
 }
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-    :root {
-        --transition-fast: 0s;
-        --transition-normal: 0s;
-        --transition-slow: 0s;
-        --transition-bounce: 0s;
-    }
-    
-    * {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
+:root {
+    --transition-fast: 0s;
+    --transition-normal: 0s;
+    --transition-slow: 0s;
+    --transition-bounce: 0s;
+}
+
+* {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+}
 }
 
 /* Theme utility classes */
 .gradient-text {
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+background: var(--gradient-primary);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+background-clip: text;
 }
 
 .glass-effect {
-    backdrop-filter: var(--backdrop-glass);
-    background: rgba(26, 26, 26, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+backdrop-filter: var(--backdrop-glass);
+background: rgba(26, 26, 26, 0.8);
+border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glow-effect {
-    box-shadow: var(--shadow-glow);
+box-shadow: var(--shadow-glow);
 }
 
 .shine-effect {
-    position: relative;
-    overflow: hidden;
+position: relative;
+overflow: hidden;
 }
 
 .shine-effect::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: var(--gradient-shine);
-    transition: left 0.6s ease;
+content: '';
+position: absolute;
+top: 0;
+left: -100%;
+width: 100%;
+height: 100%;
+background: var(--gradient-shine);
+transition: left 0.6s ease;
 }
 
 .shine-effect:hover::after {
-    left: 100%;
+left: 100%;
 }

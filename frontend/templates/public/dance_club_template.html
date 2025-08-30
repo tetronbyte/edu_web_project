@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dance Club - Dectinity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/dance_club.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/clubs.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="with-topbar">
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            </a>
+            <span class="logo-text" style="font-weight: normal;">Dectinity</span>
+        </div>
+        <div class="button-group">
+            <a href="/" class="button">Home</a>
+            <a href="/notes" class="button">Notes</a>
+            <a href="/blog" class="button">Blog</a>
+
+            <!-- Clubs Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Clubs</button>
+                <div class="dropdown-menu">
+                    <a href="/clubs" class="dropdown-item">Clubs Home</a>
+                    <a href="/clubs/sports" class="dropdown-item">Sports Club</a>
+                    <a href="/clubs/photography" class="dropdown-item">Photography Club</a>
+                    <a href="/clubs/drama" class="dropdown-item">Drama Club</a>
+                    <a href="/clubs/dance" class="dropdown-item">Dance Club</a>
+                    <a href="/clubs/chess" class="dropdown-item">Chess Club</a>
+                </div>
+            </div>
+
+            <!-- Miscellaneous Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Miscellaneous</button>
+                <div class="dropdown-menu">
+                    <a href="/creative_arena" class="dropdown-item">Creative Arena</a>
+                    <a href="/gllm" class="dropdown-item">GLLM</a>
+                    <a href="/gpa_calculator" class="dropdown-item">GPA Calc</a>
+                    <a href="/gpa_predictor" class="dropdown-item">GPA Predict</a>
+                </div>
+            </div>
+
+
+        <button class="mobile-topbar-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-nav-dropdown">
+            <button class="nav-btn" onclick="window.location.href='/'">Home</button>
+            <button class="nav-btn" onclick="window.location.href='/notes'">Notes</button>
+            <button class="nav-btn active" onclick="window.location.href='/clubs'">Clubs</button>
+            <button class="nav-btn" onclick="window.location.href='/blog'">Blog</button>
+            <button class="nav-btn" onclick="window.location.href='/gllm'">GLLM</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+            <button class="nav-btn" onclick="window.location.href='/creative-arena'">Creative Arena</button>
+        </div>
+
+    </header>
+
+    <main class="main-content-public">
+        <!-- Club Header -->
+        <section class="club-header dance-header">
+            <div class="club-header-content">
+                <div class="club-icon-large">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div class="club-info">
+                    <h1>Dance Club</h1>
+                    <p>Move to the rhythm, express your soul</p>
+                    <div class="club-stats">
+                        <span class="stat">40+ Members</span>
+                        <span class="stat">6 Dance Styles</span>
+                        <span class="stat">10 Performances</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Navigation Tabs -->
+            <nav class="club-nav">
+                <button class="nav-tab active" data-tab="featured">Featured</button>
+                <button class="nav-tab" data-tab="events">Events</button>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Featured Tab -->
+                <div class="tab-panel active" data-panel="featured">
+                    <section class="dance-styles">
+                        <h2>Dance Styles We Offer</h2>
+                        <div class="styles-grid">
+                            <div class="style-card">
+                                <div class="style-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <h3>Contemporary</h3>
+                                <p>Expressive and fluid movements that tell a story</p>
+                            </div>
+                            <div class="style-card">
+                                <div class="style-icon">
+                                    <i class="fas fa-bolt"></i>
+                                </div>
+                                <h3>Hip-Hop</h3>
+                                <p>Street style dancing with attitude and energy</p>
+                            </div>
+                            <div class="style-card">
+                                <div class="style-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h3>Bollywood</h3>
+                                <p>Vibrant and colorful Indian film dance</p>
+                            </div>
+                            <div class="style-card">
+                                <div class="style-icon">
+                                    <i class="fas fa-fire"></i>
+                                </div>
+                                <h3>Latin</h3>
+                                <p>Passionate and rhythmic Latin American dances</p>
+                            </div>
+                            <div class="style-card">
+                                <div class="style-icon">
+                                    <i class="fas fa-crown"></i>
+                                </div>
+                                <h3>Classical</h3>
+                                <p>Traditional and elegant dance forms</p>
+                            </div>
+                            <div class="style-card">
+                                <div class="style-icon">
+                                    <i class="fas fa-magic"></i>
+                                </div>
+                                <h3>Freestyle</h3>
+                                <p>Creative expression through improvised movement</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="featured-performances">
+                        <h2>Featured Performances</h2>
+                        <div class="performances-grid" id="featuredPerformances">
+                            <div class="loading">Loading featured performances...</div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Events Tab -->
+                <div class="tab-panel" data-panel="events">
+                    <section class="dance-events">
+                        <h2>Dance Events & Performances</h2>
+                        <div class="events-filter">
+                            <button class="filter-btn active" data-filter="all">All Events</button>
+                            <button class="filter-btn" data-filter="performances">Performances</button>
+                            <button class="filter-btn" data-filter="workshops">Workshops</button>
+                            <button class="filter-btn" data-filter="competitions">Competitions</button>
+                        </div>
+                        <div class="events-list" id="danceEvents">
+                            <div class="loading">Loading events...</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <button class="back-button" onclick="window.location.href='/clubs'">
+        <i class="fas fa-arrow-left"></i> Back to Clubs
+    </button>
+
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/pages/dance_club.js') }}"></script>
+</body>
+</html>

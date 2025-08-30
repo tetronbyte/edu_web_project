@@ -1,0 +1,847 @@
+/* ========= Clubs Page Styles ========= */
+
+/* Hero Section */
+.clubs-hero {
+  background: linear-gradient(135deg,
+    rgba(0, 31, 77, 0.95) 0%,
+    rgba(0, 51, 102, 0.95) 50%,
+    rgba(0, 64, 128, 0.95) 100%);
+  padding: var(--spacing-3xl) 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.clubs-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(77, 166, 255, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(0, 89, 179, 0.1) 0%, transparent 50%);
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+}
+
+.hero-subtitle {
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-2xl);
+  font-weight: var(--font-weight-medium);
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-3xl);
+  margin-top: var(--spacing-2xl);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  display: block;
+  font-size: 3rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--accent-primary);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: var(--font-weight-semibold);
+}
+
+/* Clubs Grid */
+.clubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-2xl);
+  padding: var(--spacing-3xl) 0;
+}
+
+.club-card {
+  background: var(--gradient-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  text-align: center;
+  border: 2px solid var(--border-primary);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.club-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-primary), var(--brand-accent));
+  transform: scaleX(0);
+  transition: transform var(--transition-normal);
+}
+
+.club-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-xl);
+  border-color: var(--brand-accent);
+}
+
+.club-card:hover::before {
+  transform: scaleX(1);
+}
+
+.club-icon {
+  font-size: 4rem;
+  color: var(--accent-primary);
+  margin-bottom: var(--spacing-lg);
+  display: block;
+}
+
+.club-card h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-2xl);
+}
+
+.club-card p {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.6;
+}
+
+.club-features {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xl);
+}
+
+.feature-tag {
+  background: rgba(77, 166, 255, 0.1);
+  color: var(--accent-primary);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: var(--radius-xl);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  border: 1px solid rgba(77, 166, 255, 0.3);
+}
+
+.club-btn {
+  gap: var(--spacing-sm);
+  min-width: 150px;
+}
+
+/* Coming Soon Overlay */
+.club-card.coming-soon {
+  position: relative;
+  opacity: 0.7;
+}
+
+.coming-soon-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xl);
+}
+
+.coming-soon-text {
+  background: var(--gradient-warning);
+  color: #000;
+  padding: var(--spacing-md) var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  transform: rotate(-5deg);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Upcoming Events Section */
+.upcoming-events {
+  padding: var(--spacing-3xl) 0;
+  background: var(--gradient-card);
+  border-radius: var(--radius-xl);
+  margin-top: var(--spacing-2xl);
+}
+
+.upcoming-events h2 {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+  color: var(--accent-primary);
+}
+
+.events-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+/* Club Header Styles */
+.club-header {
+  background: linear-gradient(135deg,
+    rgba(0, 31, 77, 0.95) 0%,
+    rgba(0, 51, 102, 0.95) 50%,
+    rgba(0, 64, 128, 0.95) 100%);
+  padding: var(--spacing-3xl) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.club-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(77, 166, 255, 0.1) 0%, transparent 50%);
+  z-index: 0;
+}
+
+.club-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2xl);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  position: relative;
+  z-index: 1;
+}
+
+.club-icon-large {
+  font-size: 6rem;
+  color: var(--accent-primary);
+  flex-shrink: 0;
+}
+
+.club-info h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: var(--spacing-md);
+  background: linear-gradient(45deg, var(--accent-primary), var(--brand-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.club-info p {
+  font-size: var(--font-size-xl);
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.club-stats {
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.stat {
+  background: rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-light);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Club Navigation Tabs */
+.club-nav {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  margin: var(--spacing-2xl) 0;
+  background: var(--bg-secondary);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--border-primary);
+}
+
+.nav-tab {
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-tab:hover {
+  background: rgba(77, 166, 255, 0.1);
+  color: var(--accent-primary);
+}
+
+.nav-tab.active {
+  background: var(--gradient-primary);
+  color: var(--text-primary);
+  box-shadow: var(--shadow-md);
+}
+
+/* Tab Content */
+.tab-content {
+  margin-top: var(--spacing-2xl);
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Photography Club Specific Styles */
+.photography-header {
+  background: linear-gradient(135deg,
+    rgba(0, 31, 77, 0.95) 0%,
+    rgba(0, 89, 179, 0.95) 100%);
+}
+
+.photo-of-week {
+  background: var(--gradient-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+  border: 2px solid var(--border-primary);
+}
+
+.featured-photo-container {
+  text-align: center;
+}
+
+.photo-card {
+  background: var(--gradient-card);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  border: 2px solid var(--border-primary);
+}
+
+.photo-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--brand-accent);
+}
+
+.photo-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.photo-info {
+  padding: var(--spacing-lg);
+}
+
+.photo-info h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.photo-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+/* Art & Design Club Specific Styles */
+.art-design-header {
+  background: linear-gradient(135deg,
+    rgba(138, 43, 226, 0.9) 0%,
+    rgba(75, 0, 130, 0.9) 100%);
+}
+
+.featured-artwork,
+.upcoming-workshops {
+  background: var(--gradient-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+  border: 2px solid var(--border-primary);
+}
+
+.workshops-categories,
+.blog-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  justify-content: center;
+}
+
+.category-btn {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 2px solid var(--border-primary);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--transition-normal);
+}
+
+.category-btn:hover {
+  background: var(--brand-accent);
+  color: var(--text-primary);
+  border-color: var(--brand-accent);
+}
+
+.category-btn.active {
+  background: var(--gradient-primary);
+  color: var(--text-primary);
+  border-color: var(--brand-accent);
+}
+
+/* Sports Club Specific Styles */
+.sports-header {
+  background: linear-gradient(135deg,
+    rgba(255, 69, 0, 0.9) 0%,
+    rgba(220, 20, 60, 0.9) 100%);
+}
+
+.sports-highlights {
+  background: var(--gradient-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+  border: 2px solid var(--border-primary);
+}
+
+.sports-categories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xl);
+  justify-content: center;
+}
+
+.registration-events {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.registration-card {
+  background: var(--gradient-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  border: 2px solid var(--border-primary);
+  transition: all var(--transition-normal);
+}
+
+.registration-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--brand-accent);
+}
+
+/* Dance Club Specific Styles */
+.dance-header {
+  background: linear-gradient(135deg,
+    rgba(67, 42, 255, 0.9) 0%,
+    rgba(89, 60, 255, 0.9) 100%);
+}
+
+.dance-styles {
+  background: var(--gradient-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+  border: 2px solid var(--border-primary);
+}
+
+.styles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-xl);
+  margin-top: var(--spacing-xl);
+}
+
+.style-card {
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  text-align: center;
+  border: 2px solid var(--border-primary);
+  transition: all var(--transition-normal);
+}
+
+.style-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--brand-accent);
+}
+
+.style-icon {
+  font-size: 3rem;
+  color: var(--accent-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+/* Drama Club Specific Styles */
+.drama-header {
+  background: linear-gradient(135deg,
+    rgba(128, 0, 128, 0.9) 0%,
+    rgba(75, 0, 130, 0.9) 100%);
+}
+
+.current-production {
+  background: var(--gradient-card);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-2xl);
+  margin-bottom: var(--spacing-2xl);
+  border: 2px solid var(--border-primary);
+}
+
+/* Events and Filters */
+.events-filter,
+.workshops-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+  justify-content: center;
+}
+
+.filter-btn {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  border: 2px solid var(--border-primary);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  font-weight: var(--font-weight-semibold);
+  transition: all var(--transition-normal);
+}
+
+.filter-btn:hover {
+  background: var(--brand-accent);
+  color: var(--text-primary);
+  border-color: var(--brand-accent);
+}
+
+.filter-btn.active {
+  background: var(--gradient-primary);
+  color: var(--text-primary);
+  border-color: var(--brand-accent);
+}
+
+/* Event Cards */
+.events-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.event-card {
+  background: var(--gradient-card);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  border: 2px solid var(--border-primary);
+  transition: all var(--transition-normal);
+  position: relative;
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--brand-accent);
+}
+
+.event-date {
+  background: var(--gradient-primary);
+  color: var(--text-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  display: inline-block;
+  margin-bottom: var(--spacing-md);
+}
+
+.event-title {
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-xl);
+}
+
+.event-description {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.6;
+}
+
+.event-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+}
+
+/* Modals */
+.photo-modal,
+.registration-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  z-index: var(--z-modal);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--gradient-card);
+  border-radius: var(--radius-xl);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  border: 2px solid var(--border-primary);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xl);
+  border-bottom: 1px solid var(--border-secondary);
+}
+
+.modal-header h3 {
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.modal-close {
+  font-size: 2rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: color var(--transition-normal);
+}
+
+.modal-close:hover {
+  color: var(--error);
+}
+
+.modal-body {
+  padding: var(--spacing-xl);
+}
+
+/* Registration Info */
+.registration-info {
+  margin-bottom: var(--spacing-xl);
+}
+
+.info-card {
+  background: var(--info-bg);
+  border: 2px solid var(--info);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  color: var(--info);
+  flex-shrink: 0;
+}
+
+.info-card p {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ===== CLUBS PAGE DROPDOWN STYLES ===== */
+/* Note: Main topbar dropdown styles are in layout.css */
+/* These are additional/override styles specific to clubs pages */
+
+.clubs-dropdown-menu {
+  background: var(--gradient-header);
+  border: 2px solid var(--border-primary);
+  border-top: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  min-width: 220px;
+  padding: var(--spacing-sm) 0;
+  backdrop-filter: blur(15px);
+}
+
+.clubs-dropdown-menu::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-card);
+}
+
+.clubs-dropdown-item {
+  padding: var(--spacing-md) var(--spacing-xl);
+  transition: all var(--transition-fast);
+  border-left: 3px solid transparent;
+}
+
+.clubs-dropdown-item:hover {
+  background: rgba(77, 166, 255, 0.15);
+  border-left-color: var(--accent-primary);
+  padding-left: calc(var(--spacing-xl) + var(--spacing-xs));
+  text-shadow: 0 0 10px rgba(102, 179, 255, 0.4);
+}
+
+/* Special club-specific dropdown animations */
+@keyframes clubsDropdownGlow {
+  0% {
+    box-shadow: var(--shadow-lg);
+  }
+  50% {
+    box-shadow: var(--shadow-xl), 0 0 20px rgba(77, 166, 255, 0.3);
+  }
+  100% {
+    box-shadow: var(--shadow-lg);
+  }
+}
+
+.nav-dropdown:hover .clubs-dropdown-menu {
+  animation: clubsDropdownGlow 2s ease-in-out infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-stats {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+
+  .clubs-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  .club-header-content {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--spacing-lg);
+  }
+
+  .club-icon-large {
+    font-size: 4rem;
+  }
+
+  .club-stats {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .club-nav {
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .nav-tab {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+  }
+
+  .events-filter,
+  .workshops-filter,
+  .workshops-categories,
+  .blog-categories,
+  .sports-categories {
+    gap: var(--spacing-sm);
+  }
+
+  .filter-btn,
+  .category-btn {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-sm);
+  }
+
+  .events-list {
+    grid-template-columns: 1fr;
+  }
+
+  .styles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-content {
+    max-width: 95vw;
+    margin: var(--spacing-md);
+  }
+
+  .clubs-dropdown-menu {
+    position: fixed;
+    top: var(--topbar-height);
+    right: var(--spacing-md);
+    left: var(--spacing-md);
+    width: auto;
+    border-radius: var(--radius-lg);
+    border-top: 2px solid var(--border-primary);
+  }
+}
+
+@media (max-width: 480px) {
+  .club-card {
+    padding: var(--spacing-lg);
+  }
+
+  .club-icon {
+    font-size: 3rem;
+  }
+
+  .featured-photo-container,
+  .sports-highlights,
+  .dance-styles,
+  .current-production {
+    padding: var(--spacing-lg);
+  }
+
+  .event-card {
+    padding: var(--spacing-lg);
+  }
+
+  .modal-header,
+  .modal-body {
+    padding: var(--spacing-lg);
+  }
+}

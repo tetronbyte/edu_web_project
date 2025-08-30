@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V65PG4DBXS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-V65PG4DBXS');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Club | Dectinity</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
+</head>
+<body class="with-topbar">
+
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            </a>
+            <span class="logo-text" style="font-weight: normal;">Dectinity</span>
+        </div>
+        <div class="button-group">
+            <a href="/" class="button">Home</a>
+            <a href="/notes" class="button">Notes</a>
+            <a href="/blog" class="button">Blog</a>
+
+            <!-- Clubs Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Clubs</button>
+                <div class="dropdown-menu">
+                    <a href="/clubs" class="dropdown-item">Clubs Home</a>
+                    <a href="/clubs/sports" class="dropdown-item">Sports Club</a>
+                    <a href="/clubs/photography" class="dropdown-item">Photography Club</a>
+                    <a href="/clubs/drama" class="dropdown-item">Drama Club</a>
+                    <a href="/clubs/dance" class="dropdown-item">Dance Club</a>
+                    <a href="/clubs/chess" class="dropdown-item">Chess Club</a>
+                </div>
+            </div>
+
+            <!-- Miscellaneous Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Miscellaneous</button>
+                <div class="dropdown-menu">
+                    <a href="/creative_arena" class="dropdown-item">Creative Arena</a>
+                    <a href="/gllm" class="dropdown-item">GLLM</a>
+                    <a href="/gpa_calculator" class="dropdown-item">GPA Calc</a>
+                    <a href="/gpa_predictor" class="dropdown-item">GPA Predict</a>
+                </div>
+            </div>
+
+
+        <button class="mobile-topbar-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-nav-dropdown">
+            <button class="nav-btn" onclick="window.location.href='/'">Home</button>
+            <button class="nav-btn" onclick="window.location.href='/notes'">Notes</button>
+            <button class="nav-btn active" onclick="window.location.href='/clubs'">Clubs</button>
+            <button class="nav-btn" onclick="window.location.href='/blog'">Blog</button>
+            <button class="nav-btn" onclick="window.location.href='/gllm'">GLLM</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+            <button class="nav-btn" onclick="window.location.href='/creative-arena'">Creative Arena</button>
+        </div>
+
+    </header>
+
+    <!-- Main Content -->
+    <main style="margin-top: var(--topbar-height); padding: var(--spacing-2xl); min-height: calc(100vh - var(--topbar-height));">
+        
+        <!-- Hero Section -->
+        <section style="text-align: center; margin-bottom: var(--spacing-3xl);">
+            <h1 class="text-gradient" style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: var(--spacing-lg);">
+                ♟️ Chess Club
+            </h1>
+            <p style="color: var(--text-secondary); font-size: 1.2rem; max-width: 600px; margin: 0 auto var(--spacing-2xl);">
+                Strategic thinking, competitive matches, and chess mastery for all skill levels
+            </p>
+        </section>
+
+        <!-- Features Grid -->
+        <section class="grid-responsive" style="margin-bottom: var(--spacing-3xl);">
+            <div class="dashboard-card">
+                <div class="card-icon">♟️</div>
+                <h3>Tournaments</h3>
+                <p>Participate in weekly tournaments and compete against fellow chess enthusiasts</p>
+                <button class="btn btn-primary">View Tournaments</button>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">📚</div>
+                <h3>Learning Resources</h3>
+                <p>Access tutorials, opening guides, and strategic analysis to improve your game</p>
+                <button class="btn btn-primary">Study Now</button>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">👥</div>
+                <h3>Club Members</h3>
+                <p>Connect with other players, form study groups, and find practice partners</p>
+                <button class="btn btn-primary">Join Community</button>
+            </div>
+
+            <div class="dashboard-card">
+                <div class="card-icon">🏆</div>
+                <h3>Rankings</h3>
+                <p>Track your progress and see where you stand among club members</p>
+                <button class="btn btn-primary">View Rankings</button>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section style="text-align: center; margin-bottom: var(--spacing-3xl);">
+            <h2 style="color: var(--accent-primary); margin-bottom: var(--spacing-xl);">Quick Actions</h2>
+            <div style="display: flex; gap: var(--spacing-lg); justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-lg btn-success">Start a Game</button>
+                <button class="btn btn-lg btn-primary">Find Opponent</button>
+                <button class="btn btn-lg btn-secondary">Practice Puzzles</button>
+            </div>
+        </section>
+
+        <!-- Chess Board Preview -->
+        <section style="text-align: center;">
+            <h2 style="color: var(--accent-primary); margin-bottom: var(--spacing-xl);">Featured Game</h2>
+            <div class="card" style="max-width: 600px; margin: 0 auto; padding: var(--spacing-2xl);">
+                <h3>Game of the Week</h3>
+                <p style="color: var(--text-secondary); margin-bottom: var(--spacing-lg);">
+                    Analyze this brilliant tactical combination from our recent tournament
+                </p>
+                <div style="background: var(--bg-tertiary); padding: var(--spacing-xl); border-radius: var(--radius-md); margin-bottom: var(--spacing-lg);">
+                    <p style="font-family: monospace; font-size: 1.1rem;">
+                        1. e4 e5 2. Nf3 Nc6 3. Bb5 a6<br>
+                        4. Ba4 Nf6 5. O-O Be7 6. Re1 b5<br>
+                        7. Bb3 d6 8. c3 O-O 9. h3 ...
+                    </p>
+                </div>
+                <button class="btn btn-primary">Analyze Game</button>
+            </div>
+        </section>
+
+    </main>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drama Club - Dectinity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/drama_club.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/clubs.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="layout-public">
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            </a>
+            <span class="logo-text" style="font-weight: normal;">Dectinity</span>
+        </div>
+        <div class="button-group">
+            <a href="/" class="button">Home</a>
+            <a href="/notes" class="button">Notes</a>
+            <a href="/blog" class="button">Blog</a>
+
+            <!-- Clubs Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Clubs</button>
+                <div class="dropdown-menu">
+                    <a href="/clubs" class="dropdown-item">Clubs Home</a>
+                    <a href="/clubs/sports" class="dropdown-item">Sports Club</a>
+                    <a href="/clubs/photography" class="dropdown-item">Photography Club</a>
+                    <a href="/clubs/drama" class="dropdown-item">Drama Club</a>
+                    <a href="/clubs/dance" class="dropdown-item">Dance Club</a>
+                    <a href="/clubs/chess" class="dropdown-item">Chess Club</a>
+                </div>
+            </div>
+
+            <!-- Miscellaneous Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Miscellaneous</button>
+                <div class="dropdown-menu">
+                    <a href="/creative_arena" class="dropdown-item">Creative Arena</a>
+                    <a href="/gllm" class="dropdown-item">GLLM</a>
+                    <a href="/gpa_calculator" class="dropdown-item">GPA Calc</a>
+                    <a href="/gpa_predictor" class="dropdown-item">GPA Predict</a>
+                </div>
+            </div>
+
+
+        <button class="mobile-topbar-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-nav-dropdown">
+            <button class="nav-btn" onclick="window.location.href='/'">Home</button>
+            <button class="nav-btn" onclick="window.location.href='/notes'">Notes</button>
+            <button class="nav-btn active" onclick="window.location.href='/clubs'">Clubs</button>
+            <button class="nav-btn" onclick="window.location.href='/blog'">Blog</button>
+            <button class="nav-btn" onclick="window.location.href='/gllm'">GLLM</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+            <button class="nav-btn" onclick="window.location.href='/creative-arena'">Creative Arena</button>
+        </div>
+
+    </header>
+
+    <main class="main-content-public">
+        <!-- Club Header -->
+        <section class="club-header drama-header">
+            <div class="club-header-content">
+                <div class="club-icon-large">
+                    <i class="fas fa-theater-masks"></i>
+                </div>
+                <div class="club-info">
+                    <h1>Drama Club</h1>
+                    <p>All the world's a stage</p>
+                    <div class="club-stats">
+                        <span class="stat">35+ Members</span>
+                        <span class="stat">5 Productions</span>
+                        <span class="stat">8 Events</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Navigation Tabs -->
+            <nav class="club-nav">
+                <button class="nav-tab active" data-tab="featured">Featured</button>
+                <button class="nav-tab" data-tab="events">Events</button>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Featured Tab -->
+                <div class="tab-panel active" data-panel="featured">
+                    <section class="current-production">
+                        <h2>Current Production</h2>
+                        <div class="production-showcase" id="currentProduction">
+                            <div class="loading">Loading current production...</div>
+                        </div>
+                    </section>
+
+                    <section class="past-productions">
+                        <h2>Past Productions</h2>
+                        <div class="productions-gallery" id="pastProductions">
+                            <div class="loading">Loading past productions...</div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Events Tab -->
+                <div class="tab-panel" data-panel="events">
+                    <section class="drama-events">
+                        <h2>Drama Club Events</h2>
+                        <div class="events-filter">
+                            <button class="filter-btn active" data-filter="all">All Events</button>
+                            <button class="filter-btn" data-filter="productions">Productions</button>
+                            <button class="filter-btn" data-filter="auditions">Auditions</button>
+                            <button class="filter-btn" data-filter="workshops">Acting Workshops</button>
+                        </div>
+                        <div class="events-list" id="dramaEvents">
+                            <div class="loading">Loading events...</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <button class="back-button" onclick="window.location.href='/clubs'">
+        <i class="fas fa-arrow-left"></i> Back to Clubs
+    </button>
+
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/pages/drama_club.js') }}"></script>
+</body>
+</html>

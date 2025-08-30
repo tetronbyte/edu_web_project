@@ -1,0 +1,553 @@
+/* ========= Drama Club Styles ========= */
+
+/* Hero Section */
+.club-hero {
+    background: linear-gradient(135deg, 
+        rgba(75, 0, 130, 0.95) 0%, 
+        rgba(138, 43, 226, 0.95) 50%, 
+        rgba(72, 61, 139, 0.95) 100%);
+    padding: var(--spacing-3xl) 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.club-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(72, 61, 139, 0.15) 0%, transparent 50%);
+    z-index: 0;
+}
+
+/* Theater Masks Animation */
+.theater-masks {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin: var(--spacing-2xl) 0;
+}
+
+.mask {
+    font-size: 3rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.mask:nth-child(2) {
+    animation-delay: 1.5s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Featured Productions */
+.featured-productions {
+    padding: var(--spacing-3xl) 0;
+    background: var(--bg-primary);
+}
+
+.productions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+.production-card {
+    background: var(--gradient-card);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border: 2px solid var(--border-primary);
+    transition: all var(--transition-normal);
+    position: relative;
+    cursor: pointer;
+}
+
+.production-card:hover {
+    transform: translateY(-8px) perspective(1000px) rotateX(5deg);
+    border-color: #8a2be2;
+    box-shadow: 0 20px 40px rgba(138, 43, 226, 0.3);
+}
+
+.production-poster {
+    width: 100%;
+    height: 300px;
+    background: linear-gradient(45deg, #4b0082, #8a2be2);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.production-poster::before {
+    content: '🎭';
+    font-size: 4rem;
+    opacity: 0.3;
+    position: absolute;
+}
+
+.poster-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(75, 0, 130, 0.8);
+    opacity: 0;
+    transition: all var(--transition-normal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(5px);
+}
+
+.production-card:hover .poster-overlay {
+    opacity: 1;
+}
+
+.view-trailer-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--text-primary);
+    color: var(--text-primary);
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-normal);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.view-trailer-btn:hover {
+    background: var(--text-primary);
+    color: #8a2be2;
+    transform: scale(1.05);
+}
+
+.production-info {
+    padding: var(--spacing-2xl);
+}
+
+.production-genre {
+    display: inline-block;
+    background: linear-gradient(45deg, #4b0082, #8a2be2);
+    color: var(--text-primary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--spacing-md);
+}
+
+.production-title {
+    color: var(--text-primary);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.2;
+}
+
+.production-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-lg);
+}
+
+.production-cast {
+    margin-bottom: var(--spacing-lg);
+}
+
+.cast-title {
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--spacing-md);
+}
+
+.cast-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.cast-member {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    border: 1px solid var(--border-secondary);
+}
+
+.production-schedule {
+    background: var(--bg-tertiary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    border-left: 4px solid #8a2be2;
+}
+
+.schedule-title {
+    color: var(--text-primary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.show-times {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--spacing-sm);
+}
+
+.show-time {
+    background: var(--bg-secondary);
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    text-align: center;
+    border: 1px solid var(--border-secondary);
+}
+
+.show-date {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+}
+
+.show-time-slot {
+    color: var(--text-muted);
+    font-size: var(--font-size-xs);
+}
+
+/* Drama Workshops */
+.workshops-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--bg-secondary);
+}
+
+.workshops-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-xl);
+    margin-top: var(--spacing-xl);
+}
+
+.workshop-card {
+    background: var(--gradient-card);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-2xl);
+    border: 2px solid var(--border-primary);
+    transition: all var(--transition-normal);
+    position: relative;
+    overflow: hidden;
+}
+
+.workshop-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #4b0082, #8a2be2);
+}
+
+.workshop-card:hover {
+    transform: translateY(-8px);
+    border-color: #8a2be2;
+    box-shadow: var(--shadow-lg);
+}
+
+.workshop-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, #4b0082, #8a2be2);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: var(--text-primary);
+    margin: 0 auto var(--spacing-lg);
+    position: relative;
+    box-shadow: 0 8px 20px rgba(138, 43, 226, 0.3);
+}
+
+.workshop-title {
+    color: var(--text-primary);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.workshop-level {
+    display: inline-block;
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--border-secondary);
+}
+
+.workshop-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.workshop-details {
+    background: var(--bg-tertiary);
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--spacing-lg);
+    border: 1px solid var(--border-secondary);
+}
+
+.workshop-meta {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.meta-item {
+    text-align: center;
+}
+
+.meta-label {
+    font-size: var(--font-size-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--spacing-xs);
+}
+
+.meta-value {
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+.enroll-btn {
+    width: 100%;
+    background: linear-gradient(45deg, #4b0082, #8a2be2);
+    color: var(--text-primary);
+    border: none;
+    padding: var(--spacing-lg);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    font-weight: var(--font-weight-semibold);
+    transition: all var(--transition-normal);
+    font-size: var(--font-size-base);
+}
+
+.enroll-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+}
+
+/* Drama Events */
+.events-section {
+    padding: var(--spacing-3xl) 0;
+    background: var(--bg-primary);
+}
+
+.events-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: var(--spacing-xl) auto 0;
+    padding-left: var(--spacing-2xl);
+}
+
+.events-timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, #4b0082, #8a2be2);
+}
+
+.event-item {
+    position: relative;
+    margin-bottom: var(--spacing-3xl);
+    background: var(--gradient-card);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-2xl);
+    border: 2px solid var(--border-primary);
+    margin-left: var(--spacing-xl);
+    transition: all var(--transition-normal);
+}
+
+.event-item::before {
+    content: '';
+    position: absolute;
+    left: -43px;
+    top: 30px;
+    width: 20px;
+    height: 20px;
+    border-radius: var(--radius-full);
+    background: linear-gradient(45deg, #4b0082, #8a2be2);
+    border: 4px solid var(--bg-primary);
+    box-shadow: 0 4px 10px rgba(138, 43, 226, 0.3);
+}
+
+.event-item:hover {
+    transform: translateX(10px);
+    border-color: #8a2be2;
+    box-shadow: var(--shadow-lg);
+}
+
+.event-date {
+    color: var(--text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: var(--spacing-sm);
+}
+
+.event-title {
+    color: var(--text-primary);
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+}
+
+.event-description {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-lg);
+}
+
+.event-details {
+    display: flex;
+    gap: var(--spacing-lg);
+    flex-wrap: wrap;
+}
+
+.event-detail {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.event-icon {
+    color: #8a2be2;
+}
+
+/* Spotlight Animation */
+.spotlight-animation {
+    position: relative;
+    overflow: hidden;
+}
+
+.spotlight-animation::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: spotlight 4s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes spotlight {
+    0% {
+        transform: translate(-100%, -100%);
+    }
+    100% {
+        transform: translate(100%, 100%);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .productions-grid,
+    .workshops-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .show-times {
+        grid-template-columns: 1fr;
+    }
+    
+    .events-timeline {
+        padding-left: var(--spacing-lg);
+    }
+    
+    .event-item {
+        margin-left: var(--spacing-md);
+    }
+    
+    .event-item::before {
+        left: -28px;
+    }
+    
+    .workshop-meta {
+        grid-template-columns: 1fr;
+    }
+    
+    .event-details {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+}
+
+@media (max-width: 480px) {
+    .theater-masks {
+        gap: var(--spacing-sm);
+    }
+    
+    .mask {
+        font-size: 2rem;
+    }
+    
+    .production-poster {
+        height: 250px;
+    }
+    
+    .production-info {
+        padding: var(--spacing-lg);
+    }
+    
+    .workshop-card {
+        padding: var(--spacing-lg);
+    }
+    
+    .workshop-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+}

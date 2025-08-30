@@ -1,0 +1,136 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "title": "Art Exhibition Opening",
+      "description": "Showcase of student artwork and design projects from the semester",
+      "club_id": "art_design",
+      "club_name": "Art & Design Club",
+      "date": "2025-09-02",
+      "time": "18:00",
+      "end_time": "21:00",
+      "location": "Art Gallery",
+      "capacity": 50,
+      "registered": 23,
+      "type": "Exhibition",
+      "featured": true,
+      "registration_required": true,
+      "registration_deadline": "2025-08-31",
+      "tags": [
+        "art",
+        "exhibition",
+        "creativity"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Photography Workshop",
+      "description": "Learn advanced photography techniques with professional equipment",
+      "club_id": "photography",
+      "club_name": "Photography Club",
+      "date": "2025-09-09",
+      "time": "14:00",
+      "end_time": "17:00",
+      "location": "Media Center",
+      "capacity": 20,
+      "registered": 15,
+      "type": "Workshop",
+      "featured": true,
+      "registration_required": true,
+      "registration_deadline": "2025-09-06",
+      "tags": [
+        "photography",
+        "workshop",
+        "learning"
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Dance Competition",
+      "description": "Annual inter-college dance competition with multiple categories",
+      "club_id": "dance",
+      "club_name": "Dance Club",
+      "date": "2025-09-16",
+      "time": "19:00",
+      "end_time": "22:00",
+      "location": "Main Auditorium",
+      "capacity": 200,
+      "registered": 145,
+      "type": "Competition",
+      "featured": true,
+      "registration_required": true,
+      "registration_deadline": "2025-09-11",
+      "tags": [
+        "dance",
+        "competition",
+        "performance"
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Drama Workshop: Acting Fundamentals",
+      "description": "Introduction to basic acting techniques and stage presence",
+      "club_id": "drama",
+      "club_name": "Drama Club",
+      "date": "2025-09-23",
+      "time": "16:00",
+      "end_time": "18:00",
+      "location": "Theater Hall",
+      "capacity": 25,
+      "registered": 18,
+      "type": "Workshop",
+      "featured": false,
+      "registration_required": true,
+      "registration_deadline": "2025-09-21",
+      "tags": [
+        "drama",
+        "acting",
+        "workshop"
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Chess Tournament",
+      "description": "Monthly chess tournament open to all skill levels",
+      "club_id": "chess",
+      "club_name": "Chess Club",
+      "date": "2025-09-30",
+      "time": "15:00",
+      "end_time": "19:00",
+      "location": "Library Hall",
+      "capacity": 32,
+      "registered": 28,
+      "type": "Tournament",
+      "featured": false,
+      "registration_required": true,
+      "registration_deadline": "2025-09-23",
+      "tags": [
+        "chess",
+        "tournament",
+        "strategy"
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Sports Day",
+      "description": "Annual sports day with multiple events and competitions",
+      "club_id": "sports",
+      "club_name": "Sports Club",
+      "date": "2025-10-07",
+      "time": "09:00",
+      "end_time": "17:00",
+      "location": "Sports Complex",
+      "capacity": 100,
+      "registered": 67,
+      "type": "Competition",
+      "featured": true,
+      "registration_required": true,
+      "registration_deadline": "2025-09-27",
+      "tags": [
+        "sports",
+        "competition",
+        "athletics"
+      ]
+    }
+  ]
+}

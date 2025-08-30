@@ -170,55 +170,52 @@ h6 { font-size: var(--font-size-base); }
 
 /* Topbar buttons */
 .button {
-  background: none;
-  color: var(--text-light);
-  border: none;
-  box-shadow: none;
-  padding: 0 20px; /* or any spacing you like */
-  font-size: var(--font-size-base);
-  cursor: pointer;
-  position: relative;
-  transition: color 0.3s;
+    background: none;
+    color: var(--text-light);
+    border: none;
+    box-shadow: none;
+    padding: 0 20px;
+    font-size: var(--font-size-base);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s;
 }
 
 .button:hover {
-  color: var(--accent-primary);
-  background: none;
-  /* Your underline animation is already handled by ::after */
-  box-shadow: none;
-  transform: none;
+    color: var(--accent-primary);
+    background: none;
+    box-shadow: none;
+    transform: none;
 }
-
 
 /* Dot-to-underline animation */
 .button::after {
-  content: "";
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  right: 0;
-  width: 3px;
-  height: 2px;
-  background-color: var(--text-light);
-  border-radius: 1px;
-  margin: 0 auto;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    width: 3px;
+    height: 2px;
+    background-color: var(--text-light);
+    border-radius: 1px;
+    margin: 0 auto;
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
 }
 
 .button:hover::after {
-  width: 75%;
-  opacity: 1;
-  border-radius: 0;
+    width: 75%;
+    opacity: 1;
+    border-radius: 0;
 }
 
 /* Override general button hover for topbar buttons */
 .topbar .button {
-  /* Only minimal styles here */
-  background: none;
-  box-shadow: none;
-  padding: 0 20px;
-  color: var(--text-light);
+    background: none;
+    box-shadow: none;
+    padding: 0 20px;
+    color: var(--text-light);
 }
 
 /* Forms */
@@ -394,6 +391,7 @@ input::file-selector-button:hover {
     border-color: var(--brand-accent);
 }
 
+/* FIXED: Complete the card-icon rule */
 .card-icon {
     font-size: 3rem;
     margin-bottom: var(--spacing-lg);
@@ -631,13 +629,13 @@ input::file-selector-button:hover {
 }
 
 @keyframes fadeIn {
-    from { 
-        opacity: 0; 
-        transform: translateY(20px); 
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
-    to { 
-        opacity: 1; 
-        transform: translateY(0); 
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
@@ -646,13 +644,13 @@ input::file-selector-button:hover {
 }
 
 @keyframes slideIn {
-    from { 
-        transform: translateX(100%); 
-        opacity: 0; 
+    from {
+        transform: translateX(100%);
+        opacity: 0;
     }
-    to { 
-        transform: translateX(0); 
-        opacity: 1; 
+    to {
+        transform: translateX(0);
+        opacity: 1;
     }
 }
 
@@ -661,13 +659,13 @@ input::file-selector-button:hover {
 }
 
 @keyframes slideOut {
-    from { 
-        transform: translateX(0); 
-        opacity: 1; 
+    from {
+        transform: translateX(0);
+        opacity: 1;
     }
-    to { 
-        transform: translateX(100%); 
-        opacity: 0; 
+    to {
+        transform: translateX(100%);
+        opacity: 0;
     }
 }
 
@@ -677,11 +675,9 @@ input::file-selector-button:hover {
 .text-error { color: var(--error); }
 .text-warning { color: var(--warning); }
 .text-info { color: var(--info); }
-
 .cursor-pointer { cursor: pointer; }
 .cursor-not-allowed { cursor: not-allowed; }
 .pointer-events-none { pointer-events: none; }
-
 .opacity-0 { opacity: 0; }
 .opacity-50 { opacity: 0.5; }
 .opacity-60 { opacity: 0.6; }
@@ -689,7 +685,6 @@ input::file-selector-button:hover {
 .opacity-80 { opacity: 0.8; }
 .opacity-90 { opacity: 0.9; }
 .opacity-100 { opacity: 1; }
-
 .rounded { border-radius: var(--radius-md); }
 .rounded-sm { border-radius: var(--radius-sm); }
 .rounded-lg { border-radius: var(--radius-lg); }
@@ -701,18 +696,18 @@ input::file-selector-button:hover {
     .form-row {
         flex-direction: column;
     }
-    
+
     .form-actions {
         flex-direction: column;
     }
-    
+
     .checkbox-group,
     .radio-group {
         flex-direction: column;
         gap: var(--spacing-md);
         align-items: flex-start;
     }
-    
+
     .search-input {
         width: 250px;
     }
@@ -724,11 +719,11 @@ input::file-selector-button:hover {
     .card-footer {
         padding: var(--spacing-lg);
     }
-    
+
     .dashboard-card {
         padding: var(--spacing-lg);
     }
-    
+
     .card-icon {
         font-size: 2.5rem;
     }

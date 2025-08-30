@@ -1,0 +1,100 @@
+{
+  "tools": [
+    {
+      "id": 1,
+      "name": "AI Image Generator",
+      "description": "Create stunning images from text descriptions using advanced AI technology",
+      "status": "coming_soon",
+      "category": "visual",
+      "features": [
+        "Text-to-Image",
+        "High Resolution",
+        "Multiple Styles"
+      ],
+      "icon": "🎨",
+      "estimated_release": "2025-10-15",
+      "difficulty": "easy",
+      "popularity": 95
+    },
+    {
+      "id": 2,
+      "name": "Color Palette Generator",
+      "description": "Generate beautiful color palettes for your design projects",
+      "status": "coming_soon",
+      "category": "design",
+      "features": [
+        "Random Generation",
+        "Export Options",
+        "Color Theory"
+      ],
+      "icon": "🎨",
+      "estimated_release": "2025-09-30",
+      "difficulty": "easy",
+      "popularity": 88
+    },
+    {
+      "id": 3,
+      "name": "AI Writing Assistant",
+      "description": "Get help with essays, creative writing, and academic papers",
+      "status": "coming_soon",
+      "category": "writing",
+      "features": [
+        "Grammar Check",
+        "Style Suggestions",
+        "Plagiarism Detection"
+      ],
+      "icon": "✍️",
+      "estimated_release": "2025-11-01",
+      "difficulty": "medium",
+      "popularity": 92
+    },
+    {
+      "id": 4,
+      "name": "Music Composer",
+      "description": "Create melodies and beats for your creative projects",
+      "status": "coming_soon",
+      "category": "audio",
+      "features": [
+        "AI Composition",
+        "Multiple Genres",
+        "Export to MIDI"
+      ],
+      "icon": "🎵",
+      "estimated_release": "2025-12-15",
+      "difficulty": "medium",
+      "popularity": 85
+    },
+    {
+      "id": 5,
+      "name": "Video Editor",
+      "description": "Edit videos with AI-powered features and effects",
+      "status": "coming_soon",
+      "category": "video",
+      "features": [
+        "Auto-Edit",
+        "Effects Library",
+        "HD Export"
+      ],
+      "icon": "🎬",
+      "estimated_release": "2026-01-20",
+      "difficulty": "hard",
+      "popularity": 89
+    },
+    {
+      "id": 6,
+      "name": "Presentation Maker",
+      "description": "Create professional presentations with AI assistance",
+      "status": "coming_soon",
+      "category": "productivity",
+      "features": [
+        "Smart Templates",
+        "Auto-Design",
+        "Export Options"
+      ],
+      "icon": "📊",
+      "estimated_release": "2025-10-30",
+      "difficulty": "easy",
+      "popularity": 91
+    }
+  ]
+}

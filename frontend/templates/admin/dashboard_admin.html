@@ -3,222 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Dectinity</title>
+    <title>Admin Dashboard - Dectinity</title>
     
-    <!-- Base CSS Files -->
-    <link rel="stylesheet" href="../../static/css/base/reset.css">
-    <link rel="stylesheet" href="../../static/css/base/themes.css">
-    <link rel="stylesheet" href="../../static/css/base/layout.css">
-    <link rel="stylesheet" href="../../static/css/base/components.css">
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/static/css/base/reset.css">
+    <link rel="stylesheet" href="/static/css/base/themes.css">
+    <link rel="stylesheet" href="/static/css/base/layout.css">
+    <link rel="stylesheet" href="/static/css/base/components.css">
+    <link rel="stylesheet" href="/static/css/pages/admin.css">
+    <link rel="stylesheet" href="/static/css/pages/dashboard_admin.css">
     
-    <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="../../static/css/pages/dashboard_admin.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="layout-admin">
+    
     <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" onclick="toggleMobileSidebar()" style="display: none;">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 6H20M4 12H20M4 18H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
     </button>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <nav class="sidebar" id="sidebar">
         <div class="logo">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <h3>Dectinity Admin</h3>
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Dectinity<br>Admin</h3>
         </div>
         
         <div class="nav-buttons">
-            <button onclick="navigateToDashboard()" class="active">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="3" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
-                    <rect x="14" y="3" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
-                    <rect x="14" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
-                    <rect x="3" y="14" width="7" height="7" stroke="currentColor" stroke-width="2" fill="currentColor" opacity="0.2"/>
-                </svg>
+            <button class="nav-btn active" data-page="dashboard">
+                <i class="fas fa-th-large"></i>
                 <span>Dashboard</span>
             </button>
             
-            <button onclick="navigateToUpload()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <polyline points="7,10 12,5 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <line x1="12" y1="5" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                </svg>
+            <button class="nav-btn" data-page="upload-notes">
+                <i class="fas fa-upload"></i>
                 <span>Upload Notes</span>
             </button>
             
-            <button onclick="navigateToBlog()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M14.828 14.828C15.5 14.156 16 13.204 16 12.172C16 10.109 14.364 8.47297 12.301 8.47297C11.269 8.47297 10.317 8.97297 9.645 9.64497" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
+            <button class="nav-btn" data-page="manage-blog">
+                <i class="fas fa-blog"></i>
                 <span>Manage Blog</span>
             </button>
             
-            <button onclick="navigateToNewPost()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M18.5 2.50023C18.8978 2.1024 19.4374 1.87891 20 1.87891C20.5626 1.87891 21.1022 2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213 4.00023C22.1213 4.56284 21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                <span>New Post</span>
+            <button class="nav-btn" data-page="new-post">
+                <i class="fas fa-edit"></i>
+                <span>New Blog Post</span>
+            </button>
+            
+            <button class="nav-btn" data-page="clubs">
+                <i class="fas fa-users"></i>
+                <span>Manage Clubs</span>
+            </button>
+            
+            <button class="nav-btn" data-page="events">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </button>
+            
+            <button class="nav-btn" data-page="artworks">
+                <i class="fas fa-palette"></i>
+                <span>Artworks</span>
+            </button>
+            
+            <button class="nav-btn" data-page="workshops">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <span>Workshops</span>
+            </button>
+            
+            <button class="nav-btn" data-page="creative-arena">
+                <i class="fas fa-magic"></i>
+                <span>Creative<br>Arena</span>
+            </button>
+            
+            <button class="nav-btn" data-page="analytics">
+                <i class="fas fa-chart-line"></i>
+                <span>Analytics</span>
             </button>
         </div>
         
         <button class="logout-btn" onclick="window.location.href='/admin/logout'">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <polyline points="16,17 21,12 16,7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                <line x1="21" y1="12" x2="9" y2="12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+            <i class="fas fa-sign-out-alt"></i>
             <span>Logout</span>
         </button>
-    </div>
+    </nav>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <main class="main-content">
         <div class="dashboard-container">
             <!-- Dashboard Header -->
             <div class="dashboard-header">
                 <h1>Admin Dashboard</h1>
-                <button id="refreshDashboard" class="btn btn-secondary">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <polyline points="23,4 23,10 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <polyline points="1,20 1,14 7,14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        <path d="M20.49 9C19.9828 7.56678 19.1209 6.28392 17.9845 5.27EA6C16.8482 4.26221 15.4745 3.55663 13.9917 3.21669C12.5089 2.87676 10.9652 2.91364 9.50481 3.32416C8.04437 3.73469 6.71475 4.505 5.64 5.58L1 10M23 14L18.36 18.42C17.2853 19.495 15.9556 20.2653 14.4952 20.6758C13.0348 21.0864 11.4911 21.1232 10.0083 20.7833C8.52547 20.4434 7.1518 19.7378 6.01547 18.73C4.87913 17.7221 4.01717 16.4392 3.51 15.006" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
+                <button class="btn" onclick="window.location.reload()">
+                    <i class="fas fa-sync-alt"></i>
                     Refresh
                 </button>
             </div>
 
-            <!-- Quick Stats -->
-            <div id="statsGrid" class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number" id="totalPosts">-</span>
-                    <span class="stat-label">Total Posts</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="publishedPosts">-</span>
-                    <span class="stat-label">Published</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="draftPosts">-</span>
-                    <span class="stat-label">Drafts</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number" id="totalNotes">-</span>
-                    <span class="stat-label">Total Notes</span>
-                </div>
-            </div>
-
             <!-- Dashboard Grid -->
             <div class="dashboard-grid">
-                <!-- Blog Management Card -->
+                <!-- Blog Management -->
                 <div class="dashboard-card">
                     <div class="card-icon">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M14.828 14.828C15.5 14.156 16 13.204 16 12.172C16 10.109 14.364 8.47297 12.301 8.47297C11.269 8.47297 10.317 8.97297 9.645 9.64497" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <i class="fas fa-blog"></i>
                     </div>
                     <h3>Blog Management</h3>
                     <p>Create, edit, and manage your blog posts. Keep your content fresh and engaging.</p>
-                    <button onclick="navigateToBlog()" class="btn btn-primary">Manage Posts</button>
+                    <button class="btn" onclick="window.location.href='/admin/blog'">Manage Posts</button>
                 </div>
 
-                <!-- Notes Upload Card -->
+                <!-- Notes Upload -->
                 <div class="dashboard-card">
                     <div class="card-icon">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <polyline points="7,10 12,5 17,10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <line x1="12" y1="5" x2="12" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        </svg>
+                        <i class="fas fa-upload"></i>
                     </div>
                     <h3>Notes Upload</h3>
                     <p>Upload and organize study notes for different courses and subjects.</p>
-                    <button onclick="navigateToUpload()" class="btn btn-primary">Upload Notes</button>
+                    <button class="btn" onclick="window.location.href='/admin/upload'">Upload Notes</button>
                 </div>
 
-                <!-- New Post Card -->
+                <!-- Create New Post -->
                 <div class="dashboard-card">
                     <div class="card-icon">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M18.5 2.50023C18.8978 2.1024 19.4374 1.87891 20 1.87891C20.5626 1.87891 21.1022 2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213 4.00023C22.1213 4.56284 21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <i class="fas fa-plus"></i>
                     </div>
                     <h3>Create New Post</h3>
                     <p>Write and publish new blog posts to share knowledge and updates.</p>
-                    <button onclick="navigateToNewPost()" class="btn btn-success">New Post</button>
+                    <button class="btn" onclick="window.location.href='/admin/blog/new'">Create Post</button>
                 </div>
 
-                <!-- Site Analytics Card -->
+                <!-- Visit Public Site -->
                 <div class="dashboard-card">
                     <div class="card-icon">
-                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-                            <path d="M8 14S9.5 16 12 16S16 14 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <line x1="9" y1="9" x2="9.01" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            <line x1="15" y1="9" x2="15.01" y2="9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+                        <i class="fas fa-external-link-alt"></i>
                     </div>
                     <h3>Visit Public Site</h3>
                     <p>View the public site to see how your content appears to visitors.</p>
-                    <button onclick="window.open('/', '_blank')" class="btn btn-secondary">View Site</button>
+                    <button class="btn" onclick="window.open('/', '_blank')">Visit Site</button>
                 </div>
-            </div>
 
-            <!-- Recent Activity -->
-            <div class="recent-activity">
-                <h3>Recent Activity</h3>
-                <div id="recentActivityList" class="activity-list">
-                    <div class="loading">Loading recent activity...</div>
+                <!-- Club Management -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Club Management</h3>
+                    <p>Manage student clubs, member information, and club activities.</p>
+                    <button class="btn" onclick="navigateToPage('clubs')">Manage Clubs</button>
+                </div>
+
+                <!-- Events Management -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Events Management</h3>
+                    <p>Schedule and manage events, track registrations and attendance.</p>
+                    <button class="btn" onclick="navigateToPage('events')">Manage Events</button>
+                </div>
+
+                <!-- Artworks Management -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Artwork Gallery</h3>
+                    <p>Manage student artwork submissions and gallery exhibitions.</p>
+                    <button class="btn" onclick="navigateToPage('artworks')">Manage Artworks</button>
+                </div>
+
+                <!-- Workshop Management -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Workshop Management</h3>
+                    <p>Schedule workshops, manage instructors and track enrollments.</p>
+                    <button class="btn" onclick="navigateToPage('workshops')">Manage Workshops</button>
+                </div>
+
+                <!-- Creative Arena -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3>Creative Arena</h3>
+                    <p>Manage AI tools, track subscriptions and monitor tool usage.</p>
+                    <button class="btn" onclick="navigateToPage('creative-arena')">Manage Tools</button>
+                </div>
+
+                <!-- Analytics -->
+                <div class="dashboard-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Analytics & Reports</h3>
+                    <p>View detailed analytics, reports and insights about platform usage.</p>
+                    <button class="btn" onclick="navigateToPage('analytics')">View Analytics</button>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <!-- Core JavaScript -->
-    <script src="../../static/javascript/core/utils.js"></script>
-    <script src="../../static/javascript/core/api.js"></script>
+    <!-- JavaScript Files -->
+    <script src="/static/javascript/core/utils.js"></script>
+    <script src="/static/javascript/core/api.js"></script>
+    <script src="/static/javascript/pages/dashboard_admin.js"></script>
     
-    <!-- Page-specific JavaScript -->
-    <script src="../../static/javascript/pages/dashboard_admin.js"></script>
-    
-    <!-- Global admin functions -->
     <script>
-        function navigateToDashboard() { window.location.href = '/admin'; }
-        function navigateToBlog() { window.location.href = '/admin/blog'; }
-        function navigateToNewPost() { window.location.href = '/admin/blog/new'; }
-        function navigateToUpload() { window.location.href = '/admin/upload'; }
-        
-        function toggleMobileSidebar() {
-            const sidebar = document.querySelector('.sidebar');
-            if (sidebar) sidebar.classList.toggle('mobile-open');
+        function navigateToPage(page) {
+            Utils.showNotification(`${page.charAt(0).toUpperCase() + page.slice(1)} management will be implemented soon!`, 'info');
         }
-
-        // Show mobile menu button on small screens
-        function checkScreenSize() {
-            const mobileBtn = document.querySelector('.mobile-menu-btn');
-            if (window.innerWidth <= 768) {
-                mobileBtn.style.display = 'block';
-            } else {
-                mobileBtn.style.display = 'none';
-                const sidebar = document.querySelector('.sidebar');
-                if (sidebar) sidebar.classList.remove('mobile-open');
-            }
-        }
-
-        window.addEventListener('resize', checkScreenSize);
-        checkScreenSize();
     </script>
 </body>
 </html>

@@ -91,20 +91,16 @@ window.Api = (() => {
             del(`/admin/notes/${encodeURIComponent(course)}/${encodeURIComponent(semester)}/${encodeURIComponent(subject)}/${encodeURIComponent(filename)}`),
 
         // Blog management
+        // New (correct match to Flask admin_routes.py)
         getBlogPosts: (params = {}) => {
             const query = new URLSearchParams(params).toString();
-            return get(`/api/admin/blog/posts${query ? '?' + query : ''}`);
+            return get(`/admin/api/blog/posts${query ? '?' + query : ''}`);
         },
-
-        getBlogPost: (id) => get(`/api/admin/blog/post/${id}`),
-
-        createBlogPost: (postData) => post('/api/admin/blog/post', postData),
-
-        updateBlogPost: (id, postData) => put(`/api/admin/blog/post/${id}`, postData),
-
-        deleteBlogPost: (id) => del(`/api/admin/blog/post/${id}`),
-
-        toggleBlogPostStatus: (id) => post(`/api/admin/blog/post/${id}/toggle`, {}),
+        getBlogPost: (id) => get(`/admin/api/blog/post/${id}`),
+        createBlogPost: (postData) => post('/admin/api/blog/post', postData),
+        updateBlogPost: (id, postData) => put(`/admin/api/blog/post/${id}`, postData),
+        deleteBlogPost: (id) => del(`/admin/api/blog/post/${id}`),
+        toggleBlogPostStatus: (id) => post(`/admin/api/blog/post/${id}/toggle`, {}),
 
         // Dashboard
         getDashboardStats: () => get('/api/admin/dashboard/stats'),

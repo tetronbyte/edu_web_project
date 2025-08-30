@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creative Arena - Dectinity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/creative_arena.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="with-topbar">
+<!-- Topbar -->
+    <header class="topbar">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            </a>
+            <span class="logo-text" style="font-weight: normal;">Dectinity</span>
+        </div>
+        <div class="button-group">
+            <a href="/" class="button">Home</a>
+            <a href="/notes" class="button">Notes</a>
+            <a href="/blog" class="button">Blog</a>
+
+            <!-- Clubs Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Clubs</button>
+                <div class="dropdown-menu">
+                    <a href="/clubs" class="dropdown-item">Clubs Home</a>
+                    <a href="/clubs/sports" class="dropdown-item">Sports Club</a>
+                    <a href="/clubs/photography" class="dropdown-item">Photography Club</a>
+                    <a href="/clubs/drama" class="dropdown-item">Drama Club</a>
+                    <a href="/clubs/dance" class="dropdown-item">Dance Club</a>
+                    <a href="/clubs/chess" class="dropdown-item">Chess Club</a>
+                </div>
+            </div>
+
+            <!-- Miscellaneous Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Miscellaneous</button>
+                <div class="dropdown-menu">
+                    <a href="/creative_arena" class="dropdown-item">Creative Arena</a>
+                    <a href="/gllm" class="dropdown-item">GLLM</a>
+                    <a href="/gpa_calculator" class="dropdown-item">GPA Calc</a>
+                    <a href="/gpa_predictor" class="dropdown-item">GPA Predict</a>
+                </div>
+            </div>
+
+
+        <button class="mobile-topbar-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-nav-dropdown">
+            <button class="nav-btn" onclick="window.location.href='/'">Home</button>
+            <button class="nav-btn" onclick="window.location.href='/notes'">Notes</button>
+            <button class="nav-btn active" onclick="window.location.href='/clubs'">Clubs</button>
+            <button class="nav-btn" onclick="window.location.href='/blog'">Blog</button>
+            <button class="nav-btn" onclick="window.location.href='/gllm'">GLLM</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+            <button class="nav-btn" onclick="window.location.href='/creative_arena'">Creative Arena</button>
+        </div>
+
+    </header>
+
+    <main class="main-content-public">
+        <!-- Hero Section -->
+        <section class="creative-hero">
+            <div class="hero-content">
+                <h1 class="text-gradient">Creative Arena</h1>
+                <p class="hero-subtitle">Unleash your creativity with our collection of tools and resources</p>
+                <div class="hero-features">
+                    <span class="feature-pill">AI-Powered</span>
+                    <span class="feature-pill">Student-Focused</span>
+                    <span class="feature-pill">Free to Use</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Tools Grid -->
+            <section class="tools-grid">
+                <div class="tool-card coming-soon">
+                    <div class="tool-icon">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <h3>AI Image Generator</h3>
+                    <p>Create stunning images from text descriptions using advanced AI technology</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Text-to-Image</span>
+                        <span class="feature-tag">High Resolution</span>
+                        <span class="feature-tag">Multiple Styles</span>
+                    </div>
+                    <div class="coming-soon-overlay">
+                        <span class="coming-soon-text">Coming Soon</span>
+                    </div>
+                    <button class="btn btn-secondary tool-btn" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+
+                <div class="tool-card coming-soon">
+                    <div class="tool-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Color Palette Generator</h3>
+                    <p>Generate beautiful color palettes for your design projects</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Random Generation</span>
+                        <span class="feature-tag">Export Options</span>
+                        <span class="feature-tag">Color Theory</span>
+                    </div>
+                    <div class="coming-soon-overlay">
+                        <span class="coming-soon-text">Coming Soon</span>
+                    </div>
+                    <button class="btn btn-secondary tool-btn" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+
+                <div class="tool-card coming-soon">
+                    <div class="tool-icon">
+                        <i class="fas fa-pen-fancy"></i>
+                    </div>
+                    <h3>AI Writing Assistant</h3>
+                    <p>Get help with essays, creative writing, and academic papers</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Grammar Check</span>
+                        <span class="feature-tag">Style Suggestions</span>
+                        <span class="feature-tag">Plagiarism Detection</span>
+                    </div>
+                    <div class="coming-soon-overlay">
+                        <span class="coming-soon-text">Coming Soon</span>
+                    </div>
+                    <button class="btn btn-secondary tool-btn" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+
+                <div class="tool-card coming-soon">
+                    <div class="tool-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3>Music Composer</h3>
+                    <p>Create melodies and beats for your creative projects</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">AI Composition</span>
+                        <span class="feature-tag">Multiple Genres</span>
+                        <span class="feature-tag">Export to MIDI</span>
+                    </div>
+                    <div class="coming-soon-overlay">
+                        <span class="coming-soon-text">Coming Soon</span>
+                    </div>
+                    <button class="btn btn-secondary tool-btn" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+
+                <div class="tool-card coming-soon">
+                    <div class="tool-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3>Video Editor</h3>
+                    <p>Edit videos with AI-powered features and effects</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Auto-Edit</span>
+                        <span class="feature-tag">Effects Library</span>
+                        <span class="feature-tag">HD Export</span>
+                    </div>
+                    <div class="coming-soon-overlay">
+                        <span class="coming-soon-text">Coming Soon</span>
+                    </div>
+                    <button class="btn btn-secondary tool-btn" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+
+                <div class="tool-card coming-soon">
+                    <div class="tool-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Presentation Maker</h3>
+                    <p>Create professional presentations with AI assistance</p>
+                    <div class="tool-features">
+                        <span class="feature-tag">Smart Templates</span>
+                        <span class="feature-tag">Auto-Design</span>
+                        <span class="feature-tag">Export Options</span>
+                    </div>
+                    <div class="coming-soon-overlay">
+                        <span class="coming-soon-text">Coming Soon</span>
+                    </div>
+                    <button class="btn btn-secondary tool-btn" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </section>
+
+            <!-- Info Section -->
+            <section class="info-section">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <div class="info-content">
+                        <h3>Exciting Tools Coming Soon!</h3>
+                        <p>We're working hard to bring you the best creative tools powered by AI. These tools will help you with your academic and creative projects, making them more engaging and professional.</p>
+                        <ul>
+                            <li>AI-powered content generation</li>
+                            <li>Easy-to-use interfaces</li>
+                            <li>Export in multiple formats</li>
+                            <li>Completely free for students</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="notification-signup">
+                    <h3>Stay Updated</h3>
+                    <p>Get notified when new tools become available</p>
+                    <form class="signup-form" id="notificationSignup">
+                        <div class="form-row">
+                            <input type="email" placeholder="Enter your email" class="form-control" id="notificationEmail">
+                            <button type="submit" class="btn btn-primary">Notify Me</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <button class="back-button" onclick="window.location.href='/'">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </button>
+
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/pages/creative_arena.js') }}"></script>
+</body>
+</html>

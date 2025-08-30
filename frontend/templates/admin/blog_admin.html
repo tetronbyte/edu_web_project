@@ -6,13 +6,13 @@
     <title>Blog Management | Admin</title>
     
     <!-- Base CSS Files -->
-    <link rel="stylesheet" href="../../static/css/base/reset.css">
-    <link rel="stylesheet" href="../../static/css/base/themes.css">
-    <link rel="stylesheet" href="../../static/css/base/layout.css">
-    <link rel="stylesheet" href="../../static/css/base/components.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
     
     <!-- Page-specific CSS -->
-    <link rel="stylesheet" href="../../static/css/pages/blog_admin.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/blog_admin.css') }}">
 </head>
 <body class="layout-admin">
     <!-- Mobile Menu Button -->
@@ -81,63 +81,72 @@
         </button>
     </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <div class="blog-management-container">
-            <!-- Blog Header -->
-            <div class="blog-header">
-                <h2>Blog Management</h2>
-                <button id="newPostBtn" class="new-post-btn">Create New Post</button>
-            </div>
+    <!-- Main Content - FIXED ALIGNMENT -->
+    <div class="blog-management-container">
+        <!-- Blog Header -->
+        <div class="blog-header">
+            <h2>Blog Management</h2>
+            <button id="newPostBtn" class="new-post-btn">Create New Post</button>
+        </div>
 
-            <!-- Blog Controls -->
-            <div class="blog-controls">
-                <div class="search-container">
-                    <input type="text" id="postSearch" class="search-input" placeholder="Search posts...">
-                </div>
+        <!-- Blog Controls -->
+        <div class="blog-controls">
+            <div class="search-container">
+                <input type="text" id="postSearch" class="search-input" placeholder="Search posts...">
+            </div>
+            
+            <div class="filter-container">
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="published">Published</option>
+                    <option value="unpublished">Unpublished</option>
+                </select>
                 
-                <div class="filter-container">
-                    <select id="statusFilter" class="filter-select">
-                        <option value="">All Status</option>
-                        <option value="published">Published</option>
-                        <option value="unpublished">Unpublished</option>
-                    </select>
-                    
-                    <select id="categoryFilter" class="filter-select">
-                        <option value="">All Categories</option>
-                        <option value="announcements">Announcements</option>
-                        <option value="tutorials">Tutorials</option>
-                        <option value="study-tips">Study Tips</option>
-                        <option value="resources">Resources</option>
-                    </select>
-                </div>
+                <select id="categoryFilter" class="filter-select">
+                    <option value="">All Categories</option>
+                    <option value="announcements">Announcements</option>
+                    <option value="tutorials">Tutorials</option>
+                    <option value="study-tips">Study Tips</option>
+                    <option value="resources">Resources</option>
+                </select>
             </div>
+        </div>
 
-            <!-- Posts List -->
-            <div id="postsList" class="posts-list admin-list">
-                <!-- Posts will be loaded dynamically -->
-            </div>
+        <!-- Posts List -->
+        <div id="postsList" class="posts-list admin-list">
+            <!-- Posts will be loaded dynamically -->
+        </div>
 
-            <!-- Pagination -->
-            <div id="pagination" class="pagination" style="display: none;">
-                <!-- Pagination will be generated dynamically -->
-            </div>
+        <!-- Pagination -->
+        <div id="pagination" class="pagination" style="display: none;">
+            <!-- Pagination will be generated dynamically -->
         </div>
     </div>
 
     <!-- Core JavaScript -->
-    <script src="../../static/javascript/core/utils.js"></script>
-    <script src="../../static/javascript/core/api.js"></script>
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
     
     <!-- Page-specific JavaScript -->
-    <script src="../../static/javascript/pages/blog_admin.js"></script>
+    <script src="{{ url_for('static', filename='javascript/pages/blog_admin.js') }}"></script>
     
     <!-- Global admin functions -->
     <script>
-        function navigateToDashboard() { window.location.href = '/admin'; }
-        function navigateToBlog() { window.location.href = '/admin/blog'; }
-        function navigateToNewPost() { window.location.href = '/admin/blog/new'; }
-        function navigateToUpload() { window.location.href = '/admin/upload'; }
+        function navigateToDashboard() { 
+            window.location.href = '/admin'; 
+        }
+        
+        function navigateToBlog() { 
+            window.location.href = '/admin/blog'; 
+        }
+        
+        function navigateToNewPost() { 
+            window.location.href = '/admin/blog/new'; 
+        }
+        
+        function navigateToUpload() { 
+            window.location.href = '/admin/upload'; 
+        }
         
         function toggleMobileSidebar() {
             const sidebar = document.querySelector('.sidebar');

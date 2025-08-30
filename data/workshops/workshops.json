@@ -1,0 +1,262 @@
+{
+  "workshops": [
+    {
+      "id": 1,
+      "title": "Digital Art Fundamentals",
+      "club_id": "art_design",
+      "club_name": "Art & Design Club",
+      "instructor": "Prof. Anderson",
+      "description": "Learn the basics of digital art creation using modern tools and software",
+      "date": "2025-08-31",
+      "time": "14:00",
+      "end_time": "16:00",
+      "duration": "2 hours",
+      "location": "Computer Lab 1",
+      "capacity": 15,
+      "enrolled": 12,
+      "level": "Beginner",
+      "price": "Free",
+      "materials_provided": true,
+      "prerequisites": [],
+      "topics": [
+        "Digital art software introduction",
+        "Basic drawing techniques",
+        "Color theory in digital art",
+        "Layer management"
+      ],
+      "tags": [
+        "digital art",
+        "beginner",
+        "software"
+      ],
+      "featured": true
+    },
+    {
+      "id": 2,
+      "title": "Advanced Painting Techniques",
+      "club_id": "art_design",
+      "club_name": "Art & Design Club",
+      "instructor": "Artist Maria Rodriguez",
+      "description": "Master advanced painting techniques and color theory for professional results",
+      "date": "2025-09-10",
+      "time": "15:00",
+      "end_time": "18:00",
+      "duration": "3 hours",
+      "location": "Art Studio",
+      "capacity": 10,
+      "enrolled": 8,
+      "level": "Advanced",
+      "price": "$25",
+      "materials_provided": false,
+      "prerequisites": [
+        "Basic painting experience"
+      ],
+      "topics": [
+        "Advanced color mixing",
+        "Texture techniques",
+        "Composition principles",
+        "Professional finishing"
+      ],
+      "tags": [
+        "painting",
+        "advanced",
+        "techniques"
+      ],
+      "featured": true
+    },
+    {
+      "id": 3,
+      "title": "Hip-Hop Dance Basics",
+      "club_id": "dance",
+      "club_name": "Dance Club",
+      "instructor": "Coach Mike Thompson",
+      "description": "Learn fundamental hip-hop moves and develop your street dance style",
+      "date": "2025-09-05",
+      "time": "18:00",
+      "end_time": "20:00",
+      "duration": "2 hours",
+      "location": "Dance Studio A",
+      "capacity": 20,
+      "enrolled": 18,
+      "level": "Beginner",
+      "price": "Free",
+      "materials_provided": true,
+      "prerequisites": [],
+      "topics": [
+        "Basic hip-hop foundations",
+        "Rhythm and timing",
+        "Freestyle techniques",
+        "Performance skills"
+      ],
+      "tags": [
+        "hip-hop",
+        "dance",
+        "beginner"
+      ],
+      "featured": true
+    },
+    {
+      "id": 4,
+      "title": "Contemporary Dance Workshop",
+      "club_id": "dance",
+      "club_name": "Dance Club",
+      "instructor": "Sarah Liu",
+      "description": "Explore expressive contemporary dance movements and storytelling",
+      "date": "2025-09-15",
+      "time": "16:00",
+      "end_time": "18:30",
+      "duration": "2.5 hours",
+      "location": "Dance Studio B",
+      "capacity": 15,
+      "enrolled": 11,
+      "level": "Intermediate",
+      "price": "$15",
+      "materials_provided": true,
+      "prerequisites": [
+        "Basic dance experience"
+      ],
+      "topics": [
+        "Contemporary movement principles",
+        "Emotional expression through dance",
+        "Floor work techniques",
+        "Choreography basics"
+      ],
+      "tags": [
+        "contemporary",
+        "dance",
+        "intermediate"
+      ],
+      "featured": false
+    },
+    {
+      "id": 5,
+      "title": "Photography Basics",
+      "club_id": "photography",
+      "club_name": "Photography Club",
+      "instructor": "Prof. Alex Kim",
+      "description": "Learn fundamental photography techniques including composition and lighting",
+      "date": "2025-09-20",
+      "time": "13:00",
+      "end_time": "16:00",
+      "duration": "3 hours",
+      "location": "Media Center",
+      "capacity": 12,
+      "enrolled": 10,
+      "level": "Beginner",
+      "price": "Free",
+      "materials_provided": true,
+      "prerequisites": [],
+      "topics": [
+        "Camera basics and settings",
+        "Composition techniques",
+        "Understanding light",
+        "Basic photo editing"
+      ],
+      "tags": [
+        "photography",
+        "beginner",
+        "basics"
+      ],
+      "featured": true
+    },
+    {
+      "id": 6,
+      "title": "Portrait Photography Masterclass",
+      "club_id": "photography",
+      "club_name": "Photography Club",
+      "instructor": "Maria Santos",
+      "description": "Master portrait photography with professional lighting and posing techniques",
+      "date": "2025-09-30",
+      "time": "14:00",
+      "end_time": "18:00",
+      "duration": "4 hours",
+      "location": "Photography Studio",
+      "capacity": 8,
+      "enrolled": 7,
+      "level": "Advanced",
+      "price": "$40",
+      "materials_provided": true,
+      "prerequisites": [
+        "Photography basics",
+        "Own camera"
+      ],
+      "topics": [
+        "Studio lighting setup",
+        "Posing direction",
+        "Background selection",
+        "Post-processing portraits"
+      ],
+      "tags": [
+        "portrait",
+        "photography",
+        "advanced"
+      ],
+      "featured": true
+    },
+    {
+      "id": 7,
+      "title": "Acting Fundamentals",
+      "club_id": "drama",
+      "club_name": "Drama Club",
+      "instructor": "Director James Wilson",
+      "description": "Learn basic acting techniques and stage presence for theater",
+      "date": "2025-09-25",
+      "time": "17:00",
+      "end_time": "19:00",
+      "duration": "2 hours",
+      "location": "Theater Hall",
+      "capacity": 20,
+      "enrolled": 16,
+      "level": "Beginner",
+      "price": "Free",
+      "materials_provided": true,
+      "prerequisites": [],
+      "topics": [
+        "Voice projection",
+        "Body language and movement",
+        "Character development",
+        "Scene study basics"
+      ],
+      "tags": [
+        "acting",
+        "theater",
+        "beginner"
+      ],
+      "featured": true
+    },
+    {
+      "id": 8,
+      "title": "Advanced Scene Work",
+      "club_id": "drama",
+      "club_name": "Drama Club",
+      "instructor": "Prof. Emily Chen",
+      "description": "Advanced scene work and character development for experienced actors",
+      "date": "2025-10-10",
+      "time": "19:00",
+      "end_time": "21:30",
+      "duration": "2.5 hours",
+      "location": "Studio Theater",
+      "capacity": 12,
+      "enrolled": 9,
+      "level": "Advanced",
+      "price": "$20",
+      "materials_provided": false,
+      "prerequisites": [
+        "Acting fundamentals",
+        "Audition required"
+      ],
+      "topics": [
+        "Method acting techniques",
+        "Emotional memory work",
+        "Partner scene work",
+        "Character analysis"
+      ],
+      "tags": [
+        "acting",
+        "advanced",
+        "scene work"
+      ],
+      "featured": false
+    }
+  ]
+}

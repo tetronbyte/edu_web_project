@@ -14,19 +14,32 @@ class BlogService:
     def _ensure_blog_data(self):
         """Ensure blog directory and data file exist"""
         os.makedirs(self.BLOG_DATA_PATH, exist_ok=True)
-        
         if not os.path.exists(self.BLOG_POSTS_FILE):
+            # Create sample data with two posts
             initial_data = {
                 "posts": [
                     {
                         "id": str(uuid.uuid4()),
-                        "title": "Welcome to Our Study Portal Blog",
-                        "excerpt": "This is your first blog post! Start writing about academic topics, study tips, and more.",
-                        "content": "<p>Welcome to the Study Portal Blog! This is where we'll share valuable insights, study tips, tutorials, and important announcements.</p><p>Stay tuned for more content!</p>",
-                        "category": "announcements",
+                        "title": "Welcome to Dectinity Blog",
+                        "excerpt": "This is your first blog post! Everything is working perfectly.",
+                        "content": "<h2>Welcome!</h2><p>This is where we'll share valuable insights, study tips, and announcements.</p>",
+                        "category": "announcements", 
                         "date": datetime.now().isoformat(),
                         "readTime": 2,
                         "featured": True,
+                        "image": None,
+                        "author": "Admin",
+                        "published": True
+                    },
+                    {
+                        "id": str(uuid.uuid4()),
+                        "title": "Study Tips for Success",
+                        "excerpt": "Learn effective study techniques that actually work.",
+                        "content": "<p>Here are some proven study methods...</p>",
+                        "category": "study-tips",
+                        "date": datetime.now().isoformat(), 
+                        "readTime": 5,
+                        "featured": False,
                         "image": None,
                         "author": "Admin",
                         "published": True
@@ -34,6 +47,7 @@ class BlogService:
                 ]
             }
             self._save_blog_data(initial_data)
+
 
     def _load_blog_data(self) -> Dict:
         """Load blog data from JSON file"""
@@ -51,7 +65,7 @@ class BlogService:
 
     def _calculate_read_time(self, content: str) -> int:
         """Calculate estimated reading time"""
-        # Remove HTML tags and count words
+        # Remove HTML tags and count words - FIXED REGEX
         text = re.sub(r'<[^>]+>', '', content)
         word_count = len(text.split())
         # Average reading speed: 225 words per minute
@@ -83,9 +97,9 @@ class BlogService:
             search_lower = search.lower()
             posts = [
                 post for post in posts
-                if search_lower in post.get('title', '').lower() or 
-                   search_lower in post.get('excerpt', '').lower() or
-                   search_lower in post.get('content', '').lower()
+                if search_lower in post.get('title', '').lower()
+                or search_lower in post.get('excerpt', '').lower()
+                or search_lower in post.get('content', '').lower()
             ]
         
         # Apply limit
@@ -120,7 +134,7 @@ class BlogService:
         # Generate excerpt if not provided
         excerpt = post_data.get('excerpt', '')
         if not excerpt:
-            # Generate excerpt from content
+            # Generate excerpt from content - FIXED REGEX
             content_text = re.sub(r'<[^>]+>', '', post_data['content'])
             excerpt = content_text[:150] + ('...' if len(content_text) > 150 else '')
 
@@ -142,7 +156,6 @@ class BlogService:
         data = self._load_blog_data()
         data['posts'].append(new_post)
         self._save_blog_data(data)
-
         return new_post
 
     def update_post(self, post_id: str, post_data: Dict) -> Optional[Dict]:
@@ -163,10 +176,8 @@ class BlogService:
                     'published': post_data.get('published', post.get('published', True)),
                     'lastModified': datetime.now().isoformat()
                 })
-                
                 self._save_blog_data(data)
                 return post
-        
         return None
 
     def delete_post(self, post_id: str) -> bool:
@@ -178,7 +189,6 @@ class BlogService:
                 data['posts'].pop(i)
                 self._save_blog_data(data)
                 return True
-        
         return False
 
     def toggle_post_status(self, post_id: str) -> Optional[Dict]:
@@ -191,7 +201,6 @@ class BlogService:
                 post['lastModified'] = datetime.now().isoformat()
                 self._save_blog_data(data)
                 return post
-        
         return None
 
     def search_posts(self, query: str, category: str = '') -> List[Dict]:
@@ -216,8 +225,8 @@ class BlogService:
     def get_recent_activity(self, limit: int = 10) -> List[Dict]:
         """Get recent activity for dashboard"""
         posts = self.get_all_posts(include_unpublished=True)
-        
         activities = []
+        
         for post in posts[:limit]:
             activities.append({
                 'description': f"Blog post '{post['title']}' {'published' if post.get('published') else 'drafted'}",
@@ -231,3 +240,42 @@ class BlogService:
         """Get featured posts"""
         posts = self.get_all_posts()
         return [post for post in posts if post.get('featured', False)]
+
+    # NEW METHODS ADDED
+    def get_categories(self) -> List[str]:
+        """Get all unique categories"""
+        data = self._load_blog_data()
+        categories = set()
+        
+        for post in data.get('posts', []):
+            if post.get('published', True):  # Only published posts
+                categories.add(post.get('category', ''))
+        
+        return sorted(list(categories))
+
+    def get_posts_by_category(self, category: str) -> List[Dict]:
+        """Get posts by specific category"""
+        return self.get_published_posts(category=category)
+
+    def get_post_stats(self) -> Dict:
+        """Get detailed post statistics"""
+        posts = self.get_all_posts(include_unpublished=True)
+        categories = {}
+        
+        for post in posts:
+            cat = post.get('category', 'uncategorized')
+            if cat not in categories:
+                categories[cat] = {'total': 0, 'published': 0, 'drafts': 0}
+            
+            categories[cat]['total'] += 1
+            if post.get('published', True):
+                categories[cat]['published'] += 1
+            else:
+                categories[cat]['drafts'] += 1
+        
+        return {
+            'total_posts': len(posts),
+            'published_posts': len([p for p in posts if p.get('published', True)]),
+            'draft_posts': len([p for p in posts if not p.get('published', True)]),
+            'categories': categories
+        }

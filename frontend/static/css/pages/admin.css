@@ -10,28 +10,98 @@
   left: 0;
   padding-top: 20px;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.sidebar h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #4da6ff;
-}
-
-.sidebar a {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   color: white;
-  padding: 15px 20px;
-  text-decoration: none;
-  transition: background-color 0.3s;
 }
 
-.sidebar a:hover {
+/* Logo Section */
+.sidebar .logo {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #333;
+}
+
+.sidebar .logo svg {
+  margin-right: 10px;
+}
+
+.sidebar .logo h3 {
+  font-size: 1.2rem;
+  color: #4da6ff;
+  margin: 0;
+}
+
+/* Navigation Buttons */
+.sidebar .nav-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.sidebar .nav-buttons button {
+  background-color: #00264d;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.sidebar .nav-buttons button svg {
+  width: 24px;
+  height: 24px;
+  stroke: white;
+}
+
+.sidebar .nav-buttons button span {
+  flex: 1;
+}
+
+.sidebar .nav-buttons button:hover {
   background-color: #003366;
 }
 
-.sidebar a.active {
+.sidebar .nav-buttons button.active {
   background-color: #004080;
+}
+
+/* Logout Button */
+.sidebar .logout-btn {
+  background-color: #e60000;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  position: absolute;
+  bottom: 20px;
+  width: calc(100% - 40px);
+  left: 20px;
+}
+
+.sidebar .logout-btn svg {
+  width: 24px;
+  height: 24px;
+  stroke: white;
+}
+
+.sidebar .logout-btn:hover {
+  background-color: #cc0000;
+  transform: translateY(-2px);
 }
 
 /* Main Content Styles */
@@ -44,6 +114,7 @@
 
 h1 {
   margin-bottom: 20px;
+  color: white;
 }
 
 /* Form Styles */
@@ -59,6 +130,7 @@ form {
 form label {
   display: block;
   margin-bottom: 8px;
+  color: white;
 }
 
 form input,
@@ -80,7 +152,7 @@ form button {
   padding: 12px 20px;
   border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s ease;
 }
 
 form button:hover {
@@ -125,6 +197,7 @@ table td {
 
 table th {
   background-color: #003366;
+  color: white;
 }
 
 table tr:nth-child(even) {
@@ -173,7 +246,7 @@ table tr:nth-child(even) {
   cursor: pointer;
   font-size: 1rem;
   box-shadow: 0 4px #00264d;
-  transition: transform 0.2s, background-color 0.2s;
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .note-button:hover {

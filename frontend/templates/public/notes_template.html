@@ -22,25 +22,61 @@
 </head>
 <body class="with-topbar">
 
-    <!-- ✅ Topbar -->
-    <div class="topbar">
-        <!-- Left: Logo + Site Name -->
+    <!-- Topbar -->
+    <header class="topbar">
         <div class="logo">
             <a href="/">
                 <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
             </a>
             <span class="logo-text" style="font-weight: normal;">Dectinity</span>
         </div>
-
-        <!-- Right: Navigation Buttons -->
         <div class="button-group">
             <a href="/" class="button">Home</a>
             <a href="/notes" class="button">Notes</a>
-            <a href="/gllm" class="button">GLLM</a>
-            <a href="/gpa_calculator" class="button">GPA Calc</a>
-            <a href="/gpa_predictor" class="button">GPA Predict</a>
+            <a href="/blog" class="button">Blog</a>
+
+            <!-- Clubs Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Clubs</button>
+                <div class="dropdown-menu">
+                    <a href="/clubs" class="dropdown-item">Clubs Home</a>
+                    <a href="/clubs/sports" class="dropdown-item">Sports Club</a>
+                    <a href="/clubs/photography" class="dropdown-item">Photography Club</a>
+                    <a href="/clubs/drama" class="dropdown-item">Drama Club</a>
+                    <a href="/clubs/dance" class="dropdown-item">Dance Club</a>
+                    <a href="/clubs/chess" class="dropdown-item">Chess Club</a>
+                </div>
+            </div>
+
+            <!-- Miscellaneous Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Miscellaneous</button>
+                <div class="dropdown-menu">
+                    <a href="/creative_arena" class="dropdown-item">Creative Arena</a>
+                    <a href="/gllm" class="dropdown-item">GLLM</a>
+                    <a href="/gpa_calculator" class="dropdown-item">GPA Calc</a>
+                    <a href="/gpa_predictor" class="dropdown-item">GPA Predict</a>
+                </div>
+            </div>
+
+
+        <button class="mobile-topbar-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-nav-dropdown">
+            <button class="nav-btn" onclick="window.location.href='/'">Home</button>
+            <button class="nav-btn" onclick="window.location.href='/notes'">Notes</button>
+            <button class="nav-btn active" onclick="window.location.href='/clubs'">Clubs</button>
+            <button class="nav-btn" onclick="window.location.href='/blog'">Blog</button>
+            <button class="nav-btn" onclick="window.location.href='/gllm'">GLLM</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+            <button class="nav-btn" onclick="window.location.href='/creative-arena'">Creative Arena</button>
         </div>
-    </div>
+
+    </header>
 
     <!-- ✅ Notes Page Content -->
     <main style="margin-top: var(--topbar-height); padding: var(--spacing-xl);">
@@ -65,7 +101,12 @@
         </div>
 
         <!-- Back Button -->
-        <button class="backButton" id="backButton" onclick="goBack()">← Back</button>
+        <button class="back-button" id="backButton" onclick="goBack()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 6px;">
+                <path fill-rule="evenodd" d="M15 8a.5.5 0 0 1-.5.5H3.707l4.147 4.146a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 1 1 .708.708L3.707 7.5H14.5a.5.5 0 0 1 .5.5z"/>
+            </svg>
+            Back
+        </button>
     </main>
 
     <!-- ✅ Scripts -->

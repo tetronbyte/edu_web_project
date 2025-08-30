@@ -1,0 +1,210 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubs - Dectinity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/clubs.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="with-topbar">
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            </a>
+            <span class="logo-text" style="font-weight: normal;">Dectinity</span>
+        </div>
+        <div class="button-group">
+            <a href="/" class="button">Home</a>
+            <a href="/notes" class="button">Notes</a>
+            <a href="/blog" class="button">Blog</a>
+
+            <!-- Clubs Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Clubs</button>
+                <div class="dropdown-menu">
+                    <a href="/clubs" class="dropdown-item">Clubs Home</a>
+                    <a href="/clubs/sports" class="dropdown-item">Sports Club</a>
+                    <a href="/clubs/photography" class="dropdown-item">Photography Club</a>
+                    <a href="/clubs/drama" class="dropdown-item">Drama Club</a>
+                    <a href="/clubs/dance" class="dropdown-item">Dance Club</a>
+                    <a href="/clubs/chess" class="dropdown-item">Chess Club</a>
+                </div>
+            </div>
+
+            <!-- Miscellaneous Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Miscellaneous</button>
+                <div class="dropdown-menu">
+                    <a href="/creative_arena" class="dropdown-item">Creative Arena</a>
+                    <a href="/gllm" class="dropdown-item">GLLM</a>
+                    <a href="/gpa_calculator" class="dropdown-item">GPA Calc</a>
+                    <a href="/gpa_predictor" class="dropdown-item">GPA Predict</a>
+                </div>
+            </div>
+
+
+        <button class="mobile-topbar-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-nav-dropdown">
+            <button class="nav-btn" onclick="window.location.href='/'">Home</button>
+            <button class="nav-btn" onclick="window.location.href='/notes'">Notes</button>
+            <button class="nav-btn active" onclick="window.location.href='/clubs'">Clubs</button>
+            <button class="nav-btn" onclick="window.location.href='/blog'">Blog</button>
+            <button class="nav-btn" onclick="window.location.href='/gllm'">GLLM</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+            <button class="nav-btn" onclick="window.location.href='/creative-arena'">Creative Arena</button>
+        </div>
+
+    </header>
+
+    <main class="main-content-public">
+        <div class="clubs-hero">
+            <div class="hero-content">
+                <h1 class="text-gradient">Student Clubs</h1>
+                <p class="hero-subtitle">Join our vibrant community of student organizations</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">6</span>
+                        <span class="stat-label">Active Clubs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">200+</span>
+                        <span class="stat-label">Members</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50+</span>
+                        <span class="stat-label">Events</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <section class="clubs-grid">
+                <div class="club-card" data-club="art-design">
+                    <div class="club-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>Art & Design Club</h3>
+                    <p>Express your creativity through various art forms and design projects.</p>
+                    <div class="club-features">
+                        <span class="feature-tag">Workshops</span>
+                        <span class="feature-tag">Tutorials</span>
+                        <span class="feature-tag">Events</span>
+                        <span class="feature-tag">Blog</span>
+                    </div>
+                    <button class="btn btn-primary club-btn" onclick="window.location.href='/clubs/art-design'">
+                        Explore Club <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="club-card" data-club="photography">
+                    <div class="club-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3>Photography Club</h3>
+                    <p>Capture moments and develop your photography skills with fellow enthusiasts.</p>
+                    <div class="club-features">
+                        <span class="feature-tag">Photo Archives</span>
+                        <span class="feature-tag">Weekly Features</span>
+                        <span class="feature-tag">Workshops</span>
+                        <span class="feature-tag">Events</span>
+                    </div>
+                    <button class="btn btn-primary club-btn" onclick="window.location.href='/clubs/photography'">
+                        Explore Club <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="club-card" data-club="dance">
+                    <div class="club-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3>Dance Club</h3>
+                    <p>Move to the rhythm and learn various dance styles in a fun environment.</p>
+                    <div class="club-features">
+                        <span class="feature-tag">Events</span>
+                        <span class="feature-tag">Performances</span>
+                        <span class="feature-tag">Community</span>
+                    </div>
+                    <button class="btn btn-primary club-btn" onclick="window.location.href='/clubs/dance'">
+                        Explore Club <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="club-card" data-club="drama">
+                    <div class="club-icon">
+                        <i class="fas fa-theater-masks"></i>
+                    </div>
+                    <h3>Drama Club</h3>
+                    <p>Unleash your acting potential and participate in theatrical productions.</p>
+                    <div class="club-features">
+                        <span class="feature-tag">Events</span>
+                        <span class="feature-tag">Productions</span>
+                        <span class="feature-tag">Community</span>
+                    </div>
+                    <button class="btn btn-primary club-btn" onclick="window.location.href='/clubs/drama'">
+                        Explore Club <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="club-card" data-club="sports">
+                    <div class="club-icon">
+                        <i class="fas fa-running"></i>
+                    </div>
+                    <h3>Sports Club</h3>
+                    <p>Stay active and competitive with various sports activities and tournaments.</p>
+                    <div class="club-features">
+                        <span class="feature-tag">Events</span>
+                        <span class="feature-tag">Registration</span>
+                        <span class="feature-tag">Tournaments</span>
+                        <span class="feature-tag">Blog</span>
+                    </div>
+                    <button class="btn btn-primary club-btn" onclick="window.location.href='/clubs/sports'">
+                        Explore Club <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="club-card coming-soon" data-club="chess">
+                    <div class="club-icon">
+                        <i class="fas fa-chess"></i>
+                    </div>
+                    <h3>Chess Club</h3>
+                    <p>Strategic thinking and competitive chess matches.</p>
+                    <div class="coming-soon-overlay">
+                        <span class="coming-soon-text">Coming Soon</span>
+                    </div>
+                    <button class="btn btn-secondary club-btn" disabled>
+                        Coming Soon
+                    </button>
+                </div>
+            </section>
+
+            <section class="upcoming-events">
+                <h2>Upcoming Events</h2>
+                <div class="events-container" id="upcomingEvents">
+                    <div class="loading">Loading events...</div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <button class="back-button" onclick="window.location.href='/'">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </button>
+
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/pages/clubs.js') }}"></script>
+</body>
+</html>

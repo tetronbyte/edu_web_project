@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Art & Design Club - Dectinity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/clubs.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="layout-public">
+    <!-- Topbar -->
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            </a>
+            <span class="logo-text" style="font-weight: normal;">Dectinity</span>
+        </div>
+        <div class="button-group">
+            <a href="/" class="button">Home</a>
+            <a href="/notes" class="button">Notes</a>
+            <a href="/blog" class="button">Blog</a>
+
+            <!-- Clubs Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Clubs</button>
+                <div class="dropdown-menu">
+                    <a href="/clubs" class="dropdown-item">Clubs Home</a>
+                    <a href="/clubs/sports" class="dropdown-item">Sports Club</a>
+                    <a href="/clubs/photography" class="dropdown-item">Photography Club</a>
+                    <a href="/clubs/drama" class="dropdown-item">Drama Club</a>
+                    <a href="/clubs/dance" class="dropdown-item">Dance Club</a>
+                    <a href="/clubs/chess" class="dropdown-item">Chess Club</a>
+                </div>
+            </div>
+
+            <!-- Miscellaneous Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Miscellaneous</button>
+                <div class="dropdown-menu">
+                    <a href="/creative_arena" class="dropdown-item">Creative Arena</a>
+                    <a href="/gllm" class="dropdown-item">GLLM</a>
+                    <a href="/gpa_calculator" class="dropdown-item">GPA Calc</a>
+                    <a href="/gpa_predictor" class="dropdown-item">GPA Predict</a>
+                </div>
+            </div>
+
+
+        <button class="mobile-topbar-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-nav-dropdown">
+            <button class="nav-btn" onclick="window.location.href='/'">Home</button>
+            <button class="nav-btn" onclick="window.location.href='/notes'">Notes</button>
+            <button class="nav-btn active" onclick="window.location.href='/clubs'">Clubs</button>
+            <button class="nav-btn" onclick="window.location.href='/blog'">Blog</button>
+            <button class="nav-btn" onclick="window.location.href='/gllm'">GLLM</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+            <button class="nav-btn" onclick="window.location.href='/creative-arena'">Creative Arena</button>
+        </div>
+
+    </header>
+
+    <main class="main-content-public">
+        <!-- Club Header -->
+        <section class="club-header art-design-header">
+            <div class="club-header-content">
+                <div class="club-icon-large">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <div class="club-info">
+                    <h1>Art & Design Club</h1>
+                    <p>Where creativity meets innovation</p>
+                    <div class="club-stats">
+                        <span class="stat">30+ Members</span>
+                        <span class="stat">8 Workshops</span>
+                        <span class="stat">12 Projects</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Navigation Tabs -->
+            <nav class="club-nav">
+                <button class="nav-tab active" data-tab="featured">Featured</button>
+                <button class="nav-tab" data-tab="events">Events</button>
+                <button class="nav-tab" data-tab="workshops">Workshops</button>
+                <button class="nav-tab" data-tab="blog">Blog</button>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Featured Tab -->
+                <div class="tab-panel active" data-panel="featured">
+                    <section class="featured-artwork">
+                        <h2>Featured Artwork</h2>
+                        <div class="featured-gallery" id="featuredArtwork">
+                            <div class="loading">Loading featured artwork...</div>
+                        </div>
+                    </section>
+
+                    <section class="upcoming-workshops">
+                        <h2>Upcoming Workshops</h2>
+                        <div class="workshops-preview" id="upcomingWorkshops">
+                            <div class="loading">Loading workshops...</div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Events Tab -->
+                <div class="tab-panel" data-panel="events">
+                    <section class="club-events">
+                        <h2>Art & Design Events</h2>
+                        <div class="events-filter">
+                            <button class="filter-btn active" data-filter="all">All Events</button>
+                            <button class="filter-btn" data-filter="exhibitions">Exhibitions</button>
+                            <button class="filter-btn" data-filter="competitions">Competitions</button>
+                            <button class="filter-btn" data-filter="workshops">Workshop Events</button>
+                        </div>
+                        <div class="events-list" id="artEvents">
+                            <div class="loading">Loading events...</div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Workshops Tab -->
+                <div class="tab-panel" data-panel="workshops">
+                    <section class="workshops-section">
+                        <h2>Art & Design Workshops</h2>
+                        <div class="workshops-categories">
+                            <button class="category-btn active" data-category="all">All Categories</button>
+                            <button class="category-btn" data-category="digital-art">Digital Art</button>
+                            <button class="category-btn" data-category="traditional">Traditional Art</button>
+                            <button class="category-btn" data-category="design">Design</button>
+                            <button class="category-btn" data-category="mixed-media">Mixed Media</button>
+                        </div>
+                        <div class="workshops-grid" id="artWorkshops">
+                            <div class="loading">Loading workshops...</div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Blog Tab -->
+                <div class="tab-panel" data-panel="blog">
+                    <section class="club-blog">
+                        <h2>Art & Design Blog</h2>
+                        <div class="blog-categories">
+                            <button class="category-btn active" data-category="">All Posts</button>
+                            <button class="category-btn" data-category="tutorials">Tutorials</button>
+                            <button class="category-btn" data-category="inspiration">Inspiration</button>
+                            <button class="category-btn" data-category="techniques">Techniques</button>
+                        </div>
+                        <div class="blog-posts" id="artBlogPosts">
+                            <div class="loading">Loading blog posts...</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <button class="back-button" onclick="window.location.href='/clubs'">
+        <i class="fas fa-arrow-left"></i> Back to Clubs
+    </button>
+
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/pages/art_design_club.js') }}"></script>
+</body>
+</html>

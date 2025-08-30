@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Management - Dectinity Admin</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/static/css/base/reset.css">
+    <link rel="stylesheet" href="/static/css/base/themes.css">
+    <link rel="stylesheet" href="/static/css/base/layout.css">
+    <link rel="stylesheet" href="/static/css/base/components.css">
+    <link rel="stylesheet" href="/static/css/pages/clubs_admin.css">
+    <link rel="stylesheet" href="/static/css/pages/admin.css">
+    
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .events-admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+        
+        .events-filters {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        
+        .events-table {
+            background: var(--gradient-card);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            border: 2px solid var(--border-primary);
+        }
+        
+        .table-header {
+            padding: var(--spacing-xl);
+            border-bottom: 1px solid var(--border-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: var(--spacing-lg);
+            text-align: left;
+            border-bottom: 1px solid var(--border-secondary);
+        }
+        
+        th {
+            background: var(--bg-tertiary);
+            font-weight: var(--font-weight-semibold);
+            color: var(--text-primary);
+        }
+        
+        td {
+            color: var(--text-secondary);
+        }
+        
+        .event-title {
+            color: var(--text-primary);
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .event-club {
+            display: inline-block;
+            background: var(--bg-tertiary);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            margin-top: var(--spacing-xs);
+        }
+        
+        .event-status {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-semibold);
+        }
+        
+        .status-upcoming {
+            background: var(--info-bg);
+            color: var(--info);
+        }
+        
+        .status-ongoing {
+            background: var(--success-bg);
+            color: var(--success);
+        }
+        
+        .status-completed {
+            background: var(--text-muted);
+            color: var(--bg-primary);
+        }
+        
+        .capacity-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            margin-top: var(--spacing-xs);
+        }
+        
+        .capacity-fill {
+            height: 100%;
+            background: var(--gradient-success);
+            transition: width var(--transition-normal);
+        }
+        
+        .capacity-text {
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
+            margin-top: var(--spacing-xs);
+        }
+        
+        .actions-cell {
+            display: flex;
+            gap: var(--spacing-xs);
+        }
+        
+        .event-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+        }
+        
+        .event-form-grid .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body class="layout-admin">
+    
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Dectinity Admin</h3>
+        </div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="window.location.href='/admin'">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </button>
+            
+            <button class="nav-btn" onclick="window.location.href='/admin/upload'">
+                <i class="fas fa-file-alt"></i>
+                <span>Upload Notes</span>
+            </button>
+            
+            <button class="nav-btn" onclick="window.location.href='/admin/blog'">
+                <i class="fas fa-blog"></i>
+                <span>Manage Blog</span>
+            </button>
+            
+            <button class="nav-btn" onclick="window.location.href='/admin/clubs'">
+                <i class="fas fa-users"></i>
+                <span>Manage Clubs</span>
+            </button>
+            
+            <button class="nav-btn active">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Events</span>
+            </button>
+        </div>
+        
+        <button class="logout-btn" onclick="window.location.href='/admin/logout'">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="events-admin-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1><i class="fas fa-calendar-alt"></i> Events Management</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-success" id="addEventBtn">
+                        <i class="fas fa-plus"></i> Add New Event
+                    </button>
+                </div>
+            </div>
+            <!-- Add this after your existing header -->
+            <div class="event-management-tabs">
+                <button class="tab-button active" data-tab="events">Events</button>
+                <button class="tab-button" data-tab="registrations">Registrations</button>
+                <button class="tab-button" data-tab="announcements">Announcements</button>
+                <button class="tab-button" data-tab="archives">Archives</button>
+            </div>
+
+            <!-- Add club selector -->
+            <div class="events-filters">
+                <select id="managementClubFilter" class="filter-select">
+                    <option value="">Select Club for Management</option>
+                </select>
+            </div>
+
+            <!-- Existing events section -->
+            <div id="eventsSection">
+                <!-- Your existing events table -->
+            </div>
+
+            <!-- Add new sections -->
+            <div id="registrationsSection" style="display: none;" class="registrations-section">
+                <h3>Event Registrations</h3>
+                <div id="registrationsContainer">
+                    <!-- Registrations will be loaded here -->
+                </div>
+            </div>
+
+            <div id="announcementsSection" style="display: none;" class="announcements-section">
+                <h3>Event Announcements</h3>
+                
+                <form id="announcementForm" class="announcement-form">
+                    <div class="form-group">
+                        <label for="announcementTitle">Announcement Title</label>
+                        <input type="text" id="announcementTitle" name="title" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="announcementContent">Content</label>
+                        <textarea id="announcementContent" name="content" class="form-control" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="announcementEvent">Related Event (Optional)</label>
+                        <select id="announcementEvent" name="event_id" class="form-control">
+                            <option value="">Select Event</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="announcementPriority">Priority</label>
+                        <select id="announcementPriority" name="priority" class="form-control">
+                            <option value="low">Low</option>
+                            <option value="normal" selected>Normal</option>
+                            <option value="high">High</option>
+                            <option value="urgent">Urgent</option>
+                        </select>
+                    </div>
+                    
+                    <div class="email-option">
+                        <input type="checkbox" id="sendEmailOption" name="send_email">
+                        <label for="sendEmailOption">Send as Email Notification</label>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Create Announcement</button>
+                </form>
+                
+                <div id="announcementsContainer">
+                    <!-- Announcements will be loaded here -->
+                </div>
+            </div>
+
+            <div id="archivesSection" style="display: none;" class="archives-section">
+                <h3>Archived Events</h3>
+                <div id="archivesContainer">
+                    <!-- Archived events will be loaded here -->
+                </div>
+            </div>
+
+
+            <!-- Filters -->
+            <div class="events-filters">
+                <select id="clubFilter" class="filter-select">
+                    <option value="">All Clubs</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
+                
+                <select id="typeFilter" class="filter-select">
+                    <option value="">All Types</option>
+                    <option value="workshop">Workshop</option>
+                    <option value="competition">Competition</option>
+                    <option value="exhibition">Exhibition</option>
+                    <option value="seminar">Seminar</option>
+                </select>
+                
+                <select id="statusFilter" class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="ongoing">Ongoing</option>
+                    <option value="completed">Completed</option>
+                </select>
+                
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search events...">
+                    <button class="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Events Table -->
+            <div class="events-table">
+                <div class="table-header">
+                    <h3>All Events</h3>
+                    <span id="eventsCount">Loading...</span>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Event Details</th>
+                                <th>Club</th>
+                                <th>Date & Time</th>
+                                <th>Location</th>
+                                <th>Registration</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventsTableBody">
+                            <!-- Table rows will be populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Event Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="eventModalTitle">Add New Event</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <form id="eventForm">
+                <input type="hidden" id="eventId" name="id">
+                
+                <div class="event-form-grid">
+                    <div class="form-group">
+                        <label for="eventTitle">Event Title *</label>
+                        <input type="text" id="eventTitle" name="title" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventClub">Club *</label>
+                        <select id="eventClub" name="club_id" class="form-control" required>
+                            <option value="">Select Club</option>
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="eventDescription">Description *</label>
+                        <textarea id="eventDescription" name="description" class="form-control" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventDate">Date *</label>
+                        <input type="date" id="eventDate" name="date" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventTime">Start Time *</label>
+                        <input type="time" id="eventTime" name="time" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventEndTime">End Time</label>
+                        <input type="time" id="eventEndTime" name="end_time" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventLocation">Location *</label>
+                        <input type="text" id="eventLocation" name="location" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventCapacity">Capacity</label>
+                        <input type="number" id="eventCapacity" name="capacity" class="form-control" min="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventType">Event Type</label>
+                        <select id="eventType" name="type" class="form-control">
+                            <option value="Workshop">Workshop</option>
+                            <option value="Competition">Competition</option>
+                            <option value="Exhibition">Exhibition</option>
+                            <option value="Seminar">Seminar</option>
+                            <option value="Social">Social Event</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventTags">Tags (comma separated)</label>
+                        <input type="text" id="eventTags" name="tags" class="form-control" placeholder="workshop, art, beginner">
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="eventFeatured" name="featured">
+                                Featured Event
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="eventRegistrationRequired" name="registration_required">
+                                Registration Required
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Save Event
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/events_admin.js"></script>
+</body>
+</html>

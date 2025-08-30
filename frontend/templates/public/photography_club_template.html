@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photography Club - Dectinity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/themes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/components.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base/layout.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/photography_club.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/clubs.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="layout-public">
+    <!-- Topbar -->
+    <header class="topbar">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
+            </a>
+            <span class="logo-text" style="font-weight: normal;">Dectinity</span>
+        </div>
+        <div class="button-group">
+            <a href="/" class="button">Home</a>
+            <a href="/notes" class="button">Notes</a>
+            <a href="/blog" class="button">Blog</a>
+
+            <!-- Clubs Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Clubs</button>
+                <div class="dropdown-menu">
+                    <a href="/clubs" class="dropdown-item">Clubs Home</a>
+                    <a href="/clubs/sports" class="dropdown-item">Sports Club</a>
+                    <a href="/clubs/photography" class="dropdown-item">Photography Club</a>
+                    <a href="/clubs/drama" class="dropdown-item">Drama Club</a>
+                    <a href="/clubs/dance" class="dropdown-item">Dance Club</a>
+                    <a href="/clubs/chess" class="dropdown-item">Chess Club</a>
+                </div>
+            </div>
+
+            <!-- Miscellaneous Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Miscellaneous</button>
+                <div class="dropdown-menu">
+                    <a href="/creative_arena" class="dropdown-item">Creative Arena</a>
+                    <a href="/gllm" class="dropdown-item">GLLM</a>
+                    <a href="/gpa_calculator" class="dropdown-item">GPA Calc</a>
+                    <a href="/gpa_predictor" class="dropdown-item">GPA Predict</a>
+                </div>
+            </div>
+
+
+        <button class="mobile-topbar-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-nav-dropdown">
+            <button class="nav-btn" onclick="window.location.href='/'">Home</button>
+            <button class="nav-btn" onclick="window.location.href='/notes'">Notes</button>
+            <button class="nav-btn active" onclick="window.location.href='/clubs'">Clubs</button>
+            <button class="nav-btn" onclick="window.location.href='/blog'">Blog</button>
+            <button class="nav-btn" onclick="window.location.href='/gllm'">GLLM</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+            <button class="nav-btn" onclick="window.location.href='/creative-arena'">Creative Arena</button>
+        </div>
+
+    </header>
+
+    <main class="main-content-public">
+        <!-- Club Header -->
+        <section class="club-header photography-header">
+            <div class="club-header-content">
+                <div class="club-icon-large">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <div class="club-info">
+                    <h1>Photography Club</h1>
+                    <p>Capturing moments, creating memories</p>
+                    <div class="club-stats">
+                        <span class="stat">15+ Members</span>
+                        <span class="stat">2 Events</span>
+                        <span class="stat">100+ Photos</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container">
+            <!-- Navigation Tabs -->
+            <nav class="club-nav">
+                <button class="nav-tab active" data-tab="featured">Featured</button>
+                <button class="nav-tab" data-tab="archives">Photo Archives</button>
+                <button class="nav-tab" data-tab="events">Events</button>
+                <button class="nav-tab" data-tab="workshops">Workshops</button>
+                <button class="nav-tab" data-tab="blog">Blog</button>
+            </nav>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Featured Tab -->
+                <div class="tab-panel active" data-panel="featured">
+                    <section class="photo-of-week">
+                        <h2>Photo of the Week</h2>
+                        <div class="featured-photo-container" id="photoOfWeek">
+                            <div class="loading">Loading photo of the week...</div>
+                        </div>
+                    </section>
+
+                    <section class="recent-highlights">
+                        <h2>Recent Highlights</h2>
+                        <div class="highlights-grid" id="recentHighlights">
+                            <div class="loading">Loading recent photos...</div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Photo Archives Tab -->
+                <div class="tab-panel" data-panel="archives">
+                    <section class="photo-archives">
+                        <div class="archives-header">
+                            <h2>Photo Archives</h2>
+                            <div class="archive-filters">
+                                <select id="yearFilter" class="filter-select">
+                                    <option value="">All Years</option>
+                                </select>
+                                <select id="eventFilter" class="filter-select">
+                                    <option value="">All Events</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="archives-grid" id="photoArchives">
+                            <div class="loading">Loading photo archives...</div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Events Tab -->
+                <div class="tab-panel" data-panel="events">
+                    <section class="club-events">
+                        <h2>Photography Events</h2>
+                        <div class="events-filter">
+                            <button class="filter-btn active" data-filter="all">All Events</button>
+                            <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+                            <button class="filter-btn" data-filter="past">Past Events</button>
+                        </div>
+                        <div class="events-list" id="photographyEvents">
+                            <div class="loading">Loading events...</div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Workshops Tab -->
+                <div class="tab-panel" data-panel="workshops">
+                    <section class="workshops-section">
+                        <h2>Photography Workshops & Tutorials</h2>
+                        <div class="workshops-filter">
+                            <select id="difficultyFilter" class="filter-select">
+                                <option value="">All Levels</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div class="workshops-grid" id="workshopsList">
+                            <div class="loading">Loading workshops...</div>
+                        </div>
+                    </section>
+                </div>
+                <!-- Add this after your workshops section -->
+                <section class="events-section">
+                    <div class="container">
+                        <h2 class="section-title">Photography Club Events</h2>
+                        <p class="section-subtitle">Join our exciting photography events and workshops</p>
+                        
+                        <!-- Event Tabs -->
+                        <div class="events-tabs">
+                            <button class="tab-btn active" data-tab="upcoming">Upcoming Events</button>
+                            <button class="tab-btn" data-tab="announcements">Announcements</button>
+                            <button class="tab-btn" data-tab="past">Past Events</button>
+                        </div>
+                        
+                        <!-- Upcoming Events -->
+                        <div id="upcoming-tab" class="tab-content active">
+                            <div id="upcomingEvents">
+                                <div class="loading">Loading upcoming events...</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Announcements -->
+                        <div id="announcements-tab" class="tab-content" style="display: none;">
+                            <div id="clubAnnouncements">
+                                <div class="loading">Loading announcements...</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Past Events -->
+                        <div id="past-tab" class="tab-content" style="display: none;">
+                            <div id="pastEvents">
+                                <div class="loading">Loading past events...</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+
+                <!-- Blog Tab -->
+                <div class="tab-panel" data-panel="blog">
+                    <section class="club-blog">
+                        <h2>Photography Club Blog</h2>
+                        <div class="blog-posts" id="clubBlogPosts">
+                            <div class="loading">Loading blog posts...</div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Photo Modal -->
+    <div id="photoModal" class="photo-modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <img src="" alt="" id="modalImage">
+            <div class="modal-info">
+                <h3 id="modalTitle"></h3>
+                <p id="modalDescription"></p>
+                <div class="modal-meta">
+                    <span id="modalDate"></span>
+                    <span id="modalPhotographer"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <button class="back-button" onclick="window.location.href='/clubs'">
+        <i class="fas fa-arrow-left"></i> Back to Clubs
+    </button>
+
+    <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript/core/photography_club.js') }}"></script>
+</body>
+</html>

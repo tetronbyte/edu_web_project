@@ -1,8 +1,7 @@
 /* ========= Public Blog Page ========= */
-
 document.addEventListener('DOMContentLoaded', () => {
     const { qs, showNotification, debounce } = window.Utils;
-
+    
     // State management
     let currentPage = 1;
     let postsPerPage = 6;
@@ -10,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let filteredPosts = [];
     let currentCategory = '';
     let searchTerm = '';
-
+    
     // DOM elements
     const featuredSection = qs('#featuredPost');
     const blogContainer = qs('#blogContainer');
@@ -18,11 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const categoryFilter = qs('#categoryFilter');
     const loadMoreBtn = qs('#loadMoreBtn');
     const loadMoreContainer = qs('.load-more-container');
-
+    
     // Initialize
     loadBlogPosts();
     setupEventListeners();
-
+    
     // Load blog posts from server
     async function loadBlogPosts() {
         try {
@@ -30,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = await Api.getBlogPosts();
             allPosts = data.posts || [];
             filteredPosts = [...allPosts];
-            
             displayFeaturedPost();
             displayBlogPosts();
             hideLoading();
@@ -40,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
             hideLoading();
         }
     }
-
+    
     // Setup event listeners
     function setupEventListeners() {
         // Search functionality with debounce
@@ -50,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 filterAndDisplayPosts();
             }, 300));
         }
-
+        
         // Category filter
         if (categoryFilter) {
             categoryFilter.addEventListener('change', () => {
@@ -58,232 +56,257 @@ document.addEventListener('DOMContentLoaded', () => {
                 filterAndDisplayPosts();
             });
         }
-
+        
         // Load more button
         if (loadMoreBtn) {
             loadMoreBtn.addEventListener('click', loadMorePosts);
         }
-
-        // Post click handlers will be added dynamically
+        
+        // Modal close functionality
+        setupModalEvents();
     }
-
+    
     // Display featured post
     function displayFeaturedPost() {
         if (!featuredSection || allPosts.length === 0) {
             if (featuredSection) featuredSection.style.display = 'none';
             return;
         }
-
+        
         // Get the most recent featured post or first post
         const featuredPost = allPosts.find(post => post.featured) || allPosts[0];
         
         featuredSection.innerHTML = `
-            <div class="featured-post" onclick="openPost('${featuredPost.id}')">
+            <div class="featured-post" onclick="openPostModal('${featuredPost.id}')">
                 <div class="featured-post-content">
                     <div class="featured-post-text">
-                        <h2>${featuredPost.title}</h2>
-                        <p>${featuredPost.excerpt}</p>
+                        <h2>${escapeHtml(featuredPost.title)}</h2>
+                        <p>${escapeHtml(featuredPost.excerpt)}</p>
                         <div class="featured-post-meta">
-                            <span class="badge badge-featured">Featured</span>
-                            <span>${Utils.formatDate(featuredPost.date)}</span>
+                            <span>${formatDate(featuredPost.date)}</span>
                             <span>${featuredPost.readTime} min read</span>
+                            <span class="badge badge-featured">Featured</span>
                         </div>
                     </div>
                     <div class="featured-post-image">
                         ${featuredPost.image ? 
-                            `<img src="${featuredPost.image}" alt="${featuredPost.title}">` :
-                            `<div class="post-image no-image"></div>`
+                            `<img src="${featuredPost.image}" alt="${escapeHtml(featuredPost.title)}" />` : 
+                            '<div class="post-image no-image"></div>'
                         }
                     </div>
                 </div>
             </div>
         `;
     }
-
+    
     // Filter and display posts
     function filterAndDisplayPosts() {
         filteredPosts = allPosts.filter(post => {
             const matchesSearch = !searchTerm || 
-                post.title.toLowerCase().includes(searchTerm) ||
+                post.title.toLowerCase().includes(searchTerm) || 
                 post.excerpt.toLowerCase().includes(searchTerm);
-            
             const matchesCategory = !currentCategory || post.category === currentCategory;
             
             return matchesSearch && matchesCategory;
         });
-
+        
         currentPage = 1;
         displayBlogPosts();
     }
-
+    
     // Display blog posts
     function displayBlogPosts() {
         if (!blogContainer) return;
-
+        
         if (filteredPosts.length === 0) {
             showEmptyState();
             return;
         }
-
-        const startIndex = 0;
-        const endIndex = currentPage * postsPerPage;
-        const postsToShow = filteredPosts.slice(startIndex, endIndex);
-
-        blogContainer.innerHTML = postsToShow.map(post => createPostHTML(post)).join('');
-
+        
+        const postsToShow = filteredPosts.slice(0, currentPage * postsPerPage);
+        
+        blogContainer.innerHTML = postsToShow.map(post => createBlogPostHTML(post)).join('');
+        
         // Update load more button
         updateLoadMoreButton();
+        
+        // Add click event listeners
+        attachPostClickListeners();
     }
-
-    // Create post HTML
-    function createPostHTML(post) {
+    
+    // Create blog post HTML
+    function createBlogPostHTML(post) {
         return `
-            <article class="blog-post fade-in" onclick="openPost('${post.id}')">
-                <div class="post-image ${!post.image ? 'no-image' : ''}">
+            <div class="blog-post" data-post-id="${post.id}" onclick="openPostModal('${post.id}')">
+                <div class="post-image ${post.image ? '' : 'no-image'}">
                     ${post.image ? 
-                        `<img src="${post.image}" alt="${post.title}" loading="lazy">` :
+                        `<img src="${post.image}" alt="${escapeHtml(post.title)}" />` : 
                         ''
                     }
                 </div>
                 <div class="post-content">
-                    <h3 class="post-title">${post.title}</h3>
-                    <p class="post-excerpt">${post.excerpt}</p>
+                    <h3 class="post-title">${escapeHtml(post.title)}</h3>
+                    <p class="post-excerpt">${escapeHtml(post.excerpt)}</p>
                     <div class="post-meta">
-                        <div>
-                            <span class="post-date">${Utils.formatDate(post.date)}</span>
-                            <span class="post-read-time">${post.readTime} min read</span>
-                        </div>
-                        <span class="badge badge-primary">${post.category}</span>
+                        <span class="post-date">${formatDate(post.date)}</span>
+                        <span class="post-read-time">${post.readTime} min read</span>
                     </div>
                 </div>
-            </article>
+            </div>
         `;
     }
-
+    
+    // Escape HTML to prevent XSS
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // Format date
+    function formatDate(dateString) {
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+    
+    // Attach click listeners to posts
+    function attachPostClickListeners() {
+        const posts = document.querySelectorAll('.blog-post');
+        posts.forEach(post => {
+            post.addEventListener('click', () => {
+                const postId = post.dataset.postId;
+                openPostModal(postId);
+            });
+        });
+    }
+    
     // Load more posts
     function loadMorePosts() {
         currentPage++;
         displayBlogPosts();
     }
-
+    
     // Update load more button
     function updateLoadMoreButton() {
-        if (!loadMoreContainer || !loadMoreBtn) return;
-
-        const totalShown = currentPage * postsPerPage;
-        const hasMore = totalShown < filteredPosts.length;
-
-        if (hasMore) {
-            loadMoreContainer.style.display = 'block';
+        if (!loadMoreBtn) return;
+        
+        const hasMorePosts = currentPage * postsPerPage < filteredPosts.length;
+        
+        if (hasMorePosts) {
+            loadMoreBtn.style.display = 'inline-block';
             loadMoreBtn.disabled = false;
-            loadMoreBtn.textContent = 'Load More Posts';
         } else {
-            if (filteredPosts.length > postsPerPage) {
-                loadMoreBtn.textContent = 'All posts loaded';
-                loadMoreBtn.disabled = true;
-            } else {
-                loadMoreContainer.style.display = 'none';
-            }
+            loadMoreBtn.style.display = 'none';
         }
     }
-
-    // Open post in modal or new page
-    function openPost(postId) {
-        // For now, we'll show a modal. In a real app, this might navigate to a dedicated post page
-        showPostModal(postId);
-    }
-
-    // Show post modal
-    async function showPostModal(postId) {
+    
+    // Open post modal
+    window.openPostModal = async function(postId) {
         try {
-            const post = await Api.getBlogPost(postId);
+            const response = await Api.getBlogPost(postId);
+            const post = response.post;
             
-            const modal = document.createElement('div');
-            modal.className = 'post-modal';
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <span class="close-modal">&times;</span>
-                    <div class="modal-body">
-                        <h1>${post.title}</h1>
-                        <div class="post-meta">
-                            <span>${Utils.formatDate(post.date)}</span>
-                            <span class="badge badge-primary">${post.category}</span>
-                            <span>${post.readTime} min read</span>
-                        </div>
-                        <div class="post-content">
-                            ${post.content}
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            document.body.appendChild(modal);
-            modal.style.display = 'block';
-
-            // Close modal events
-            const closeBtn = modal.querySelector('.close-modal');
-            closeBtn.onclick = () => {
-                modal.style.display = 'none';
-                document.body.removeChild(modal);
-            };
-
-            modal.onclick = (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                    document.body.removeChild(modal);
-                }
-            };
-
-            // Escape key to close
-            document.addEventListener('keydown', function handleEscape(e) {
-                if (e.key === 'Escape') {
-                    modal.style.display = 'none';
-                    document.body.removeChild(modal);
-                    document.removeEventListener('keydown', handleEscape);
-                }
-            });
-
+            if (!post) {
+                showNotification('Post not found', 'error');
+                return;
+            }
+            
+            showPostModal(post);
         } catch (error) {
             console.error('Error loading post:', error);
-            showNotification('Failed to load post. Please try again.', 'error');
+            showNotification('Failed to load post', 'error');
         }
+    };
+    
+    // Show post modal
+    function showPostModal(post) {
+        const modal = qs('#postModal') || createPostModal();
+        
+        const modalBody = modal.querySelector('.modal-body');
+        modalBody.innerHTML = `
+            <h1>${escapeHtml(post.title)}</h1>
+            <div class="post-meta" style="margin-bottom: 2rem; color: var(--text-muted);">
+                <span>${formatDate(post.date)}</span> • 
+                <span>${post.readTime} min read</span> • 
+                <span style="text-transform: capitalize;">${escapeHtml(post.category)}</span>
+            </div>
+            <div class="post-content">${post.content}</div>
+        `;
+        
+        modal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
     }
-
+    
+    // Create post modal if it doesn't exist
+    function createPostModal() {
+        const modal = document.createElement('div');
+        modal.id = 'postModal';
+        modal.className = 'post-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-modal" onclick="closePostModal()">&times;</span>
+                <div class="modal-body"></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        return modal;
+    }
+    
+    // Close post modal
+    window.closePostModal = function() {
+        const modal = qs('#postModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    };
+    
+    // Setup modal events
+    function setupModalEvents() {
+        // Close modal when clicking outside
+        document.addEventListener('click', (event) => {
+            const modal = qs('#postModal');
+            if (modal && event.target === modal) {
+                closePostModal();
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closePostModal();
+            }
+        });
+    }
+    
     // Show loading state
     function showLoading() {
         if (blogContainer) {
             blogContainer.innerHTML = '<div class="loading">Loading posts...</div>';
         }
     }
-
+    
     // Hide loading state
     function hideLoading() {
-        const loading = qs('.loading');
-        if (loading) {
-            loading.remove();
-        }
+        // Loading is hidden when posts are displayed
     }
-
+    
     // Show empty state
     function showEmptyState() {
-        if (!blogContainer) return;
-
-        const message = searchTerm || currentCategory ? 
-            'No posts match your current filters. Try adjusting your search or category filter.' :
-            'No blog posts available at this time. Please check back later.';
-
-        blogContainer.innerHTML = `
-            <div class="empty-state">
-                <h3>No Posts Found</h3>
-                <p>${message}</p>
-            </div>
-        `;
-
-        if (loadMoreContainer) {
-            loadMoreContainer.style.display = 'none';
+        if (blogContainer) {
+            blogContainer.innerHTML = `
+                <div class="empty-state">
+                    <h3>No posts found</h3>
+                    <p>No posts match your current search or filter criteria.</p>
+                </div>
+            `;
+        }
+        
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = 'none';
         }
     }
-
-    // Make openPost available globally for onclick handlers
-    window.openPost = openPost;
 });

@@ -1,0 +1,124 @@
+{
+  "artworks": [
+    {
+      "id": 1,
+      "title": "Digital Dreams",
+      "artist": "Sarah Johnson",
+      "club_id": "art_design",
+      "description": "A vibrant digital art piece exploring futuristic themes and technology",
+      "medium": "Digital Art",
+      "category": "Digital",
+      "created_date": "2025-07-15",
+      "featured": true,
+      "likes": 156,
+      "views": 1205,
+      "image_path": "/static/images/artworks/digital_dreams.jpg",
+      "thumbnail_path": "/static/images/artworks/thumbs/digital_dreams_thumb.jpg",
+      "dimensions": "3840x2160",
+      "tags": [
+        "digital",
+        "futuristic",
+        "technology",
+        "vibrant"
+      ],
+      "exhibition_status": "displayed",
+      "award": "Best Digital Art 2025"
+    },
+    {
+      "id": 2,
+      "title": "Nature's Canvas",
+      "artist": "Mike Chen",
+      "club_id": "art_design",
+      "description": "Traditional oil painting inspired by natural landscapes and seasonal changes",
+      "medium": "Oil on Canvas",
+      "category": "Painting",
+      "created_date": "2025-06-20",
+      "featured": true,
+      "likes": 203,
+      "views": 945,
+      "image_path": "/static/images/artworks/natures_canvas.jpg",
+      "thumbnail_path": "/static/images/artworks/thumbs/natures_canvas_thumb.jpg",
+      "dimensions": "60x40 cm",
+      "tags": [
+        "nature",
+        "landscape",
+        "oil painting",
+        "traditional"
+      ],
+      "exhibition_status": "displayed",
+      "award": null
+    },
+    {
+      "id": 3,
+      "title": "Urban Sketches",
+      "artist": "Emily Davis",
+      "club_id": "art_design",
+      "description": "Collection of architectural sketches from city exploration and urban adventures",
+      "medium": "Pencil and Charcoal",
+      "category": "Sketching",
+      "created_date": "2025-08-01",
+      "featured": false,
+      "likes": 89,
+      "views": 567,
+      "image_path": "/static/images/artworks/urban_sketches.jpg",
+      "thumbnail_path": "/static/images/artworks/thumbs/urban_sketches_thumb.jpg",
+      "dimensions": "A4 Series",
+      "tags": [
+        "urban",
+        "architecture",
+        "sketching",
+        "charcoal"
+      ],
+      "exhibition_status": "archived",
+      "award": null
+    },
+    {
+      "id": 4,
+      "title": "Abstract Emotions",
+      "artist": "David Wilson",
+      "club_id": "art_design",
+      "description": "Abstract acrylic painting exploring human emotions through color and form",
+      "medium": "Acrylic on Canvas",
+      "category": "Abstract",
+      "created_date": "2025-07-28",
+      "featured": true,
+      "likes": 134,
+      "views": 823,
+      "image_path": "/static/images/artworks/abstract_emotions.jpg",
+      "thumbnail_path": "/static/images/artworks/thumbs/abstract_emotions_thumb.jpg",
+      "dimensions": "80x60 cm",
+      "tags": [
+        "abstract",
+        "emotions",
+        "acrylic",
+        "colorful"
+      ],
+      "exhibition_status": "displayed",
+      "award": "People's Choice Award"
+    },
+    {
+      "id": 5,
+      "title": "Sculpture Series: Growth",
+      "artist": "Lisa Wang",
+      "club_id": "art_design",
+      "description": "3D sculpture representing growth and transformation in nature",
+      "medium": "Clay and Metal",
+      "category": "Sculpture",
+      "created_date": "2025-06-10",
+      "featured": false,
+      "likes": 78,
+      "views": 445,
+      "image_path": "/static/images/artworks/sculpture_growth.jpg",
+      "thumbnail_path": "/static/images/artworks/thumbs/sculpture_growth_thumb.jpg",
+      "dimensions": "30x25x15 cm",
+      "tags": [
+        "sculpture",
+        "3d",
+        "nature",
+        "transformation"
+      ],
+      "exhibition_status": "displayed",
+      "award": null
+    }
+  ]
+}

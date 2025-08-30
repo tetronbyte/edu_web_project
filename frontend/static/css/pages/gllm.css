@@ -17,11 +17,27 @@
     min-height: 0; /* prevent stretching */
 }
 
+/* Responsive improvement for fixed panels */
+@media (max-width: 900px) {
+  .gllm-split-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 400px 1fr;
+    gap: var(--spacing-lg);
+  }
+  .gllm-chat-panel {
+    order: 2;
+  }
+}
 
 /* === HEADER === */
 .gllm-header {
     text-align: center;
     margin-bottom: var(--spacing-lg);
+    color: #4da6ff;
+    letter-spacing: 1px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(77,166,255,0.08);
 }
 
 .gllm-header h1 {
@@ -37,7 +53,6 @@
     line-height: 1.6;
 }
 
-
 /* === GRAPH PANEL (LEFT) === */
 .gllm-graph-panel {
     display: flex;
@@ -48,6 +63,9 @@
     padding: var(--spacing-md);
     border: 2px solid var(--border-primary);
     box-shadow: var(--shadow-md);
+    position: sticky;
+    top: calc(var(--topbar-height) + var(--spacing-lg));
+    z-index: 2;
 }
 
 .calculator-container {
@@ -77,7 +95,7 @@
     border-top: 2px solid var(--border-secondary);
 }
 
-.equations-section h4 {
+equations-section h4 {
     color: var(--text-primary);
     margin-bottom: var(--spacing-md);
     font-size: var(--font-size-lg);
@@ -91,7 +109,7 @@
     padding-top: var(--spacing-md);
 }
 
-.equations-list:empty::before {
+equations-list:empty::before {
     content: "Equations will appear here when generated...";
     color: var(--text-muted);
     font-style: italic;
@@ -100,7 +118,7 @@
     padding: var(--spacing-lg);
 }
 
-.equation-item {
+equation-item {
     background: var(--bg-secondary);
     padding: var(--spacing-md);
     margin-bottom: var(--spacing-sm);
@@ -109,25 +127,24 @@
     transition: all var(--transition-fast);
     cursor: pointer;
 }
-.equation-item:hover {
+equation-item:hover {
     background: var(--bg-card-hover);
     transform: translateX(3px);
 }
-.equation-item:last-child {
+equation-item:last-child {
     margin-bottom: 0;
 }
-.equation-text {
+equation-text {
     font-family: 'Courier New', monospace;
     font-size: var(--font-size-base);
     color: var(--text-primary);
     margin-bottom: var(--spacing-xs);
 }
-.equation-desc {
+equation-desc {
     font-size: var(--font-size-sm);
     color: var(--text-secondary);
     opacity: 0.8;
 }
-
 
 /* === CHAT PANEL (RIGHT) === */
 .gllm-chat-panel {
@@ -139,6 +156,9 @@
     padding: var(--spacing-md);
     border: 2px solid var(--border-primary);
     box-shadow: var(--shadow-md);
+    position: sticky;
+    top: calc(var(--topbar-height) + var(--spacing-lg));
+    z-index: 2;
 }
 
 /* Chat messages scrollable area */
@@ -211,7 +231,6 @@
     background: var(--accent-secondary);
 }
 
-
 /* === CHAT INPUT EXTRAS === */
 .chat-input-form {
     display: flex;
@@ -233,7 +252,6 @@
     min-width: 80px;
 }
 
-
 /* Status Indicator */
 .status-indicator {
     display: flex;
@@ -245,7 +263,6 @@
 .status-indicator.loading {
     color: var(--accent-primary);
 }
-
 
 /* Loading States */
 .calculator-loading {
@@ -267,7 +284,6 @@
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
-
 
 /* === RESPONSIVE === */
 @media (max-width: 1200px) {
@@ -303,7 +319,6 @@
         width: 100%;
     }
 }
-
 
 /* === ANIMATIONS === */
 @keyframes fadeIn {

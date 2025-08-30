@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club Management - Dectinity Admin</title>
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/static/css/base/reset.css">
+    <link rel="stylesheet" href="/static/css/base/themes.css">
+    <link rel="stylesheet" href="/static/css/base/layout.css">
+    <link rel="stylesheet" href="/static/css/base/components.css">
+    <link rel="stylesheet" href="/static/css/base/admin.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .clubs-admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+        
+        .page-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: var(--spacing-2xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--border-secondary);
+        }
+        
+        .page-header h1 {
+            color: var(--accent-primary);
+            margin: 0;
+        }
+        
+        .header-actions {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+        
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .club-admin-card {
+            background: var(--gradient-card);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            border: 2px solid var(--border-primary);
+            transition: all var(--transition-normal);
+            position: relative;
+        }
+        
+        .club-admin-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--brand-accent);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .club-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .club-info h3 {
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .club-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+            background: var(--bg-tertiary);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: var(--font-weight-bold);
+            color: var(--accent-primary);
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: var(--font-size-xs);
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .club-actions {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            background: var(--gradient-warning);
+            color: #000;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-xs);
+            font-weight: var(--font-weight-bold);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: var(--z-modal);
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--gradient-card);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            max-width: 600px;
+            width: 90%;
+            border: 2px solid var(--border-primary);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 1px solid var(--border-secondary);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: var(--spacing-sm);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+        }
+        
+        .form-grid .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+    </style>
+</head>
+<body class="layout-admin">
+    
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>Dectinity Admin</h3>
+        </div>
+        
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="window.location.href='/admin'">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </button>
+            
+            <button class="nav-btn" onclick="window.location.href='/admin/upload'">
+                <i class="fas fa-file-alt"></i>
+                <span>Upload Notes</span>
+            </button>
+            
+            <button class="nav-btn" onclick="window.location.href='/admin/blog'">
+                <i class="fas fa-blog"></i>
+                <span>Manage Blog</span>
+            </button>
+            
+            <button class="nav-btn active">
+                <i class="fas fa-users"></i>
+                <span>Manage Clubs</span>
+            </button>
+        </div>
+        
+        <button class="logout-btn" onclick="window.location.href='/admin/logout'">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="clubs-admin-container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1><i class="fas fa-users"></i> Club Management</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button class="btn btn-success" id="addClubBtn">
+                        <i class="fas fa-plus"></i> Add New Club
+                    </button>
+                </div>
+            </div>
+
+            <!-- Clubs Grid -->
+            <div class="clubs-grid" id="clubsGrid">
+                <!-- Clubs will be loaded dynamically -->
+                <div class="loading">Loading clubs...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add/Edit Club Modal -->
+    <div class="modal" id="clubModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">Add New Club</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <form id="clubForm">
+                <input type="hidden" id="clubId" name="id">
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="clubName">Club Name *</label>
+                        <input type="text" id="clubName" name="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clubId">Club ID *</label>
+                        <input type="text" id="clubIdInput" name="club_id" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="clubDescription">Description *</label>
+                        <textarea id="clubDescription" name="description" class="form-control" rows="3" required></textarea>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="clubShortDesc">Short Description</label>
+                        <input type="text" id="clubShortDesc" name="short_description" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clubMembers">Members Count</label>
+                        <input type="number" id="clubMembers" name="members" class="form-control" min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clubMeetingDay">Meeting Day</label>
+                        <select id="clubMeetingDay" name="meeting_day" class="form-control">
+                            <option value="">Select Day</option>
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clubMeetingTime">Meeting Time</label>
+                        <input type="time" id="clubMeetingTime" name="meeting_time" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clubLocation">Location</label>
+                        <input type="text" id="clubLocation" name="location" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clubEmail">Contact Email</label>
+                        <input type="email" id="clubEmail" name="contact_email" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="clubTags">Tags (comma separated)</label>
+                        <input type="text" id="clubTags" name="tags" class="form-control" placeholder="art, creative, design">
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="clubFeatured" name="featured">
+                                Featured Club
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Save Club
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="/static/javascript/core/utils.js"></script>
+    <script src="/static/javascript/core/api.js"></script>
+    <script src="/static/javascript/pages/clubs_admin.js"></script>
+</body>
+</html>

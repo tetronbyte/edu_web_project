@@ -22,33 +22,110 @@
     
     <!-- Page-specific CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pages/blog_public.css') }}">
+
+    <!-- Custom Inline Styling for Search Button -->
+    <style>
+        .search-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .search-input {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .search-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .search-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .search-icon {
+            width: 20px;
+            height: 20px;
+            stroke: #333;
+        }
+    </style>
 </head>
 <body class="with-topbar">
     <!-- ✅ Topbar -->
-    <div class="topbar">
-        <!-- Left: Logo + Site Name -->
+    <!-- Topbar -->
+    <header class="topbar">
         <div class="logo">
             <a href="/">
                 <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Logo">
             </a>
             <span class="logo-text" style="font-weight: normal;">Dectinity</span>
         </div>
-
-        <!-- Right: Navigation Buttons -->
         <div class="button-group">
             <a href="/" class="button">Home</a>
             <a href="/notes" class="button">Notes</a>
-            <a href="/gllm" class="button">GLLM</a>
-            <a href="/gpa_calculator" class="button">GPA Calc</a>
-            <a href="/gpa_predictor" class="button">GPA Predict</a>
+            <a href="/blog" class="button">Blog</a>
+
+            <!-- Clubs Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Clubs</button>
+                <div class="dropdown-menu">
+                    <a href="/clubs" class="dropdown-item">Clubs Home</a>
+                    <a href="/clubs/sports" class="dropdown-item">Sports Club</a>
+                    <a href="/clubs/photography" class="dropdown-item">Photography Club</a>
+                    <a href="/clubs/drama" class="dropdown-item">Drama Club</a>
+                    <a href="/clubs/dance" class="dropdown-item">Dance Club</a>
+                    <a href="/clubs/chess" class="dropdown-item">Chess Club</a>
+                </div>
+            </div>
+
+            <!-- Miscellaneous Dropdown -->
+            <div class="nav-dropdown">
+                <button class="dropdown-toggle">Miscellaneous</button>
+                <div class="dropdown-menu">
+                    <a href="/creative_arena" class="dropdown-item">Creative Arena</a>
+                    <a href="/gllm" class="dropdown-item">GLLM</a>
+                    <a href="/gpa_calculator" class="dropdown-item">GPA Calc</a>
+                    <a href="/gpa_predictor" class="dropdown-item">GPA Predict</a>
+                </div>
+            </div>
+
+
+        <button class="mobile-topbar-menu" aria-label="Toggle menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-nav-dropdown">
+            <button class="nav-btn" onclick="window.location.href='/'">Home</button>
+            <button class="nav-btn" onclick="window.location.href='/notes'">Notes</button>
+            <button class="nav-btn active" onclick="window.location.href='/clubs'">Clubs</button>
+            <button class="nav-btn" onclick="window.location.href='/blog'">Blog</button>
+            <button class="nav-btn" onclick="window.location.href='/gllm'">GLLM</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_calculator'">GPA Calculator</button>
+            <button class="nav-btn" onclick="window.location.href='/gpa_predictor'">GPA Predictor</button>
+            <button class="nav-btn" onclick="window.location.href='/creative-arena'">Creative Arena</button>
         </div>
-    </div>
+
+    </header>
 
     <!-- Main Content -->
     <div class="main-content-public">
         <!-- Blog Header -->
         <div class="blog-header">
-            <h1>Dectinity Blog</h1>
+            <h2>Dectinity Blog</h2>
             <p>Latest updates, tutorials, and study tips</p>
         </div>
 
@@ -56,9 +133,14 @@
         <div class="blog-controls">
             <div class="search-container">
                 <input type="text" id="searchInput" class="search-input" placeholder="Search posts...">
-                <button class="search-btn">🔍</button>
+                <button class="search-btn" aria-label="Search">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7" />
+                        <line x1="16.5" y1="16.5" x2="21" y2="21" />
+                    </svg>
+                </button>
             </div>
-            
+
             <select id="categoryFilter" class="filter-select">
                 <option value="">All Categories</option>
                 <option value="announcements">Announcements</option>
@@ -84,13 +166,10 @@
         </div>
     </div>
 
-    <!-- Back Button -->
-    <button class="back-button" onclick="window.location.href='/'">← Back</button>
-
     <!-- Core JavaScript -->
     <script src="{{ url_for('static', filename='javascript/core/utils.js') }}"></script>
     <script src="{{ url_for('static', filename='javascript/core/api.js') }}"></script>
-    
+
     <!-- Page-specific JavaScript -->
     <script src="{{ url_for('static', filename='javascript/pages/blog_public.js') }}"></script>
 </body>
